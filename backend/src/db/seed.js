@@ -7,12 +7,12 @@ async function seed() {
 
   console.log('Seeding database...');
 
-  // Seed admin (username: admin, password: admin123)
-  const hashedPassword = await bcrypt.hash('admin123', 10);
+  // Seed admin (username: admin, password: admin)
+  const hashedPassword = await bcrypt.hash('admin', 10);
   await sql`
     INSERT INTO admins (username, password)
     VALUES ('admin', ${hashedPassword})
-    ON CONFLICT (username) DO NOTHING
+    ON CONFLICT (username) DO UPDATE SET password = ${hashedPassword}
   `;
 
   // Seed services (from original SQLite schema)
@@ -59,7 +59,7 @@ async function seed() {
   `;
 
   console.log('Seed complete.');
-  console.log('Default admin: username=admin, password=admin123');
+  console.log('Default admin: username=admin, password=admin');
 }
 
 seed().catch((err) => {

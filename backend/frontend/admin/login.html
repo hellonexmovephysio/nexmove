@@ -4,59 +4,104 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        *{box-sizing:border-box}
-        body{
-            margin:0;
-            font-family:Arial,sans-serif;
-            background:#eef3f8;
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
+        :root {
+            --teal: #087f80;
+            --navy: #182535;
+            --orange: #ed7147;
+            --text: #334052;
+            --bg: #f5f8f8;
+            --border: #e2e8e8;
+            --white: #fff;
+            --radius: 14px;
         }
-        .card{
-            width:100%;
-            max-width:420px;
-            background:#fff;
-            padding:30px;
-            border-radius:14px;
-            box-shadow:0 10px 35px rgba(0,0,0,.1);
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        h1{margin-top:0;color:#0d3b66}
-        label{display:block;font-weight:700;margin:15px 0 7px}
-        input{
-            width:100%;
-            padding:12px;
-            border:1px solid #d1d5db;
-            border-radius:8px;
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        button{
-            width:100%;
-            margin-top:20px;
-            padding:13px;
-            border:0;
-            border-radius:8px;
-            background:#0d3b66;
-            color:#fff;
-            font-weight:700;
-            cursor:pointer;
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: 0 14px 45px rgba(25, 48, 67, .09);
+            border-top: 5px solid var(--teal);
+            animation: fadeInUp 0.6s ease-out forwards;
         }
-        .error{
-            background:#fee2e2;
-            color:#991b1b;
-            padding:10px 12px;
-            border-radius:8px;
+
+        h1 { margin: 0 0 5px; color: var(--navy); font-weight: 700; font-size: 26px; }
+        .subtitle { color: #687486; font-size: 14px; margin-bottom: 25px; }
+
+        label { display: block; font-weight: 600; margin: 15px 0 8px; font-size: 14px; color: var(--navy); }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(8, 127, 128, 0.15); }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--teal);
+            color: var(--white);
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(8, 127, 128, 0.2);
+        }
+        button:hover { background: #056566; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(8, 127, 128, 0.3); }
+
+        .error {
+            background: #fef2f2;
+            color: #b91c1c;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid #fca5a5;
             display: none;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .back{margin-top:16px;text-align:center}
-        a{color:#0d3b66}
+
+        .back { margin-top: 25px; text-align: center; }
+        a { color: var(--teal); text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.2s; }
+        a:hover { color: var(--orange); }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>Admin Login</h1>
+        <div class="subtitle">Secure access to NEXmove Physio dashboard</div>
 
         <div id="errorMsg" class="error"></div>
 
