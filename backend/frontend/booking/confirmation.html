@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking Confirmation | NEXmove</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="confirmation-page">
+<div class="confirmation-card">
+    <div class="confirm-tick">✓</div>
+    
+    <div id="loading">Loading confirmation...</div>
+    
+    <div id="confirmationDetails" style="display:none;">
+        <p class="eyebrow">NEXmove Physio</p>
+        <h1>Booking request received</h1>
+        <p>Thank you, <strong id="custName"></strong>. Your request has been saved successfully.</p>
+        <div class="confirm-ref">Reference: <strong id="bookRef"></strong></div>
+        <dl class="confirmation-details">
+            <div><dt>Service</dt><dd id="bookService"></dd></div>
+            <div><dt>Preferred date</dt><dd id="bookDate"></dd></div>
+            <div><dt>Preferred time</dt><dd id="bookTime"></dd></div>
+            <div><dt>Visit address</dt><dd id="bookAddress"></dd></div>
+        </dl>
+        <p class="small-note">This page confirms the request was stored in the database. Our team will contact you shortly.</p>
+    </div>
+    
+    <div id="errorState" style="display:none;">
+        <h1>Confirmation not available</h1>
+        <p>Please return to the booking page and submit the form again.</p>
+    </div>
+    
+    <a class="back-btn" href="index.html">← Back to booking page</a>
+</div>
+
+<script src="../js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    
+    if (!ref) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('errorState').style.display = 'block';
+        return;
+    }
+    
+    try {
+        const res = await apiFetch(`/api/bookings/${ref}`);
+        const data = await res.json();
+        
+        document.getElementById('loading').style.display = 'none';
+        
+        if (res.ok && data.ok) {
+            document.getElementById('confirmationDetails').style.display = 'block';
+            const b = data.data;
+            
+            document.getElementById('custName').textContent = b.full_name;
+            document.getElementById('bookRef').textContent = b.booking_ref;
+            document.getElementById('bookService').textContent = b.service_name;
+            
+            const dateStr = new Date(b.preferred_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('bookDate').textContent = dateStr;
+            
+            document.getElementById('bookTime').textContent = b.preferred_time;
+            
+            document.getElementById('bookAddress').textContent = `${b.address_line1}, ${b.city}, ${b.postcode}`;
+        } else {
+            document.getElementById('errorState').style.display = 'block';
+        }
+    } catch (err) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('errorState').style.display = 'block';
+    }
+});
+</script>
+</body>
+</html>

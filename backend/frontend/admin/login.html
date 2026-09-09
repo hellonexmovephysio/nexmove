@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Login</title>
+    <style>
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            font-family:Arial,sans-serif;
+            background:#eef3f8;
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .card{
+            width:100%;
+            max-width:420px;
+            background:#fff;
+            padding:30px;
+            border-radius:14px;
+            box-shadow:0 10px 35px rgba(0,0,0,.1);
+        }
+        h1{margin-top:0;color:#0d3b66}
+        label{display:block;font-weight:700;margin:15px 0 7px}
+        input{
+            width:100%;
+            padding:12px;
+            border:1px solid #d1d5db;
+            border-radius:8px;
+        }
+        button{
+            width:100%;
+            margin-top:20px;
+            padding:13px;
+            border:0;
+            border-radius:8px;
+            background:#0d3b66;
+            color:#fff;
+            font-weight:700;
+            cursor:pointer;
+        }
+        .error{
+            background:#fee2e2;
+            color:#991b1b;
+            padding:10px 12px;
+            border-radius:8px;
+            display: none;
+            margin-bottom: 15px;
+        }
+        .back{margin-top:16px;text-align:center}
+        a{color:#0d3b66}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Admin Login</h1>
+
+        <div id="errorMsg" class="error"></div>
+
+        <form id="loginForm">
+            <label>Username</label>
+            <input type="text" id="username" name="username" required autocomplete="username">
+
+            <label>Password</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="back"><a href="../index.html">Back to booking page</a></div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // Check if already logged in
+        if (localStorage.getItem('nexmove_token')) {
+            window.location.href = 'dashboard.html';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.style.display = 'none';
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const res = await apiFetch('/api/auth/login', {
+                    method: 'POST',
+                    body: { username, password }
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    localStorage.setItem('nexmove_token', data.token);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    errorMsg.textContent = data.message || 'Login failed.';
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Server error. Please try again.';
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
