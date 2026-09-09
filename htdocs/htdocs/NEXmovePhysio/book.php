@@ -1,0 +1,1027 @@
+<?php
+// ==========================================
+// NEXmovePhysio - Responsive Booking Page
+// ==========================================
+
+require __DIR__ . '/config.php';
+
+$siteName = 'NEXmovePhysio';
+$siteTitle = 'Book a Home Physiotherapy Appointment | NEXmovePhysio';
+$phone = '73931 07245';
+$contactEmail = 'hello@NEXmovePhysio.co.uk';
+$currentYear = date('Y');
+
+$success = '';
+$error = '';
+
+// Keep form values after validation errors.
+$form = [
+    'name' => '',
+    'email' => '',
+    'phone' => '',
+    'service' => '',
+    'appointment_date' => '',
+    'appointment_time' => '',
+    'message' => '',
+];
+
+$services = [
+    'Physiotherapy',
+    'Home Visit',
+    'Sports Rehabilitation',
+    'Consultation',
+];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
+    foreach ($form as $key => $value) {
+        $form[$key] = trim($_POST[$key] ?? '');
+    }
+
+    if (
+        $form['name'] === '' ||
+        $form['email'] === '' ||
+        $form['phone'] === '' ||
+        $form['service'] === '' ||
+        $form['appointment_date'] === '' ||
+        $form['appointment_time'] === ''
+    ) {
+        $error = 'Please fill in all required fields.';
+    } elseif (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address.';
+    } elseif ($form['appointment_date'] < date('Y-m-d')) {
+        $error = 'Appointment date cannot be in the past.';
+    } elseif (!in_array($form['service'], $services, true)) {
+        $error = 'Please select a valid service.';
+    } else {
+        try {
+            $stmt = $pdo->prepare(
+                "INSERT INTO appointments
+                (name, email, phone, service, appointment_date, appointment_time, message, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')"
+            );
+
+            $stmt->execute([
+                $form['name'],
+                $form['email'],
+                $form['phone'],
+                $form['service'],
+                $form['appointment_date'],
+                $form['appointment_time'],
+                $form['message'],
+            ]);
+
+            $success = 'Your appointment request has been sent successfully. Our team will contact you shortly.';
+
+            foreach ($form as $key => $value) {
+                $form[$key] = '';
+            }
+        } catch (PDOException $e) {
+            $error = 'We could not save your appointment right now. Please try again.';
+        }
+    }
+}
+
+function e(string $value): string
+{
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book a NEXmovePhysio home physiotherapy appointment online.">
+    <title><?= e($siteTitle) ?></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Your existing website stylesheet keeps the header identical to the rest of the site. -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =====================================================
+           BOOKING PAGE ONLY
+           Scoped class names prevent conflicts with header CSS.
+        ===================================================== */
+        :root {
+            --booking-navy: #0d3b66;
+            --booking-navy-dark: #082c4e;
+            --booking-orange: #0d3b66;
+            --booking-orange-dark: #0d3b66;
+            --booking-cream: #fff9f1;
+            --booking-bg: #f4f7fb;
+            --booking-white: #ffffff;
+            --booking-text: #172033;
+            --booking-muted: #677386;
+            --booking-border: #dce3ec;
+            --booking-focus: rgba(13, 59, 102, 0.14);
+        }
+
+        .booking-page,
+        .booking-page * {
+            box-sizing: border-box;
+        }
+
+        .booking-page {
+            min-height: calc(100vh - 76px);
+            background:
+                radial-gradient(circle at 88% 8%, rgba(242, 140, 40, .10), transparent 28%),
+                linear-gradient(180deg, #f8fafc 0%, var(--booking-bg) 100%);
+            color: var(--booking-text);
+            font-family: 'Inter', Arial, sans-serif;
+        }
+
+        .booking-shell {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 56px 0 72px;
+        }
+
+        .booking-intro {
+            max-width: 760px;
+            margin: 0 auto 32px;
+            text-align: center;
+        }
+
+        .booking-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            padding: 8px 13px;
+            border: 1px solid rgba(13, 59, 102, .12);
+            border-radius: 999px;
+            background: var(--booking-white);
+            color: var(--booking-navy);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            box-shadow: 0 8px 24px rgba(13, 59, 102, .05);
+        }
+
+        .booking-intro h1 {
+            margin: 0;
+            color: var(--booking-navy);
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+        }
+
+        .booking-intro p {
+            max-width: 640px;
+            margin: 16px auto 0;
+            color: var(--booking-muted);
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .booking-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(300px, 0.38fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .booking-card,
+        .booking-help {
+            border: 1px solid rgba(13, 59, 102, .08);
+            background: var(--booking-white);
+            border-radius: 22px;
+            box-shadow: 0 22px 60px rgba(13, 59, 102, .09);
+        }
+
+        .booking-card {
+            padding: clamp(22px, 4vw, 38px);
+        }
+
+        .booking-card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 26px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .booking-card-head h2 {
+            margin: 0 0 7px;
+            color: var(--booking-navy);
+            font-size: clamp(22px, 3vw, 29px);
+            line-height: 1.2;
+        }
+
+        .booking-card-head p {
+            margin: 0;
+            color: var(--booking-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .booking-secure-badge {
+            flex: 0 0 auto;
+            padding: 8px 11px;
+            border-radius: 10px;
+            background: #eef6ff;
+            color: var(--booking-navy);
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .booking-alert {
+            margin-bottom: 22px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .booking-alert.success {
+            border: 1px solid #bbebc9;
+            background: #eefbf2;
+            color: #176b37;
+        }
+
+        .booking-alert.error {
+            border: 1px solid #ffd0d0;
+            background: #fff1f1;
+            color: #9b2626;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .booking-field {
+            min-width: 0;
+        }
+
+        .booking-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .booking-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #233148;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .booking-field label span {
+            color: #c94f34;
+        }
+
+        .booking-field input,
+        .booking-field select,
+        .booking-field textarea {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            margin: 0;
+            padding: 14px 15px;
+            border: 1px solid var(--booking-border);
+            border-radius: 11px;
+            outline: none;
+            background: #fff;
+            color: var(--booking-text);
+            font: inherit;
+            font-size: 15px;
+            line-height: 1.35;
+            transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+
+        .booking-field input,
+        .booking-field select {
+            min-height: 49px;
+        }
+
+        .booking-field textarea {
+            min-height: 126px;
+            resize: vertical;
+        }
+
+        .booking-field input::placeholder,
+        .booking-field textarea::placeholder {
+            color: #9aa5b5;
+        }
+
+        .booking-field input:focus,
+        .booking-field select:focus,
+        .booking-field textarea:focus {
+            border-color: var(--booking-navy);
+            box-shadow: 0 0 0 4px var(--booking-focus);
+        }
+
+        .booking-submit-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-top: 4px;
+        }
+
+        .booking-note {
+            margin: 0;
+            color: var(--booking-muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .booking-submit {
+            flex: 0 0 auto;
+            min-height: 50px;
+            padding: 13px 23px;
+            border: 0;
+            border-radius: 11px;
+            background: var(--booking-orange);
+            color: #fff;
+            cursor: pointer;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(242, 140, 40, .24);
+            transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+        }
+
+        .booking-submit:hover {
+            background: var(--booking-orange-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 13px 28px rgba(242, 140, 40, .28);
+        }
+
+        .booking-submit:focus-visible {
+            outline: 3px solid rgba(242, 140, 40, .32);
+            outline-offset: 3px;
+        }
+
+        .booking-help {
+            position: sticky;
+            top: 96px;
+            overflow: hidden;
+        }
+
+        .booking-help-top {
+            padding: 28px 26px;
+            background: linear-gradient(145deg, var(--booking-navy), var(--booking-navy-dark));
+            color: #fff;
+        }
+
+        .booking-help-top h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+        }
+
+        .booking-help-top p {
+            margin: 0;
+            color: rgba(255,255,255,.80);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        .booking-help-list {
+            display: grid;
+            gap: 0;
+            padding: 8px 26px;
+        }
+
+        .booking-help-item {
+            display: grid;
+            grid-template-columns: 38px minmax(0, 1fr);
+            gap: 12px;
+            padding: 18px 0;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .booking-help-item:last-child {
+            border-bottom: 0;
+        }
+
+        .booking-help-icon {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: var(--booking-cream);
+            color: var(--booking-orange-dark);
+            font-size: 18px;
+        }
+
+        .booking-help-item strong {
+            display: block;
+            margin: 2px 0 4px;
+            color: var(--booking-navy);
+            font-size: 14px;
+        }
+
+        .booking-help-item a,
+        .booking-help-item span {
+            color: var(--booking-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        .booking-help-item a:hover {
+            color: var(--booking-orange-dark);
+        }
+
+        @media (max-width: 960px) {
+            .booking-shell {
+                width: min(900px, calc(100% - 32px));
+                padding-top: 42px;
+            }
+
+            .booking-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-help {
+                position: static;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .booking-shell {
+                width: min(100% - 24px, 620px);
+                padding: 30px 0 48px;
+            }
+
+            .booking-intro {
+                margin-bottom: 22px;
+            }
+
+            .booking-intro p {
+                font-size: 15px;
+            }
+
+            .booking-card,
+            .booking-help {
+                border-radius: 17px;
+            }
+
+            .booking-card {
+                padding: 20px 16px;
+            }
+
+            .booking-card-head {
+                display: block;
+                margin-bottom: 20px;
+                padding-bottom: 18px;
+            }
+
+            .booking-secure-badge {
+                display: inline-block;
+                margin-top: 13px;
+            }
+
+            .booking-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .booking-field.full {
+                grid-column: auto;
+            }
+
+            .booking-submit-row {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .booking-submit {
+                width: 100%;
+            }
+
+            .booking-help-top,
+            .booking-help-list {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .booking-shell {
+                width: min(100% - 18px, 400px);
+            }
+
+            .booking-card {
+                padding: 18px 13px;
+            }
+
+            .booking-field input,
+            .booking-field select,
+            .booking-field textarea {
+                font-size: 16px; /* Prevents iOS zoom on focus. */
+            }
+        }
+
+        /* =====================================================
+           HEADER THEME — SAME AS UPDATED index.php
+           Booking page content/data below remains unchanged.
+        ===================================================== */
+        :root{
+            --nx-cream:#f8f4ec;
+            --nx-navy:#102d45;
+            --nx-green:#315d50;
+            --nx-line:#e3dccf;
+        }
+
+        .site-header{
+            position:sticky !important;
+            top:0;
+            z-index:9999;
+            width:100%;
+            background:rgba(248,244,236,.97) !important;
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
+            border-bottom:1px solid rgba(16,45,69,.07) !important;
+            box-shadow:none !important;
+        }
+
+        .site-header .header-row{
+            width:min(1180px,calc(100% - 40px));
+            min-height:104px;
+            margin:0 auto;
+            display:flex;
+            align-items:center;
+            gap:28px;
+        }
+
+        .site-header .brand{
+            display:flex;
+            align-items:center;
+            gap:15px;
+            flex:0 0 auto;
+            text-decoration:none;
+        }
+
+        .site-header .logo{
+            width:72px;
+            height:72px;
+            border-radius:50%;
+            display:grid;
+            place-items:center;
+            overflow:hidden;
+            background:transparent;
+            border:0;
+            flex:0 0 auto;
+        }
+
+        .site-header .main-logo-img{
+            width:100%;
+            height:100%;
+            object-fit:contain;
+            display:block;
+        }
+
+        .site-header .brand-name{
+            font-family:Georgia,"Times New Roman",serif;
+            font-size:31px;
+            line-height:1;
+            color:var(--nx-navy);
+            font-weight:400;
+        }
+
+        .site-header .brand-name span{
+            color:#5f776d;
+        }
+
+        .site-header .brand-sub{
+            margin-top:7px;
+            font-size:9px;
+            letter-spacing:6px;
+            font-weight:800;
+            color:var(--nx-navy);
+        }
+
+        .site-header .brand-tag{
+            margin-top:7px;
+            font-size:8px;
+            letter-spacing:2px;
+            color:#8a8d86;
+        }
+
+        .site-header .desktop-nav{
+            display:flex;
+            align-items:center;
+            gap:32px;
+            margin-left:auto;
+        }
+
+        .site-header .desktop-nav > a{
+            color:#26343d !important;
+            font-size:14px;
+            font-weight:700;
+            white-space:nowrap;
+            text-decoration:none;
+        }
+
+        .site-header .desktop-nav > a:hover{
+            color:var(--nx-green) !important;
+        }
+
+        .site-header .phone-btn{
+            background:var(--nx-navy) !important;
+            color:#ffffff !important;
+            padding:14px 20px !important;
+            border-radius:999px !important;
+            border:0 !important;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            box-shadow:none !important;
+        }
+
+        .site-header .menu-btn{
+            display:none;
+            margin-left:auto;
+            width:45px;
+            height:45px;
+            border:0;
+            background:transparent;
+            cursor:pointer;
+            padding:6px;
+        }
+
+        .site-header .menu-btn span{
+            display:block;
+            height:2px;
+            background:var(--nx-navy);
+            margin:7px 0;
+            border-radius:2px;
+        }
+
+        .site-header .mobile-nav{
+            display:none;
+            width:100%;
+            background:var(--nx-cream) !important;
+            border-top:1px solid var(--nx-line);
+            padding:8px 20px 18px;
+            box-shadow:0 14px 28px rgba(16,45,69,.08);
+        }
+
+        .site-header .mobile-nav.active{
+            display:block !important;
+        }
+
+        .site-header .mobile-nav a{
+            display:block;
+            padding:12px 0;
+            border-bottom:1px solid var(--nx-line);
+            color:#26343d !important;
+            font-weight:700;
+            text-decoration:none;
+        }
+
+        .site-header .mobile-nav a:last-child{
+            border-bottom:0;
+        }
+
+        .site-header .mobile-nav .mobile-phone{
+            color:var(--nx-navy) !important;
+        }
+
+        @media(max-width:1100px){
+            .site-header .desktop-nav{gap:20px}
+            .site-header .desktop-nav > a{font-size:13px}
+            .site-header .phone-btn{padding:13px 17px !important}
+        }
+
+        @media(max-width:960px){
+            .site-header .desktop-nav{display:none !important}
+            .site-header .menu-btn{display:block}
+            .site-header .header-row{
+                width:min(100% - 32px,1180px);
+                min-height:88px;
+            }
+            .site-header .logo{width:58px;height:58px}
+            .site-header .brand-name{font-size:24px}
+            .site-header .brand-sub{font-size:8px;letter-spacing:4px}
+            .site-header .brand-tag{display:none}
+        }
+
+        @media(max-width:430px){
+            .site-header .header-row{
+                width:calc(100% - 20px);
+                min-height:78px;
+                gap:11px;
+            }
+            .site-header .logo{width:50px;height:50px}
+            .site-header .brand-name{font-size:21px}
+            .site-header .brand-sub{font-size:7px;letter-spacing:3px}
+        }
+        .socials{
+    display:flex;
+    gap:12px;
+    margin-top:15px;
+}
+
+.socials a{
+    width:42px;
+    height:42px;
+
+    display:grid;
+    place-items:center;
+
+    background:#ffffff;
+    border-radius:50%;
+
+    color:#315d50;
+
+    border:1px solid rgba(49,93,80,.15);
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+    transition:.25s ease;
+}
+
+.socials a svg{
+    width:21px;
+    height:21px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.socials a:hover{
+    background:#315d50;
+    color:#ffffff;
+    transform:translateY(-3px);
+}
+
+    </style>
+</head>
+<body id="top">
+
+<!-- ==========================================
+     HEADER - same website header
+========================================== -->
+<header class="site-header">
+    <div class="header-row">
+
+        <a class="brand" href="index.php#top" aria-label="NEXmove Physio Home">
+            <div class="logo">
+                <img src="images/nexmove-logo.png" alt="NEXmove Physio logo" class="main-logo-img">
+            </div>
+
+            <div>
+                <div class="brand-name">NEX<span>move</span></div>
+                <div class="brand-sub">PHYSIO</div>
+                <div class="brand-tag">MOVE BETTER. LIVE BETTER.</div>
+            </div>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Main navigation">
+            <a href="index.php#how">How It Works</a>
+            <a href="index.php#conditions">Conditions</a>
+            <a href="index.php#pricing">Pricing</a>
+            <a href="index.php#physios">For Physios</a>
+            <a href="index.php#about">About Us</a>
+            <a class="btn" href="tel:+447393107245">☎ <?= e($phone) ?></a>
+        </nav>
+
+        
+<div class="socials">
+
+    <a href="https://instagram.com/@nexmovephysio"
+       target="_blank"
+       aria-label="Instagram">
+
+        <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.5" cy="6.5" r="1"></circle>
+        </svg>
+    </a>
+
+    <a href="https://wa.me/447393107245"
+       target="_blank"
+       aria-label="WhatsApp">
+
+        <svg viewBox="0 0 24 24">
+            <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.7A8.5 8.5 0 1 1 20.5 11.5z"></path>
+            <path d="M8.4 7.8c.3-.4.6-.4.8-.4h.5c.2 0 .4.1.5.4l.8 1.9c.1.3.1.5-.1.7l-.7.9c-.2.2-.2.4 0 .7.6 1.1 1."></path>
+        </svg>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+        <a href="index.php#how">How It Works</a>
+        <a href="index.php#conditions">Conditions</a>
+        <a href="index.php#pricing">Pricing</a>
+        <a href="index.php#physios">For Physios</a>
+        <a href="index.php#about">About Us</a>
+        <a class="mobile-phone" href="tel:+447393107245">☎ <?= e($phone) ?></a>
+    </nav>
+</header>
+
+<main class="booking-page" id="booking">
+    <div class="booking-shell">
+        <section class="booking-intro" aria-labelledby="booking-title">
+            <div class="booking-eyebrow">Home Physiotherapy Booking</div>
+            <h1 id="booking-title">Book an Appointment</h1>
+            <p>Tell us what you need and choose your preferred date and time. Our team will review your request and contact you to confirm the appointment.</p>
+        </section>
+
+        <div class="booking-layout">
+            <section class="booking-card" aria-label="Appointment booking form">
+                <div class="booking-card-head">
+                    <div>
+                        <h2>Your appointment details</h2>
+                        <p>Fields marked with * are required.</p>
+                    </div>
+                    <div class="booking-secure-badge">Private &amp; secure</div>
+                </div>
+
+                <?php if ($success !== ''): ?>
+                    <div class="booking-alert success" role="status" aria-live="polite">
+                        <?= e($success) ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($error !== ''): ?>
+                    <div class="booking-alert error" role="alert">
+                        <?= e($error) ?>
+                    </div>
+                <?php endif; ?>
+
+                <form method="post" action="#booking">
+                    <div class="booking-grid">
+                        <div class="booking-field">
+                            <label for="name">Full Name <span>*</span></label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                autocomplete="name"
+                                placeholder="Your full name"
+                                required
+                                value="<?= e($form['name']) ?>"
+                            >
+                        </div>
+
+                        <div class="booking-field">
+                            <label for="email">Email Address <span>*</span></label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                autocomplete="email"
+                                placeholder="you@example.com"
+                                required
+                                value="<?= e($form['email']) ?>"
+                            >
+                        </div>
+
+                        <div class="booking-field">
+                            <label for="phone">Phone Number <span>*</span></label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                autocomplete="tel"
+                                inputmode="tel"
+                                placeholder="e.g. 07xxx xxxxxx"
+                                required
+                                value="<?= e($form['phone']) ?>"
+                            >
+                        </div>
+
+                        <div class="booking-field">
+                            <label for="service">Service <span>*</span></label>
+                            <select id="service" name="service" required>
+                                <option value="">Select a service</option>
+                                <?php foreach ($services as $item): ?>
+                                    <option value="<?= e($item) ?>" <?= $form['service'] === $item ? 'selected' : '' ?>>
+                                        <?= e($item) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="booking-field">
+                            <label for="appointment_date">Preferred Date <span>*</span></label>
+                            <input
+                                type="date"
+                                id="appointment_date"
+                                name="appointment_date"
+                                min="<?= e(date('Y-m-d')) ?>"
+                                required
+                                value="<?= e($form['appointment_date']) ?>"
+                            >
+                        </div>
+
+                        <div class="booking-field">
+                            <label for="appointment_time">Preferred Time <span>*</span></label>
+                            <input
+                                type="time"
+                                id="appointment_time"
+                                name="appointment_time"
+                                required
+                                value="<?= e($form['appointment_time']) ?>"
+                            >
+                        </div>
+
+                        <div class="booking-field full">
+                            <label for="message">Message / Notes</label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                placeholder="Tell us briefly about your symptoms, condition, or anything you would like the physiotherapist to know."
+                            ><?= e($form['message']) ?></textarea>
+                        </div>
+
+                        <div class="booking-field full">
+                            <div class="booking-submit-row">
+                                <p class="booking-note">Submitting this form sends an appointment request. Your appointment is confirmed only after our team contacts you.</p>
+                                <button class="booking-submit" type="submit" name="booking_submit" value="1">
+                                    Book Appointment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="booking-help" aria-label="Booking help">
+                <div class="booking-help-top">
+                    <h3>Need help booking?</h3>
+                    <p>Contact NEXmovePhysio and our team can help you choose the right service.</p>
+                </div>
+
+                <div class="booking-help-list">
+                    <div class="booking-help-item">
+                        <div class="booking-help-icon" aria-hidden="true">☎</div>
+                        <div>
+                            <strong>Call us</strong>
+                            <a href="tel:+447393107245"><?= e($phone) ?></a>
+                        </div>
+                    </div>
+
+                    <div class="booking-help-item">
+                        <div class="booking-help-icon" aria-hidden="true">✉</div>
+                        <div>
+                            <strong>Email us</strong>
+                            <a href="mailto:<?= e($contactEmail) ?>"><?= e($contactEmail) ?></a>
+                        </div>
+                    </div>
+
+                    <div class="booking-help-item">
+                        <div class="booking-help-icon" aria-hidden="true">⌂</div>
+                        <div>
+                            <strong>Home physiotherapy</strong>
+                            <span>Professional physiotherapy support delivered at home.</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</main>
+
+<script>
+(function () {
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    if (!menuBtn || !mobileNav) return;
+
+    menuBtn.addEventListener('click', function () {
+        const isOpen = mobileNav.classList.toggle('active');
+        menuBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    mobileNav.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            mobileNav.classList.remove('active');
+            menuBtn.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            mobileNav.classList.remove('active');
+            menuBtn.setAttribute('aria-expanded', 'false');
+        }
+    });
+})();
+</script>
+
+</body>
+</html>
