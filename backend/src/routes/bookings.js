@@ -79,31 +79,67 @@ router.post('/', async (req, res) => {
     const sql = getDB();
 
     // Verify service exists and is active
-    const serviceRows = await sql`SELECT id FROM services WHERE id = ${serviceId} AND active = TRUE`;
+    const serviceRows = await sql`SELECT id, name, price_pence FROM services WHERE id = ${serviceId} AND active = TRUE`;
     if (!serviceRows.length) {
       return res.status(422).json({ ok: false, message: 'The selected service is not available.' });
     }
-
+    
+    const service = serviceRows[0];
     const reference = bookingReference();
+    const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() : 'http://localhost:5500';
+
+    // Stripe Integration
+    let stripeSessionId = null;
+    let checkoutUrl = `${frontendUrl}/booking/confirmation.html?ref=${encodeURIComponent(reference)}`; // fallback if free
+    
+    if (service.price_pence > 0) {
+      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'gbp',
+              product_data: {
+                name: service.name,
+                description: `Booking reference: ${reference}`,
+              },
+              unit_amount: service.price_pence,
+            },
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        success_url: `${frontendUrl}/booking/confirmation.html?ref=${encodeURIComponent(reference)}&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${frontendUrl}/booking/index.html?cancel=true`,
+        client_reference_id: reference,
+        customer_email: email,
+      });
+
+      stripeSessionId = session.id;
+      checkoutUrl = session.url;
+    }
 
     await sql`
       INSERT INTO bookings (
         booking_ref, service_id, full_name, email, phone, date_of_birth,
         postcode, address_line1, city, access_details, condition_id,
         issue_duration, pain_level, symptoms, mobility_aid, fall_risk,
-        preferred_date, preferred_time, therapist_id, consent_privacy, consent_updates
+        preferred_date, preferred_time, therapist_id, consent_privacy, consent_updates,
+        payment_status, stripe_session_id
       ) VALUES (
         ${reference}, ${serviceId}, ${fullName}, ${email}, ${phone}, ${dob},
         ${postcode}, ${address}, ${city}, ${accessDetails || null}, ${conditionId},
         ${issueDuration || null}, ${painLevel}, ${symptoms || null}, ${mobilityAid}, ${fallRisk},
-        ${preferredDate}, ${preferredTime}, ${therapistId}, ${consentPrivacy}, ${consentUpdates}
+        ${preferredDate}, ${preferredTime}, ${therapistId}, ${consentPrivacy}, ${consentUpdates},
+        ${service.price_pence > 0 ? 'pending' : 'paid'}, ${stripeSessionId}
       )
     `;
 
     res.status(201).json({
       ok: true,
       reference,
-      redirect: `confirmation.html?ref=${encodeURIComponent(reference)}`,
+      redirect: checkoutUrl,
     });
   } catch (err) {
     console.error('Create booking error:', err);

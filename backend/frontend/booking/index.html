@@ -560,7 +560,10 @@ document.getElementById('submitFormBtn').addEventListener('click', async (e) => 
     data.consent_privacy = form.elements['consent_privacy'].checked;
     data.consent_updates = form.elements['consent_updates'].checked;
     
-    msg.textContent = 'Submitting...';
+    const submitBtn = document.getElementById('submitFormBtn');
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+    msg.textContent = 'Processing Payment...';
     msg.style.color = '#3b82f6';
     
     try {
@@ -579,10 +582,14 @@ document.getElementById('submitFormBtn').addEventListener('click', async (e) => 
             if (result.errors && result.errors.length) {
                 msg.innerHTML = result.message + '<br>' + result.errors.join('<br>');
             }
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
         }
     } catch (err) {
         msg.textContent = 'Server error. Please try again.';
         msg.style.color = '#dc2626';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
     }
 });
 </script>

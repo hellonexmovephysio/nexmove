@@ -13,16 +13,17 @@
     
     <div id="confirmationDetails" style="display:none;">
         <p class="eyebrow">NEXmove Physio</p>
-        <h1>Booking request received</h1>
-        <p>Thank you, <strong id="custName"></strong>. Your request has been saved successfully.</p>
+        <h1 id="mainTitle">Booking request received</h1>
+        <p id="mainDesc">Thank you, <strong id="custName"></strong>. Your request has been saved successfully.</p>
         <div class="confirm-ref">Reference: <strong id="bookRef"></strong></div>
         <dl class="confirmation-details">
             <div><dt>Service</dt><dd id="bookService"></dd></div>
             <div><dt>Preferred date</dt><dd id="bookDate"></dd></div>
             <div><dt>Preferred time</dt><dd id="bookTime"></dd></div>
             <div><dt>Visit address</dt><dd id="bookAddress"></dd></div>
+            <div><dt>Payment status</dt><dd id="bookPaymentStatus"></dd></div>
         </dl>
-        <p class="small-note">This page confirms the request was stored in the database. Our team will contact you shortly.</p>
+        <p class="small-note" id="smallNote">Our team will contact you shortly.</p>
     </div>
     
     <div id="errorState" style="display:none;">
@@ -65,6 +66,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('bookTime').textContent = b.preferred_time;
             
             document.getElementById('bookAddress').textContent = `${b.address_line1}, ${b.city}, ${b.postcode}`;
+            
+            const paymentMap = {
+                'pending': 'Pending / Processing',
+                'paid': 'Paid',
+                'failed': 'Failed',
+                'cancelled': 'Cancelled',
+                'refunded': 'Refunded'
+            };
+            
+            document.getElementById('bookPaymentStatus').textContent = paymentMap[b.payment_status] || b.payment_status;
+            
+            const titleEl = document.getElementById('mainTitle');
+            const descEl = document.getElementById('mainDesc');
+            const tickEl = document.querySelector('.confirm-tick');
+            
+            if (b.payment_status === 'paid') {
+                titleEl.textContent = 'Booking Confirmed!';
+                descEl.innerHTML = `Thank you, <strong id="custName">${b.full_name}</strong>. Your payment was successful and your booking is confirmed.`;
+                tickEl.style.backgroundColor = '#10b981'; // green
+            } else if (b.payment_status === 'pending') {
+                titleEl.textContent = 'Payment Processing...';
+                descEl.innerHTML = `Thank you, <strong id="custName">${b.full_name}</strong>. Your payment is being processed. This page will not auto-refresh, but we will notify you once confirmed.`;
+                tickEl.style.backgroundColor = '#f59e0b'; // orange
+                tickEl.textContent = '⌛';
+            } else if (b.payment_status === 'failed' || b.payment_status === 'cancelled') {
+                titleEl.textContent = 'Payment Failed';
+                descEl.innerHTML = `Sorry, <strong id="custName">${b.full_name}</strong>. Your payment was not successful. Your booking is not confirmed. <br><a href="index.html" style="color:#2563eb;text-decoration:underline;">Please try again</a>.`;
+                tickEl.style.backgroundColor = '#ef4444'; // red
+                tickEl.textContent = '✖';
+            }
         } else {
             document.getElementById('errorState').style.display = 'block';
         }
