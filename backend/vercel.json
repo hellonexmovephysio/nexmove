@@ -1,26 +1,13 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "src/app.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "frontend/**"
-      }
-    },
-    {
-      "src": "frontend/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/src/app.js" },
-    { "src": "/admin/(.*)", "dest": "/frontend/admin/$1" },
-    { "src": "/booking/(.*)", "dest": "/frontend/booking/$1" },
-    { "src": "/images/(.*)", "dest": "/frontend/images/$1" },
-    { "src": "/css/(.*)", "dest": "/frontend/css/$1" },
-    { "src": "/(.*\\.(html|css|js|png|jpg|jpeg|svg|ico|woff|woff2|ttf))", "dest": "/frontend/$1" },
-    { "src": "/", "dest": "/frontend/index.html" },
-    { "src": "/(.*)", "dest": "/src/app.js" }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/admin/(.*)", "destination": "/frontend/admin/$1" },
+    { "source": "/booking/(.*)", "destination": "/frontend/booking/$1" },
+    { "source": "/images/(.*)", "destination": "/frontend/images/$1" },
+    { "source": "/css/(.*)", "destination": "/frontend/css/$1" },
+    { "source": "/(.*\\.(html|css|js|png|jpg|jpeg|svg|ico|woff|woff2|ttf))", "destination": "/frontend/$1" },
+    { "source": "/", "destination": "/frontend/index.html" },
+    { "source": "/(.*)", "destination": "/api" }
   ]
 }
