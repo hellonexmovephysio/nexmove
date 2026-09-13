@@ -1,13 +1,14 @@
 {
   "version": 2,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "frontend/**"
+    }
+  },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/admin/(.*)", "destination": "/frontend/admin/$1" },
-    { "source": "/booking/(.*)", "destination": "/frontend/booking/$1" },
-    { "source": "/images/(.*)", "destination": "/frontend/images/$1" },
-    { "source": "/css/(.*)", "destination": "/frontend/css/$1" },
-    { "source": "/(.*\\.(html|css|js|png|jpg|jpeg|svg|ico|woff|woff2|ttf))", "destination": "/frontend/$1" },
-    { "source": "/", "destination": "/frontend/index.html" },
-    { "source": "/(.*)", "destination": "/api" }
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
   ]
 }
