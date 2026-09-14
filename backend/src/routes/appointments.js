@@ -85,7 +85,8 @@ router.get('/:id', authMiddleware, async (req, res) => {
              b.preferred_date AS appointment_date, 
              b.preferred_time AS appointment_time, 
              b.symptoms AS message,
-             b.status, b.created_at
+             b.status, b.created_at,
+             b.approval_email_sent, b.approval_email_error
       FROM bookings b
       LEFT JOIN services s ON s.id = b.service_id
       WHERE b.id = ${id} LIMIT 1
@@ -198,14 +199,40 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
 
     const rows = await sql`
-      UPDATE bookings SET status = ${status.toLowerCase()} WHERE id = ${id} RETURNING id
+      UPDATE bookings SET status = ${status.toLowerCase()} WHERE id = ${id} RETURNING *
     `;
 
     if (!rows.length) {
       return res.status(404).json({ success: false, message: 'Appointment not found.' });
     }
 
-    res.json({ success: true, message: 'Status updated.' });
+    let emailMessage = '';
+    const booking = rows[0];
+
+    // If status changed to confirmed and email hasn't been successfully sent yet
+    if (status.toLowerCase() === 'confirmed' && !booking.approval_email_sent) {
+      const extraData = await sql`
+          SELECT s.name AS service_name, t.display_name AS therapist_name
+          FROM bookings b
+          LEFT JOIN services s ON b.service_id = s.id
+          LEFT JOIN therapists t ON b.therapist_id = t.id
+          WHERE b.id = ${id}
+      `;
+      const fullBooking = { ...booking, ...extraData[0] };
+      
+      const { sendApprovalEmail } = require('../utils/email');
+      const emailResult = await sendApprovalEmail(fullBooking);
+      
+      if (emailResult.success) {
+          await sql`UPDATE bookings SET approval_email_sent = TRUE, approval_email_sent_at = NOW(), approval_email_error = NULL WHERE id = ${id}`;
+          emailMessage = ' Confirmation email sent.';
+      } else {
+          await sql`UPDATE bookings SET approval_email_error = ${emailResult.error} WHERE id = ${id}`;
+          emailMessage = ' Confirmation email failed to send.';
+      }
+    }
+
+    res.json({ success: true, message: 'Status updated.' + emailMessage });
   } catch (err) {
     console.error('Update appointment error:', err);
     res.status(500).json({ success: false, message: 'Server error.' });
@@ -225,6 +252,44 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     res.json({ success: true, message: 'Appointment deleted.' });
   } catch (err) {
     console.error('Delete appointment error:', err);
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+});
+
+// POST /api/appointments/:id/resend-email (admin)
+router.post('/:id/resend-email', authMiddleware, async (req, res) => {
+  try {
+    const sql = getDB();
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id) || id <= 0) return res.status(400).json({ success: false, message: 'Invalid ID.' });
+
+    const rows = await sql`
+      SELECT b.*, s.name AS service_name, t.display_name AS therapist_name
+      FROM bookings b
+      LEFT JOIN services s ON b.service_id = s.id
+      LEFT JOIN therapists t ON b.therapist_id = t.id
+      WHERE b.id = ${id} LIMIT 1
+    `;
+    
+    if (!rows.length) return res.status(404).json({ success: false, message: 'Appointment not found.' });
+    
+    const booking = rows[0];
+    if (booking.status !== 'confirmed') {
+      return res.status(400).json({ success: false, message: 'Can only send email for confirmed appointments.' });
+    }
+
+    const { sendApprovalEmail } = require('../utils/email');
+    const emailResult = await sendApprovalEmail(booking);
+
+    if (emailResult.success) {
+      await sql`UPDATE bookings SET approval_email_sent = TRUE, approval_email_sent_at = NOW(), approval_email_error = NULL WHERE id = ${id}`;
+      res.json({ success: true, message: 'Confirmation email resent successfully.' });
+    } else {
+      await sql`UPDATE bookings SET approval_email_error = ${emailResult.error} WHERE id = ${id}`;
+      res.status(500).json({ success: false, message: 'Failed to resend email.', error: emailResult.error });
+    }
+  } catch (err) {
+    console.error('Resend email error:', err);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });

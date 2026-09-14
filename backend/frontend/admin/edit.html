@@ -99,6 +99,10 @@
             <span class="label">Appointment</span>
             <span id="custDateTime" class="value"></span>
         </div>
+        <div class="row" id="emailStatusRow" style="display:none;">
+            <span class="label">Email Status</span>
+            <span id="emailStatus" class="value" style="font-weight: 500;"></span>
+        </div>
 
         <form id="editForm">
             <label class="label" style="display:block;margin-top:15px;">Status</label>
@@ -111,6 +115,7 @@
 
             <button type="submit">Save Changes</button>
         </form>
+        <button id="resendBtn" type="button" style="display:none; background: #3b82f6; margin-top: 10px;">Resend Confirmation Email</button>
     </div>
     
     <div id="loading">Loading appointment...</div>
@@ -147,6 +152,26 @@
                 document.getElementById('custService').textContent = data.data.service;
                 document.getElementById('custDateTime').textContent = `${data.data.appointment_date} ${data.data.appointment_time}`;
                 document.getElementById('status').value = data.data.status;
+                
+                if (data.data.status === 'Confirmed') {
+                    const emailStatusRow = document.getElementById('emailStatusRow');
+                    const emailStatusSpan = document.getElementById('emailStatus');
+                    const resendBtn = document.getElementById('resendBtn');
+                    
+                    emailStatusRow.style.display = 'flex';
+                    resendBtn.style.display = 'block';
+                    
+                    if (data.data.approval_email_sent) {
+                        emailStatusSpan.textContent = 'Confirmation Email Sent';
+                        emailStatusSpan.style.color = '#15803d';
+                    } else if (data.data.approval_email_error) {
+                        emailStatusSpan.textContent = `Failed: ${data.data.approval_email_error}`;
+                        emailStatusSpan.style.color = '#b91c1c';
+                    } else {
+                        emailStatusSpan.textContent = 'Not Sent';
+                        emailStatusSpan.style.color = '#b91c1c';
+                    }
+                }
             } else {
                 document.getElementById('loading').textContent = data.message || 'Failed to load appointment.';
             }
@@ -184,6 +209,38 @@
             errorMsg.style.display = 'block';
         }
     });
+
+    const resendBtn = document.getElementById('resendBtn');
+    if (resendBtn) {
+        resendBtn.addEventListener('click', async () => {
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            resendBtn.disabled = true;
+            resendBtn.textContent = 'Sending...';
+            
+            try {
+                const res = await apiFetch(`/api/appointments/${id}/resend-email`, { method: 'POST' });
+                const data = await res.json();
+                
+                if (res.ok && data.success) {
+                    successMsg.textContent = 'Email resent successfully.';
+                    successMsg.style.display = 'block';
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    errorMsg.textContent = data.message || 'Resend failed.';
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Server error.';
+                errorMsg.style.display = 'block';
+            }
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend Confirmation Email';
+        });
+    }
 </script>
 </body>
 </html>
