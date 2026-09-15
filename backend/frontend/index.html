@@ -8,22 +8,29 @@
         content="NEXmove Physio - professional home physiotherapy, personalised treatment and flexible booking.">
     <title>NEXmove Physio | Move Better. Live Better.</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
-            --cream: #f8f4ec;
+            --cream: #FAF7F0;
             --cream2: #fdfbf7;
-            --white: #fff;
-            --navy: #102d45;
-            --navy2: #173b56;
-            --green: #315d50;
-            --green2: #496f61;
-            --sage: #e2e9df;
-            --gold: #b69049;
+            --white: #FFFFFF;
+            --navy: #1B2A4A;
+            --navy2: #121c32;
+            --green: #5C7A5C;
+            --sage: #8FA88F;
+            --gold: #B8894A;
             --text: #26343d;
             --muted: #667178;
             --line: #e3dccf;
             --soft: #f1eee7;
             --shadow: 0 16px 42px rgba(27, 48, 56, .08);
+            --card-shadow: 0 12px 32px rgba(27, 42, 74, 0.08);
+            --border-radius-card: 16px;
         }
 
         * {
@@ -38,7 +45,7 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
             background: var(--cream);
             color: var(--text);
             line-height: 1.55;
@@ -80,13 +87,38 @@
         }
 
         .eyebrow {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--gold);
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1.8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 12px
+            margin-bottom: 16px;
+        }
+
+        .eyebrow::before,
+        .eyebrow::after {
+            content: "";
+            flex: 0 0 40px;
+            height: 1px;
+            background: var(--gold);
+            margin: 0 12px;
+            opacity: 0.6;
+        }
+
+        .eyebrow.pill {
+            display: inline-flex;
+            border: 1px solid var(--gold);
+            border-radius: 999px;
+            padding: 6px 16px;
+            margin: 0 auto 16px;
+        }
+
+        .eyebrow.pill::before,
+        .eyebrow.pill::after {
+            display: none;
         }
 
         .section-head {
@@ -96,35 +128,50 @@
         }
 
         .section-head h2 {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: clamp(31px, 4vw, 46px);
-            line-height: 1.08;
+            font-family: 'Playfair Display', Georgia, "Times New Roman", serif;
+            font-size: clamp(34px, 4vw, 48px);
+            line-height: 1.1;
             color: var(--navy);
-            font-weight: 500
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .section-head.light h2 {
+            color: var(--white);
         }
 
         .section-head h2 em {
             font-weight: 400;
-            color: #61786e
+            color: var(--green);
+            font-style: italic;
         }
 
         .section-head p {
-            margin-top: 12px;
             color: var(--muted);
-            font-size: 15px
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-head.light p {
+            color: #d6e0dc;
         }
 
         .btn {
             min-height: 50px;
-            padding: 0 24px;
+            padding: 0 28px;
             border-radius: 999px;
-            border: 1px solid transparent;
+            border: 2px solid transparent;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 11px;
-            font-weight: 800;
-            transition: .2s ease
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: .2s ease;
+            text-transform: capitalize;
         }
 
         .btn:hover {
@@ -133,12 +180,12 @@
 
         .btn-primary {
             background: var(--navy);
-            color: #fff !important
+            color: #fff !important;
         }
 
         .btn-green {
             background: var(--green);
-            color: #fff !important
+            color: #fff !important;
         }
 
         .btn-outline {
@@ -793,126 +840,409 @@
             margin-right: 8px
         }
 
-        /* SPECIALISATIONS */
-        .special-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px
+        /* SPECIALTIES */
+        #specialisations {
+            background: var(--cream);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
         }
 
-        .special-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 23px;
-            border: 1px solid var(--line);
-            box-shadow: 0 8px 25px rgba(28, 50, 54, .04)
-        }
-
-        .special-icon {
-            font-size: 28px
-        }
-
-        .special-head {
-            margin: 10px 0
-        }
-
-        .special-head h3 {
-            color: var(--navy);
-            font-size: 17px
-        }
-
-        .special-head span {
-            font-size: 12px;
-            color: var(--gold);
-            font-weight: 700
-        }
-
-        .special-card ul {
-            list-style: none;
-            display: grid;
-            gap: 7px;
-            margin: 15px 0
-        }
-
-        .special-card li {
-            font-size: 13px;
-            color: #5a656c
-        }
-
-        .special-card li:before {
-            content: "•";
-            color: var(--green);
-            margin-right: 8px
-        }
-
-        .special-card a {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--green)
-        }
-
-        /* ABOUT */
-        .split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: clamp(34px, 6vw, 70px);
-            align-items: center
-        }
-
-        .split-image {
-            position: relative
-        }
-
-        .split-image img {
-            width: 100%;
-            border-radius: 24px;
-            min-height: 430px;
-            object-fit: cover
-        }
-
-        .image-badge {
+        .special-bg-leaf {
             position: absolute;
-            left: 24px;
-            bottom: 24px;
-            background: var(--navy);
-            color: #fff;
-            border-radius: 16px;
-            padding: 16px 20px
+            opacity: 0.05;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .image-badge strong {
-            display: block;
-            font-size: 28px
+        .special-bento {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 24px;
+            position: relative;
+            z-index: 2;
         }
 
-        .image-badge span {
-            font-size: 12px
-        }
-
-        .split-copy h2 {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: clamp(32px, 4vw, 48px);
-            line-height: 1.08;
-            color: var(--navy);
-            margin-bottom: 16px
-        }
-
-        .split-copy>p {
-            color: var(--muted);
-            margin-bottom: 20px
-        }
-
-        .check-list {
+        .special-card-featured {
+            grid-column: span 3;
+            background: var(--white);
+            border-radius: var(--border-radius-card);
+            border-top: 4px solid var(--navy);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin: 22px 0
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
         }
 
-        .check-item {
+        .special-featured-content {
+            padding: 40px;
             display: flex;
-            gap: 10px
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
         }
+
+        .special-featured-image {
+            background: url('images/musculoskeletal.jpg') center/cover no-repeat;
+            min-height: 300px;
+        }
+
+        .special-featured-content .eyebrow {
+            margin-left: 0;
+            color: var(--gold);
+            font-size: 11px;
+            margin-bottom: 16px;
+        }
+
+        .special-featured-content h3 {
+            font-size: 34px;
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .special-featured-content h4 {
+            font-size: 18px;
+            color: var(--navy);
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .special-featured-content p {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .special-icon-bare {
+            margin-bottom: 16px;
+        }
+
+        .special-icon-bare svg {
+            width: 44px;
+            height: 44px;
+            fill: none;
+            stroke: var(--navy);
+            stroke-width: 1.5;
+        }
+
+        .special-card-standard {
+            background: var(--white);
+            border-radius: var(--border-radius-card);
+            border-top: 4px solid var(--navy);
+            padding: 32px 24px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: 0.2s ease;
+        }
+
+        .special-card-standard:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(27, 42, 74, 0.12);
+        }
+
+        .special-card-standard h3 {
+            font-size: 20px;
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .special-card-standard p {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.5;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .special-link {
+            font-size: 14px;
+            color: var(--navy);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            margin-top: auto;
+        }
+
+        .pill-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--line);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .pill-link:hover {
+            border-color: var(--navy);
+            background: rgba(27, 42, 74, 0.05);
+        }
+
+        .special-bottom-bar {
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #e9eee9;
+            padding: 16px 24px;
+            border-radius: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sbb-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sbb-left svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--navy);
+        }
+
+        .sbb-left p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--navy);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .sbb-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(27, 42, 74, 0.15);
+            margin: 0 16px;
+        }
+
+        .sbb-center {
+            flex-grow: 1;
+        }
+
+        .sbb-center p {
+            font-size: 14px;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .sbb-right .btn-green {
+            padding: 10px 24px;
+            font-size: 13px;
+        }
+
+        @media(max-width: 1100px) {
+            .special-bento {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .special-card-featured {
+                grid-column: span 3;
+            }
+
+            .special-bottom-bar {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .sbb-left {
+                flex-direction: column;
+            }
+
+            .sbb-divider {
+                display: none;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .special-bento {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .special-card-featured {
+                grid-column: span 2;
+                grid-template-columns: 1fr;
+            }
+
+            .special-featured-image {
+                min-height: 200px;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .special-bento {
+                grid-template-columns: 1fr;
+            }
+
+            .special-card-featured {
+                grid-column: span 1;
+            }
+        }
+
+        /* ABOUT (WHY CHOOSE US) */
+        #about {
+            background: var(--cream);
+            position: relative;
+            padding: 100px 0;
+        }
+
+        .why-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .why-image-col {
+            position: relative;
+        }
+
+        .why-image-arch {
+            width: 100%;
+            border-radius: 200px 200px 24px 24px;
+            height: 520px;
+            object-fit: cover;
+            border: 8px solid var(--white);
+            box-shadow: var(--card-shadow);
+        }
+
+        .why-image-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 24px;
+            border-radius: 50%;
+            width: 160px;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 6px solid var(--white);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+        }
+
+        .why-image-badge strong {
+            font-size: 36px;
+            font-family: 'Playfair Display', serif;
+            line-height: 1;
+            margin-bottom: 4px;
+            color: var(--gold);
+        }
+
+        .why-image-badge span {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .why-content-col {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .process-step {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--border-radius-card);
+            border: 1px solid var(--line);
+            box-shadow: var(--card-shadow);
+            transition: 0.2s ease;
+            height: 100%;
+        }
+
+        .process-step:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold);
+            box-shadow: 0 16px 40px rgba(27, 42, 74, 0.08);
+        }
+
+        .process-number {
+            font-size: 48px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .process-text h4 {
+            font-size: 20px;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .process-text p {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .why-cta-card {
+            background: var(--navy);
+            color: var(--white);
+            padding: 32px;
+            border-radius: var(--border-radius-card);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            box-shadow: var(--card-shadow);
+        }
+
+        .why-cta-card h4 {
+            font-size: 22px;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 16px;
+        }
+
+        @media(max-width: 960px) {
+            .why-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .why-image-arch {
+                height: 400px;
+            }
+
+            .why-image-badge {
+                width: 140px;
+                height: 140px;
+            }
+
+            .why-image-badge strong {
+                font-size: 28px;
+            }
+        }
+
 
         .check-dot {
             width: 25px;
@@ -936,177 +1266,1055 @@
         }
 
         /* PRICING */
+        .pricing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 60px;
+        }
+
+        .ph-left,
+        .ph-right {
+            width: 200px;
+            text-align: left;
+        }
+
+        .ph-right {
+            text-align: right;
+        }
+
+        .ph-center {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .ph-center h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 40px;
+            margin: 0 0 10px 0;
+        }
+
+        .ph-center p {
+            font-size: 18px;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .script-font {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 24px;
+            color: var(--sage);
+            margin-bottom: 4px;
+            line-height: 1.1;
+        }
+
+        .ph-right-eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #8c9b8c;
+        }
+
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            align-items: stretch
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 60px;
+            padding: 20px 0;
         }
 
         .price-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            padding: 24px;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 32px 24px;
             position: relative;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 8px 25px rgba(28, 50, 54, .04)
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            height: 100%;
         }
 
-        .price-card.popular {
-            border: 2px solid var(--green);
-            transform: translateY(-8px)
+        .offset-down {
+            transform: translateY(40px);
+        }
+
+        .offset-up {
+            transform: translateY(-10px);
+        }
+
+        .price-card.recommended {
+            border-bottom: 40px solid #3c5942;
+            padding-bottom: 12px;
+            /* reduced padding since border is huge */
+        }
+
+        .price-card.recommended .btn-green {
+            background: #3c5942;
+            margin-bottom: -32px;
+            /* pull down into the border area */
+            position: relative;
+            z-index: 2;
+        }
+
+        .price-card.best-value {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .price-icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #f4f6f4;
+            color: var(--sage);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 16px;
+        }
+
+        .price-card.best-value .price-icon-circle {
+            background: #eef2ef;
+            color: #3c5942;
+        }
+
+        .price-icon-circle svg {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .popular-tag {
             position: absolute;
-            top: -14px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--green);
-            color: #fff;
-            border-radius: 999px;
-            padding: 6px 14px;
-            font-size: 10px;
-            font-weight: 800;
-            white-space: nowrap
+            background: #c39a5d;
+            color: var(--white);
+            border-radius: 6px 6px 0 0;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
 
-        .price-label {
-            font-size: 10px;
-            color: var(--gold);
+        .best-value-seal {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .best-value-seal .scallop-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            drop-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .best-value-seal span {
+            position: relative;
+            z-index: 2;
+            color: var(--navy);
+            font-size: 11px;
             font-weight: 800;
-            letter-spacing: 1.3px
+            text-align: center;
+            line-height: 1.1;
         }
 
         .price-card h3 {
-            font-family: Georgia, serif;
+            font-family: 'Playfair Display', serif;
             color: var(--navy);
             font-size: 20px;
-            margin: 8px 0 12px
+            font-weight: 600;
+            margin: 8px 0 12px;
+        }
+
+        .price-card.best-value h3,
+        .price-card.best-value .price {
+            color: var(--white);
         }
 
         .price {
-            font-size: 36px;
+            font-size: 46px;
             color: var(--navy);
-            font-weight: 800
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
         }
 
         .price small {
-            font-size: 12px;
+            font-size: 14px;
             color: var(--muted);
-            font-weight: 400
+            font-weight: 500;
+        }
+
+        .price-card.best-value .price small {
+            color: #d6e0dc;
         }
 
         .price-time {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--muted);
-            margin-bottom: 15px
+            margin-bottom: 20px;
+        }
+
+        .price-card.best-value .price-time {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .price-divider {
+            height: 1px;
+            background: #eaeaea;
+            margin: 0 0 20px;
+            width: 100%;
+        }
+
+        .price-card.best-value .price-divider {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .price-card ul {
             list-style: none;
             display: grid;
-            gap: 8px;
-            margin-bottom: 22px
+            gap: 12px;
+            margin-bottom: 32px;
+            text-align: left;
         }
 
         .price-card li {
-            font-size: 12.5px
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            color: var(--text);
+        }
+
+        .price-card.best-value li {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .price-card li::before {
+            content: "✓";
+            color: #c39a5d;
+            font-weight: 900;
         }
 
         .price-card .btn {
             margin-top: auto;
-            width: 100%
+            width: 100%;
+            border-radius: 99px;
         }
 
-        /* CITIES + CONDITIONS */
-        .link-grid {
+        .btn-gold {
+            background: #c39a5d;
+            color: var(--white);
+            border: none;
+        }
+
+        .btn-outline {
+            border-color: #c39a5d;
+            color: var(--navy);
+        }
+
+        /* NEW TRUST STRIP */
+        .trust-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .tf-left {
+            flex-shrink: 0;
+            width: 300px;
+        }
+
+        .tf-left h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 22px;
+            margin: 0 0 12px;
+            line-height: 1.2;
+        }
+
+        .tf-line {
+            width: 40px;
+            height: 2px;
+            background: #c39a5d;
+            margin-bottom: 12px;
+        }
+
+        .tf-subtitle {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--muted);
+        }
+
+        .tf-right.pill-box {
+            background: var(--white);
+            border-radius: 99px;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            gap: 20px;
+        }
+
+        .tf-right .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tf-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #4a634a;
+        }
+
+        .tf-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tf-text strong {
+            font-size: 13px;
+            color: var(--navy);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .tf-text span {
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .tf-divider {
+            width: 1px;
+            height: 32px;
+            background: #eaeaea;
+        }
+
+        @media(max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .offset-down,
+            .offset-up {
+                transform: none;
+            }
+
+            .trust-footer {
+                flex-direction: column;
+                gap: 24px;
+                align-items: flex-start;
+            }
+
+            .tf-right.pill-box {
+                border-radius: 16px;
+                flex-wrap: wrap;
+            }
+
+            .tf-divider {
+                display: none;
+            }
+        }
+
+        @media(max-width: 960px) {
+            .desktop-only {
+                display: none !important;
+            }
+        }
+
+        /* CITIES / LOCATIONS */
+        .locations-section {
+            background: #FAF7F0;
+            /* Cream background matching reference */
+            padding-bottom: 0;
+            /* Removing bottom padding since footer bar acts as bottom */
+        }
+
+        .locations-section .section-head {
+            margin-bottom: 40px;
+        }
+
+        .locations-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        /* London featured card */
+        .loc-featured-card {
+            background: #d4e0d4;
+            /* Soft sage green tinted background */
+            border-radius: 12px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 550px;
+            text-decoration: none;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .loc-featured-card:hover,
+        .loc-standard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .loc-featured-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            color: var(--navy);
+            margin: 0 0 16px 0;
+            z-index: 2;
+        }
+
+        .loc-featured-divider {
+            width: 32px;
+            height: 2px;
+            background: var(--gold);
+            margin-bottom: 12px;
+            z-index: 2;
+        }
+
+        .loc-featured-subtitle {
+            font-size: 18px;
+            color: var(--navy);
+            opacity: 0.8;
+            margin-bottom: 24px;
+            z-index: 2;
+        }
+
+        .loc-featured-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            z-index: 2;
+        }
+
+        .loc-featured-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .loc-featured-image {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 85%;
+            background-size: cover;
+            background-position: bottom right;
+            background-repeat: no-repeat;
+            z-index: 1;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+        }
+
+        /* Subgrid for smaller cards */
+        .loc-subgrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .loc-standard-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            padding-right: 20px;
+            text-decoration: none;
+            overflow: hidden;
+            height: 156px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .loc-standard-card.wide {
+            grid-column: span 2;
+        }
+
+        .loc-card-image {
+            width: 55%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+            mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        }
+
+        .loc-card-content {
+            padding: 0 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .loc-card-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--navy);
+            margin: 0 0 12px 0;
+        }
+
+        .loc-card-divider {
+            width: 24px;
+            height: 2px;
+            background: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .loc-card-subtitle {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+
+        .loc-card-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .loc-card-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+        }
+
+        /* Bottom Bar */
+        .loc-bottom-bar {
+            background: var(--navy);
+            padding: 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .loc-bottom-line {
+            height: 1px;
+            width: 60px;
+            background: var(--gold);
+        }
+
+        .loc-bottom-text {
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        @media(max-width: 960px) {
+            .locations-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .loc-subgrid {
+                grid-template-columns: 1fr;
+            }
+
+            .loc-standard-card.wide {
+                grid-column: span 1;
+            }
+
+            .loc-bottom-bar {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+
+
+        /* CONDITIONS BENTO GRID */
+        .conditions-head {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .cond-eyebrow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .gold-line-side {
+            flex-grow: 1;
+            height: 1px;
+            background: var(--gold);
+            opacity: 0.5;
+        }
+
+        .cond-eyebrow-container .eyebrow {
+            margin: 0;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            background: transparent;
+        }
+
+        .conditions-head h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            margin: 8px 0 16px 0;
+            color: var(--white);
+        }
+
+        .conditions-head p {
+            max-width: 600px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .conditions-bento {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .bento-top-row {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr 1.25fr;
+            gap: 20px;
+        }
+
+        .bento-middle-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .bento-bottom-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 14px
+            gap: 20px;
         }
 
-        .link-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 17px 18px;
+        .bento-card {
+            background: var(--cream);
+            border-radius: 16px;
+            padding: 24px;
             display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            align-items: center;
+            flex-direction: column;
+            position: relative;
+            text-align: left;
+            text-decoration: none;
+            color: var(--navy);
+            /* Soft shadow with inner gold rim */
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25), inset 0 0 0 2px rgba(184, 137, 74, 0.8);
+            transition: 0.3s ease;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 0 0 2px rgba(184, 137, 74, 1);
+        }
+
+        .bento-card.large {
+            padding: 32px;
+            justify-content: flex-end;
+            min-height: 320px;
+        }
+
+        .bento-card h3 {
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
-            color: var(--navy)
+            font-size: 22px;
+            margin: 0 0 8px 0;
+            color: var(--navy);
         }
 
-        .link-card:hover {
-            border-color: #9cad9f;
-            transform: translateY(-2px)
-        }
-
-        .link-card span:last-child {
+        .bento-card .learn-more {
             color: var(--gold);
-            font-size: 20px
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .bento-card .bento-arrow-btn {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            background: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+        }
+        
+        .bento-card:hover .bento-arrow-btn {
+            background: var(--gold);
+        }
+
+        .bento-card.large .bento-arrow-btn {
+            bottom: 32px;
+            right: 32px;
+            width: 44px;
+            height: 44px;
+        }
+
+        .bento-card .bento-arrow-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--white);
+            stroke-width: 2;
+        }
+        
+        .bento-card.large .bento-arrow-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .bento-icon-bg {
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            width: 140px;
+            height: 140px;
+            background: rgba(92, 122, 92, 0.15);
+            border-radius: 50%;
+        }
+
+        .bento-card.large .bento-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 160px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .bento-card.large .bento-icon svg {
+            width: 80px;
+            height: 80px;
+            fill: none;
+            stroke: var(--navy);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .bento-card.medium,
+        .bento-card.small {
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bento-card.medium {
+            padding: 24px;
+            height: 100%;
+        }
+
+        .bento-card.small {
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .bento-card.medium .bento-icon,
+        .bento-card.small .bento-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(92, 122, 92, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .bento-card.small .bento-icon {
+            margin: 0;
+        }
+
+        .bento-card.medium .bento-icon svg,
+        .bento-card.small .bento-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: var(--navy);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .bento-card.medium .bento-arrow-btn,
+        .bento-card.small .bento-arrow-btn {
+            position: static;
+            margin-left: auto;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+        }
+        
+        .bento-card.medium .bento-arrow-btn svg,
+        .bento-card.small .bento-arrow-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .bento-card.medium h3,
+        .bento-card.small h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .bento-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         /* VETTING */
+        #vetting {
+            background: var(--navy);
+            color: var(--white);
+            position: relative;
+            padding: 100px 0;
+        }
+
+        .vet-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .vet-left {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 380px;
+        }
+
+        .vet-left .eyebrow {
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-size: 11px;
+            margin-left: 0;
+            margin-bottom: 8px;
+        }
+
+        .vet-left h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--white);
+            line-height: 1.1;
+            margin: 0 0 16px 0;
+        }
+
+        .vet-left p {
+            font-size: 15px;
+            color: #d1d5db;
+            line-height: 1.6;
+            margin: 0 0 32px 0;
+        }
+
+        .vet-seal-container {
+            width: 300px;
+            height: 300px;
+            margin: 0;
+        }
+
+        .vet-seal-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .trust-footer {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .trust-line {
+            flex-grow: 1;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .trust-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+        }
+
         .vet-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
         }
 
         .vet-card {
-            background: #fff;
-            border-radius: 18px;
-            border: 1px solid var(--line);
-            padding: 23px
+            background: #fbf8f2;
+            border-radius: 8px;
+            border-top: 5px solid var(--gold);
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
         }
 
-        .vet-number {
-            font-size: 11px;
-            color: var(--gold);
-            font-weight: 800
+        .vet-watermark {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            font-size: 56px;
+            font-weight: 400;
+            color: rgba(143, 168, 143, 0.3);
+            line-height: 1;
+            font-family: 'Playfair Display', serif;
+            pointer-events: none;
+            font-style: italic;
         }
 
         .vet-icon {
-            width: 46px;
-            height: 46px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: #e2ebe6;
-            color: var(--green);
-            display: grid;
-            place-items: center;
-            margin: 14px 0
+            background: rgba(143, 168, 143, 0.4);
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
         .vet-icon svg {
-            width: 25px;
-            height: 25px
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
         }
 
         .vet-card h3 {
-            font-size: 16px;
+            font-size: 20px;
+            font-family: 'Playfair Display', serif;
             color: var(--navy);
-            margin-bottom: 8px
+            margin-bottom: 12px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
 
         .vet-card p {
-            font-size: 13px;
-            color: var(--muted)
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+            margin: 0;
         }
 
         .verified-line {
-            margin-top: 22px;
-            text-align: center;
-            background: #e4ede8;
-            color: var(--green);
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 13px
+            background: #234335;
+            color: #d1dac2;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-weight: 400;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .verified-line svg {
+            width: 16px;
+            height: 16px;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .verified-line-sep {
+            width: 1px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media(max-width: 960px) {
+            .vet-layout {
+                grid-template-columns: 1fr;
+            }
+
+
+            .vet-seal-container {
+                margin: 0 auto 32px;
+            }
+        }
+
+        @media(max-width: 600px) {
+            .vet-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ETIQUETTE */
@@ -2001,7 +3209,7 @@
             <div class="container hero-grid">
                 <div class="hero-copy">
                     <span class="eyebrow">Expert care. Personalized for you.</span>
-                    <h1 class="hero-title">Expert-Designed Strength & Fitness Plans</h1>
+                    <h1 class="hero-title">Professional Care Without Leaving Home....</h1>
                     <div class="gold-line"></div>
                     <p class="hero-text">Professional care without leaving home...</p>
                     <div class="hero-actions">
@@ -2088,293 +3296,526 @@
                     </article>
                 </div>
 
-                <div class="info-grid">
-                    <aside class="why-panel">
-                        <span class="eyebrow">Why choose NEXmove Physio?</span>
-                        <div class="benefit-list">
-                            <div class="benefit-item">
-                                <div class="benefit-icon"><svg viewBox="0 0 48 48">
-                                        <path d="M24 5 38 11v10c0 9-5.4 16-14 21C15.4 37 10 30 10 21V11L24 5z" />
-                                        <path d="m18 24 4 4 8-9" />
-                                    </svg></div>
-                                <div><strong>Trusted &amp; Experienced</strong><span>Qualified physiotherapists you can
-                                        rely on.</span></div>
-                            </div>
-                            <div class="benefit-item">
-                                <div class="benefit-icon"><svg viewBox="0 0 48 48">
-                                        <circle cx="17" cy="17" r="6" />
-                                        <circle cx="32" cy="17" r="6" />
-                                        <path d="M5 39c1-9 5-13 12-13s11 4 12 13M22 39c1-8 4-12 10-12s10 4 11 12" />
-                                    </svg></div>
-                                <div><strong>One-to-One Care</strong><span>Personal attention at every step.</span>
-                                </div>
-                            </div>
-                            <div class="benefit-item">
-                                <div class="benefit-icon"><svg viewBox="0 0 48 48">
-                                        <path d="m6 22 18-15 18 15" />
-                                        <path d="M10 20v21h28V20M19 41V28h10v13" />
-                                    </svg></div>
-                                <div><strong>Home-Based Therapy</strong><span>Comfort of your own home.</span></div>
-                            </div>
-                            <div class="benefit-item">
-                                <div class="benefit-icon"><svg viewBox="0 0 48 48">
-                                        <path
-                                            d="M24 41S7 31 7 18c0-6 4-10 9-10 4 0 7 2 8 6 1-4 4-6 8-6 5 0 9 4 9 10 0 13-17 23-17 23z" />
-                                        <path d="M13 25h7l3-6 5 12 3-6h5" />
-                                    </svg></div>
-                                <div><strong>Better Outcomes</strong><span>Focused care for faster, lasting
-                                        results.</span></div>
-                            </div>
-                        </div>
-                    </aside>
-
-                    <section class="process-panel">
-                        <span class="eyebrow">How it works</span>
-                        <div class="steps-row">
-                            <div class="step">
-                                <div class="step-icon"><svg viewBox="0 0 48 48">
-                                        <rect x="8" y="11" width="32" height="29" rx="3" />
-                                        <path d="M15 7v9M33 7v9M8 20h32" />
-                                        <path d="M15 26h4M23 26h4M31 26h4M15 32h4M23 32h4M31 32h4" />
-                                    </svg><span class="step-num">1</span></div>
-                                <h4>Book Online</h4>
-                                <p>Choose a time that works for you.</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-icon"><svg viewBox="0 0 48 48">
-                                        <path d="m6 22 18-15 18 15" />
-                                        <path d="M10 20v21h28V20M19 41V28h10v13" />
-                                    </svg><span class="step-num">2</span></div>
-                                <h4>We Come to You</h4>
-                                <p>Our expert physio visits your home.</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-icon"><svg viewBox="0 0 48 48">
-                                        <path
-                                            d="M12 24c2.5-3 6-4.5 9-3l5 2c1.8.7 2.5 2.8 1.5 4.3-.8 1.2-2.4 1.7-3.7 1.2L19 26.8" />
-                                        <path
-                                            d="M11 24 6 28l10 11c1 1.1 2.4 1.6 3.8 1.2l13.7-4.1c1.5-.5 2.5-1.8 2.5-3.4 0-2.3-2.2-3.9-4.4-3.2l-7 2.3" />
-                                    </svg><span class="step-num">3</span></div>
-                                <h4>Personalized Treatment</h4>
-                                <p>Tailored care to help you move better.</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-icon"><svg viewBox="0 0 48 48">
-                                        <circle cx="24" cy="12" r="5" />
-                                        <path d="M24 17v11M24 21 15 30M24 21l9 9M24 28l-6 12M24 28l7 12" />
-                                    </svg><span class="step-num">4</span></div>
-                                <h4>Feel the Difference</h4>
-                                <p>Better movement. Better life.</p>
-                            </div>
-                        </div>
-                        <div class="quote-card">
-                            <div class="quote-mark">&ldquo;</div>
-                            <div>
-                                <p>&ldquo;The physiotherapist was professional, knowledgeable, and made a huge
-                                    difference in my recovery.&rdquo;</p>
-                                <small>– James T.</small>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+                <!-- info-grid removed to consolidate into Why Choose Us section -->
             </div>
         </section>
 
         <!-- SPECIALISATIONS -->
-        <section class="section soft" id="specialisations">
+        <section class="section" id="specialisations">
+            <svg class="special-bg-leaf" style="left: -100px; top: 100px;" width="300" height="400" viewBox="0 0 24 24"
+                fill="var(--sage)">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+            </svg>
+            <svg class="special-bg-leaf" style="right: -100px; bottom: 100px; transform: scaleX(-1);" width="300"
+                height="400" viewBox="0 0 24 24" fill="var(--sage)">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+            </svg>
+
             <div class="container">
                 <div class="section-head">
-                    <span class="eyebrow">Find your specialist</span>
-                    <h2>Browse by Specialisation</h2>
-                    <p>Find the right physiotherapist for your specific needs.</p>
+                    <h2>Care for every stage of movement</h2>
+                    <p>Expert physiotherapy at home, tailored to your goals — wherever you are on your journey.</p>
                 </div>
-                <div class="special-grid">
-                    <article class="special-card">
-                        <div class="special-icon">🦴</div>
-                        <div class="special-head">
-                            <h3>Musculoskeletal</h3><span>31 Specialists</span>
+
+                <div class="special-bento">
+                    <!-- Featured Card -->
+                    <div class="special-card-featured">
+                        <div class="special-featured-content">
+                            <span class="eyebrow">FEATURED SERVICE</span>
+                            <h3>Musculoskeletal</h3>
+                            <h4>Move freely. Live fully.</h4>
+                            <p>Expert assessment and treatment for back pain, neck pain, joint pain, arthritis and other
+                                musculoskeletal conditions — so you can get back to doing what you love.</p>
+                            <a href="booking/index.html" class="pill-link">Explore care &rarr;</a>
                         </div>
-                        <ul>
-                            <li>Back pain &amp; sciatica</li>
-                            <li>Neck pain</li>
-                            <li>Joint pain</li>
-                            <li>Arthritis management</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
-                    <article class="special-card">
-                        <div class="special-icon">🏃</div>
-                        <div class="special-head">
-                            <h3>Sports Physio</h3><span>24 Specialists</span>
+                        <div class="special-featured-image"></div>
+                    </div>
+
+                    <!-- Standard Cards -->
+                    <div class="special-card-standard">
+                        <div class="special-icon-bare">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
                         </div>
-                        <ul>
-                            <li>Sports injuries</li>
-                            <li>Running injuries</li>
-                            <li>Injury prevention</li>
-                            <li>Return-to-sport rehab</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
-                    <article class="special-card">
-                        <div class="special-icon">🧠</div>
-                        <div class="special-head">
-                            <h3>Neuro Physio</h3><span>18 Specialists</span>
+                        <h3>Sports Physio</h3>
+                        <p>Assessment, treatment and injury prevention for sports injuries, running injuries and
+                            return-to-sport rehab.</p>
+                        <a href="booking/index.html" class="special-link">Explore care &rarr;</a>
+                    </div>
+
+                    <div class="special-card-standard">
+                        <div class="special-icon-bare">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                <line x1="12" y1="22.08" x2="12" y2="12" />
+                            </svg>
                         </div>
-                        <ul>
-                            <li>Stroke rehabilitation</li>
-                            <li>Parkinson's disease</li>
-                            <li>Multiple sclerosis</li>
-                            <li>Brain injuries</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
-                    <article class="special-card">
-                        <div class="special-icon">🫁</div>
-                        <div class="special-head">
-                            <h3>Respiratory Physio</h3><span>15 Specialists</span>
+                        <h3>Neuro Physio</h3>
+                        <p>Specialist neurorehabilitation for stroke, Parkinson's disease, multiple sclerosis and brain
+                            injuries.</p>
+                        <a href="booking/index.html" class="special-link">Explore care &rarr;</a>
+                    </div>
+
+                    <div class="special-card-standard">
+                        <div class="special-icon-bare">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
                         </div>
-                        <ul>
-                            <li>COPD</li>
-                            <li>Asthma</li>
-                            <li>Post-COVID recovery</li>
-                            <li>Breathing rehabilitation</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
-                    <article class="special-card">
-                        <div class="special-icon">👶</div>
-                        <div class="special-head">
-                            <h3>Paediatric Physio</h3><span>12 Specialists</span>
+                        <h3>Respiratory Physio</h3>
+                        <p>Support for COPD, asthma, post-COVID recovery and breathing rehabilitation.</p>
+                        <a href="booking/index.html" class="special-link">Explore care &rarr;</a>
+                    </div>
+
+                    <div class="special-card-standard">
+                        <div class="special-icon-bare">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                                <line x1="9" y1="9" x2="9.01" y2="9" />
+                                <line x1="15" y1="9" x2="15.01" y2="9" />
+                            </svg>
                         </div>
-                        <ul>
-                            <li>Developmental delay</li>
-                            <li>Cerebral palsy</li>
-                            <li>Paediatric injuries</li>
-                            <li>Neurological conditions</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
-                    <article class="special-card">
-                        <div class="special-icon">🧓</div>
-                        <div class="special-head">
-                            <h3>Geriatric Care</h3><span>16 Specialists</span>
+                        <h3>Paediatric Physio</h3>
+                        <p>Specialist care for developmental delay, cerebral palsy, paediatric injuries and neurological
+                            conditions.</p>
+                        <a href="booking/index.html" class="special-link">Explore care &rarr;</a>
+                    </div>
+
+                    <div class="special-card-standard">
+                        <div class="special-icon-bare">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
                         </div>
-                        <ul>
-                            <li>Falls prevention</li>
-                            <li>Balance training</li>
-                            <li>Mobility improvement</li>
-                            <li>Age-related weakness</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
-                    <article class="special-card">
-                        <div class="special-icon">❤️</div>
-                        <div class="special-head">
-                            <h3>Women's Health</h3><span>14 Specialists</span>
+                        <h3>Geriatric Care</h3>
+                        <p>Maintain independence with falls prevention, balance training, mobility improvement and
+                            age-related weakness.</p>
+                        <a href="booking/index.html" class="special-link">Explore care &rarr;</a>
+                    </div>
+
+                    <div class="special-card-standard">
+                        <div class="special-icon-bare">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
                         </div>
-                        <ul>
-                            <li>Pregnancy-related pain</li>
-                            <li>Postnatal recovery</li>
-                            <li>Pelvic floor</li>
-                            <li>Diastasis recti</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
-                    <article class="special-card">
-                        <div class="special-icon">🩺</div>
-                        <div class="special-head">
-                            <h3>Post-Surgical Rehab</h3><span>19 Specialists</span>
+                        <h3>Women's Health</h3>
+                        <p>Specialist support for pregnancy-related pain, postnatal recovery, pelvic floor and diastasis
+                            recti.</p>
+                        <a href="booking/index.html" class="special-link">Explore care &rarr;</a>
+                    </div>
+
+                    <div class="special-card-standard">
+                        <div class="special-icon-bare">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <line x1="12" y1="8" x2="12" y2="16" />
+                                <line x1="8" y1="12" x2="16" y2="12" />
+                            </svg>
                         </div>
-                        <ul>
-                            <li>Hip &amp; knee replacement</li>
-                            <li>ACL reconstruction</li>
-                            <li>Spinal surgery</li>
-                            <li>Shoulder surgery</li>
-                        </ul><a href="booking/index.html">Find a Specialist →</a>
-                    </article>
+                        <h3>Post-Surgical Rehab</h3>
+                        <p>Rehabilitation after hip &amp; knee replacement, ACL reconstruction, spinal surgery and
+                            shoulder surgery.</p>
+                        <a href="booking/index.html" class="special-link">Explore care &rarr;</a>
+                    </div>
                 </div>
+
+                <div class="special-bottom-bar">
+                    <div class="sbb-left">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                        </svg>
+                        <p>Same expert care. In the comfort of home.</p>
+                    </div>
+                    <div class="sbb-divider"></div>
+                    <div class="sbb-center">
+                        <p>Personalised physiotherapy. A healthier, more active you.</p>
+                    </div>
+                    <div class="sbb-right">
+                        <a href="booking/index.html" class="btn btn-green">BOOK NOW &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOCATIONS -->
+        <section class="section locations-section" id="locations">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow"
+                        style="letter-spacing: 3px; font-size: 11px; font-weight: 700; color: var(--gold);">UK-WIDE
+                        COVERAGE</span>
+                    <h2
+                        style="font-family: 'Playfair Display', serif; color: var(--navy); font-size: 48px; margin: 8px 0;">
+                        Home Physio in Your City</h2>
+                    <p style="color: #666; font-size: 18px; margin: 0;">Professional physiotherapy across major UK
+                        cities.</p>
+                </div>
+
+                <div class="locations-layout">
+                    <!-- Featured Card: London -->
+                    <a href="booking/index.html" class="loc-featured-card">
+                        <h3>London</h3>
+                        <div class="loc-featured-divider"></div>
+                        <div class="loc-featured-subtitle">Home Physiotherapy</div>
+                        <div class="loc-featured-btn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                        <div class="loc-featured-image"
+                            style="background-image: url('images/locations/london_landmark_1789488281066.jpg');"></div>
+                    </a>
+
+                    <!-- Subgrid -->
+                    <div class="loc-subgrid">
+                        <a href="booking/index.html" class="loc-standard-card">
+                            <div class="loc-card-image"
+                                style="background-image: url('images/locations/birmingham_landmark_1789488293321.jpeg');">
+                            </div>
+                            <div class="loc-card-content">
+                                <h3>Birmingham</h3>
+                                <div class="loc-card-divider"></div>
+                                <p class="loc-card-subtitle">Home Physiotherapy</p>
+                            </div>
+                            <div class="loc-card-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+
+                        <a href="booking/index.html" class="loc-standard-card">
+                            <div class="loc-card-image"
+                                style="background-image: url('images/locations/leeds_landmark_1789488309997.jpg');">
+                            </div>
+                            <div class="loc-card-content">
+                                <h3>Leeds</h3>
+                                <div class="loc-card-divider"></div>
+                                <p class="loc-card-subtitle">Home Physiotherapy</p>
+                            </div>
+                            <div class="loc-card-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+
+                        <a href="booking/index.html" class="loc-standard-card">
+                            <div class="loc-card-image"
+                                style="background-image: url('images/locations/edinburgh_landmark_1789488325810.jpg');">
+                            </div>
+                            <div class="loc-card-content">
+                                <h3>Edinburgh</h3>
+                                <div class="loc-card-divider"></div>
+                                <p class="loc-card-subtitle">Home Physiotherapy</p>
+                            </div>
+                            <div class="loc-card-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+
+                        <a href="booking/index.html" class="loc-standard-card">
+                            <div class="loc-card-image"
+                                style="background-image: url('images/locations/coventry_landmark_1789488337473.jpg');">
+                            </div>
+                            <div class="loc-card-content">
+                                <h3>Coventry</h3>
+                                <div class="loc-card-divider"></div>
+                                <p class="loc-card-subtitle">Home Physiotherapy</p>
+                            </div>
+                            <div class="loc-card-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+
+                        <a href="booking/index.html" class="loc-standard-card wide">
+                            <div class="loc-card-image"
+                                style="background-image: url('images/locations/glasgow_landmark_1789488356434.jpg');">
+                            </div>
+                            <div class="loc-card-content">
+                                <h3>Glasgow</h3>
+                                <div class="loc-card-divider"></div>
+                                <p class="loc-card-subtitle">Home Physiotherapy</p>
+                            </div>
+                            <div class="loc-card-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loc-bottom-bar">
+                <div class="loc-bottom-line"></div>
+                <div class="loc-bottom-text">Expert care, delivered to your doorstep.</div>
+                <div class="loc-bottom-line"></div>
             </div>
         </section>
 
         <!-- ABOUT -->
         <section class="section" id="about">
-            <div class="container split">
-                <div class="split-image">
-                    <img src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=1200&q=85"
-                        alt="Physiotherapist helping a patient at home">
-                    <div class="image-badge"><strong>170+</strong><span>Verified Physios</span></div>
+            <div class="container">
+                <div class="section-head light" style="text-align: left; max-width: 800px; margin: 0 auto 60px 0;">
+                    <span class="eyebrow pill"
+                        style="margin-left: 0; background: rgba(184, 137, 74, 0.15); color: var(--gold);">THE NEXMOVE
+                        DIFFERENCE</span>
+                    <h2 style="color: var(--navy);">Why Choose NEXmove Physio?</h2>
                 </div>
-                <div class="split-copy">
-                    <span class="eyebrow">Why NEXmove Physio?</span>
-                    <h2>Expert care, without the clinic journey.</h2>
-                    <p>We make physiotherapy easier to access by bringing qualified professionals directly to your home.
-                        No crowded waiting rooms and no difficult clinic journey.</p>
-                    <div class="check-list">
-                        <div class="check-item"><span class="check-dot">✓</span>
-                            <p><strong>HCPC &amp; CSP Registered</strong><br>Professional registration is verified.</p>
+
+                <div class="why-layout">
+                    <div class="why-content-col">
+                        <div class="process-step">
+                            <div class="process-number">01</div>
+                            <div class="process-text">
+                                <h4>Trusted &amp; Experienced</h4>
+                                <p>We thoroughly verify professional registration and DBS checks before any
+                                    physiotherapist joins.</p>
+                            </div>
                         </div>
-                        <div class="check-item"><span class="check-dot">✓</span>
-                            <p><strong>DBS Checked</strong><br>Appropriate checks for home visits.</p>
-                        </div>
-                        <div class="check-item"><span class="check-dot">✓</span>
-                            <p><strong>Fully Insured</strong><br>Professional indemnity documentation checked.</p>
-                        </div>
-                        <div class="check-item"><span class="check-dot">✓</span>
-                            <p><strong>Personalised Plans</strong><br>Treatment built around your goals.</p>
+                        <div class="process-step">
+                            <div class="process-number">02</div>
+                            <div class="process-text">
+                                <h4>We Come to You</h4>
+                                <p>Expert home visits that eliminate crowded waiting rooms and difficult clinic
+                                    journeys.</p>
+                            </div>
                         </div>
                     </div>
-                    <a href="booking/index.html" class="btn btn-green">Book Home Physio</a>
+
+                    <div class="why-image-col">
+                        <img src="images/center_photo.jpg" alt="Physiotherapist at home" class="why-image-arch">
+                        <div class="why-image-badge">
+                            <strong>170+</strong>
+                            <span>Verified<br>Physios</span>
+                        </div>
+                    </div>
+
+                    <div class="why-content-col">
+                        <div class="process-step">
+                            <div class="process-number">03</div>
+                            <div class="process-text">
+                                <h4>Personalized Care</h4>
+                                <p>One-to-one therapy focused completely on your goals, delivering faster and lasting
+                                    results.</p>
+                            </div>
+                        </div>
+                        <div class="why-cta-card">
+                            <h4>Ready to start your recovery?</h4>
+                            <a href="booking/index.html" class="btn btn-green" style="width: 100%;">Book Home Physio</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- PRICING -->
-        <section class="section soft" id="pricing">
-            <div class="container">
-                <div class="section-head">
-                    <span class="eyebrow">Simple pricing</span>
-                    <h2>Transparent Pricing</h2>
-                    <p>No hidden fees. Choose the appointment that fits your needs.</p>
+        <section class="section" id="pricing"
+            style="position: relative; overflow: hidden; background: #fdfaf5; padding: 100px 0;">
+            <!-- Abstract Background Shapes -->
+            <div
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;">
+                <!-- Abstract waves based on the reference -->
+                <svg viewBox="0 0 1440 600" preserveAspectRatio="none"
+                    style="position: absolute; top: 20%; left: -10%; width: 120%; height: 60%; opacity: 0.25;">
+                    <path fill="#8da08d"
+                        d="M0,200 C300,300 400,50 720,150 C1040,250 1200,50 1440,150 L1440,600 C1200,500 1000,650 720,550 C400,450 300,600 0,500 Z">
+                    </path>
+                    <path fill="#a3b4a3"
+                        d="M0,400 C400,200 600,450 960,300 C1200,200 1350,350 1440,300 L1440,600 L0,600 Z"></path>
+                </svg>
+                <!-- Large leaf top left -->
+                <svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="0.3"
+                    style="position: absolute; top: -50px; left: -50px; opacity: 0.4;">
+                    <path d="M12 22C12 22 4 16 4 9C4 5 12 2 12 2C12 2 20 5 20 9C20 16 12 22 12 22Z" fill="var(--sage)"
+                        opacity="0.1" />
+                    <path d="M12 22V9" />
+                </svg>
+                <!-- Large leaf bottom right -->
+                <svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="0.3"
+                    style="position: absolute; bottom: -50px; right: -50px; opacity: 0.4; transform: scaleX(-1);">
+                    <path d="M12 22C12 22 4 16 4 9C4 5 12 2 12 2C12 2 20 5 20 9C20 16 12 22 12 22Z" fill="var(--sage)"
+                        opacity="0.1" />
+                    <path d="M12 22V9" />
+                </svg>
+            </div>
+
+            <div class="container" style="position: relative; z-index: 2;">
+                <!-- New 3-Column Header -->
+                <div class="pricing-header">
+                    <div class="ph-left">
+                        <div class="eyebrow"
+                            style="margin:0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: #8c9b8c;">
+                            EXPERT CARE<br>AT YOUR DOORSTEP</div>
+                    </div>
+                    <div class="ph-center">
+                        <h2>Simple pricing. Personal care.</h2>
+                        <p>Choose the support that fits your recovery.</p>
+                    </div>
+                    <div class="ph-right">
+                        <div class="script-font">Move Better<br>Live Brighter</div>
+                        <div class="ph-right-eyebrow">PHYSIOTHERAPY<br>THAT COMES TO YOU</div>
+                    </div>
                 </div>
+
                 <div class="pricing-grid">
-                    <article class="price-card"><span class="price-label">FOLLOW-UP SESSION</span>
+                    <article class="price-card offset-down">
+                        <div class="price-icon-circle"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" />
+                                <path d="M9 22V12H15V22" />
+                            </svg></div>
                         <h3>Follow-up Home Visit</h3>
                         <div class="price">£75 <small>/ session</small></div>
                         <div class="price-time">45 minute session</div>
+                        <div class="price-divider"></div>
                         <ul>
-                            <li>✓ Progress review</li>
-                            <li>✓ Hands-on treatment</li>
-                            <li>✓ Exercise progression</li>
-                            <li>✓ Updated recovery plan</li>
-                        </ul><a href="booking/index.html" class="btn btn-outline">Book Now</a>
+                            <li>Progress review</li>
+                            <li>Hands-on treatment</li>
+                            <li>Exercise progression</li>
+                            <li>Updated recovery plan</li>
+                        </ul><a href="booking/index.html" class="btn btn-outline" style="border-width: 1px;">Book
+                            Now</a>
                     </article>
-                    <article class="price-card popular">
-                        <div class="popular-tag">FIRST CONSULTATION</div><span class="price-label">HOME VISIT</span>
+
+                    <article class="price-card recommended offset-up">
+                        <div class="popular-tag">RECOMMENDED FIRST STEP</div>
+                        <div class="price-icon-circle"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M16 4H8C6.89543 4 6 4.89543 6 6V20C6 21.1046 6.89543 22 8 22H16C17.1046 22 18 21.1046 18 20V6C18 4.89543 17.1046 4 16 4Z" />
+                                <path d="M9 4V2H15V4" />
+                                <path d="M9 12L11 14L15 10" />
+                            </svg></div>
                         <h3>Initial Assessment</h3>
                         <div class="price">£90 <small>/ session</small></div>
                         <div class="price-time">60 minute home visit</div>
+                        <div class="price-divider"></div>
                         <ul>
-                            <li>✓ Full assessment</li>
-                            <li>✓ Treatment at your doorstep</li>
-                            <li>✓ Personalised exercises</li>
-                            <li>✓ DBS-checked physiotherapist</li>
+                            <li>Full assessment</li>
+                            <li>Treatment at your doorstep</li>
+                            <li>Personalised exercises</li>
+                            <li>DBS-checked physiotherapist</li>
                         </ul><a href="booking/index.html" class="btn btn-green">Book Now</a>
                     </article>
-                    <article class="price-card"><span class="price-label">VIDEO CALL</span>
+
+                    <article class="price-card offset-down">
+                        <div class="price-icon-circle"><svg viewBox="0 0 24 24">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                                <line x1="8" y1="21" x2="16" y2="21" />
+                                <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg></div>
                         <h3>Online Consultation</h3>
                         <div class="price">£35 <small>/ session</small></div>
                         <div class="price-time">30 minute video session</div>
+                        <div class="price-divider"></div>
                         <ul>
-                            <li>✓ Video assessment &amp; advice</li>
-                            <li>✓ Exercise prescription</li>
-                            <li>✓ Self-management guidance</li>
-                            <li>✓ Follow-up plan</li>
-                        </ul><a href="booking/index.html" class="btn btn-outline">Book Now</a>
+                            <li>Video assessment &amp; advice</li>
+                            <li>Exercise prescription</li>
+                            <li>Self-management guidance</li>
+                            <li>Follow-up plan</li>
+                        </ul><a href="booking/index.html" class="btn btn-outline" style="border-width: 1px;">Book
+                            Now</a>
                     </article>
-                    <article class="price-card"><span class="price-label">BEST VALUE</span>
+
+                    <article class="price-card best-value offset-up">
+                        <div class="best-value-seal">
+                            <svg viewBox="0 0 100 100" class="scallop-svg">
+                                <path fill="#c39a5d"
+                                    d="M50,0 C60,0 65,10 75,10 C85,10 90,20 90,30 C90,40 100,45 100,55 C100,65 90,70 90,80 C90,90 85,100 75,100 C65,100 60,90 50,90 C40,90 35,100 25,100 C15,100 10,90 10,80 C10,70 0,65 0,55 C0,45 10,40 10,30 C10,20 15,10 25,10 C35,10 40,0 50,0 Z" />
+                            </svg>
+                            <span>BEST<br>VALUE</span>
+                        </div>
+                        <div class="price-icon-circle"><svg viewBox="0 0 24 24">
+                                <ellipse cx="12" cy="5" rx="8" ry="3" />
+                                <path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+                                <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+                            </svg></div>
                         <h3>5-Session Package</h3>
                         <div class="price">£350 <small>/ package</small></div>
                         <div class="price-time">Save compared with individual visits</div>
+                        <div class="price-divider"></div>
                         <ul>
-                            <li>✓ £70 per session</li>
-                            <li>✓ Same physio every visit</li>
-                            <li>✓ Ongoing progress tracking</li>
-                            <li>✓ Priority availability</li>
-                        </ul><a href="booking/index.html" class="btn btn-outline">Book Now</a>
+                            <li>£70 per session</li>
+                            <li>Same physio every visit</li>
+                            <li>Ongoing progress tracking</li>
+                            <li>Priority availability</li>
+                        </ul><a href="booking/index.html" class="btn btn-gold">Book Now</a>
                     </article>
+                </div>
+
+                <!-- NEW TRUST STRIP -->
+                <div class="trust-footer">
+                    <div class="tf-left">
+                        <h4>Expert physiotherapy<br>for a healthier, brighter you.</h4>
+                        <div class="tf-line"></div>
+                        <div class="tf-subtitle">SAME EXPERT CARE. A BRIGHTER TOMORROW.</div>
+                    </div>
+                    <div class="tf-right pill-box">
+                        <div class="trust-item">
+                            <div class="tf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 22C12 22 4 16 4 9C4 5 12 2 12 2C12 2 20 5 20 9C20 16 12 22 12 22Z"
+                                        fill="currentColor" />
+                                </svg></div>
+                            <div class="tf-text">
+                                <strong>No hidden fees</strong>
+                                <span>JUST EXPERT CARE</span>
+                            </div>
+                        </div>
+                        <div class="tf-divider"></div>
+                        <div class="trust-item">
+                            <div class="tf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    <path d="M9 12l2 2 4-4" />
+                                </svg></div>
+                            <div class="tf-text">
+                                <strong>Trusted &amp; DBS-checked</strong>
+                                <span>YOUR SAFETY MATTERS</span>
+                            </div>
+                        </div>
+                        <div class="tf-divider"></div>
+                        <div class="trust-item">
+                            <div class="tf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg></div>
+                            <div class="tf-text">
+                                <strong>Flexible appointments</strong>
+                                <span>AT A TIME THAT SUITS YOU</span>
+                            </div>
+                        </div>
+                        <div class="tf-divider"></div>
+                        <div class="trust-item">
+                            <div class="tf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path fill="currentColor" stroke="none"
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                </svg></div>
+                            <div class="tf-text">
+                                <strong>Support at every step</strong>
+                                <span>A HEALTHIER, BRIGHTER YOU</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2397,71 +3838,269 @@
         </section>
 
         <!-- CONDITIONS -->
-        <section class="section soft" id="conditions">
-            <div class="container">
-                <div class="section-head">
-                    <span class="eyebrow">What we treat</span>
-                    <h2>Conditions We Treat at Home</h2>
-                    <p>Evidence-based physiotherapy delivered without you leaving home.</p>
+        <section class="section" id="conditions"
+            style="position: relative; overflow: hidden; background: var(--navy); color: var(--white); padding: 100px 0;">
+            <!-- Abstract background shapes -->
+            <div style="position: absolute; right: 0; top: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;">
+                <!-- Large green wave bottom left -->
+                <svg viewBox="0 0 1440 600" preserveAspectRatio="none" style="position: absolute; bottom: -50px; left: 0; width: 120%; height: 120%; opacity: 0.15;">
+                    <path fill="var(--sage)" d="M0,600 C300,400 400,600 720,500 C1040,400 1200,600 1440,300 L1440,600 L0,600 Z"></path>
+                    <path fill="var(--cream)" d="M0,600 C400,450 600,600 960,400 C1200,250 1350,550 1440,450 L1440,600 L0,600 Z" opacity="0.1"></path>
+                </svg>
+                <!-- Large green wave top right -->
+                <svg viewBox="0 0 1440 600" preserveAspectRatio="none" style="position: absolute; top: -150px; right: -200px; width: 100%; height: 100%; opacity: 0.15; transform: scaleX(-1);">
+                    <path fill="var(--sage)" d="M0,0 C300,200 400,0 720,100 C1040,200 1200,0 1440,300 L1440,0 L0,0 Z"></path>
+                </svg>
+                
+                <!-- Gold floral art top right -->
+                <svg width="250" height="250" viewBox="0 0 100 100" style="position: absolute; top: 50px; right: 50px; opacity: 0.4;">
+                    <path d="M90 10 Q70 20 60 40 Q50 60 30 70 M60 40 Q75 30 80 50 M55 50 Q45 35 30 40" fill="none" stroke="var(--gold)" stroke-width="0.5" stroke-linecap="round" />
+                    <path d="M90 10 C85 0 70 5 60 40 C75 35 90 20 90 10 Z" fill="none" stroke="var(--gold)" stroke-width="0.5" />
+                    <path d="M60 40 C65 25 80 30 80 50 C75 45 65 45 60 40 Z" fill="none" stroke="var(--gold)" stroke-width="0.5" />
+                    <path d="M55 50 C45 30 30 35 30 40 C40 45 50 55 55 50 Z" fill="none" stroke="var(--gold)" stroke-width="0.5" />
+                </svg>
+                
+                <!-- Gold floral art bottom left -->
+                <svg width="250" height="250" viewBox="0 0 100 100" style="position: absolute; bottom: 0; left: 0; opacity: 0.4; transform: scale(-1, 1) rotate(45deg);">
+                    <path d="M90 10 Q70 20 60 40 Q50 60 30 70" fill="none" stroke="var(--gold)" stroke-width="0.5" stroke-linecap="round" />
+                    <path d="M90 10 C85 0 70 5 60 40 C75 35 90 20 90 10 Z" fill="none" stroke="var(--gold)" stroke-width="0.5" />
+                </svg>
+            </div>
+
+            <div class="container" style="position: relative; z-index: 2;">
+                <div class="conditions-head">
+                    <div class="cond-eyebrow-container">
+                        <div class="gold-line-side"></div>
+                        <span class="eyebrow pill">WHAT WE TREAT</span>
+                        <div class="gold-line-side"></div>
+                    </div>
+                    <h2>From Pain to Progress</h2>
+                    <p>Expert treatment for every stage of recovery.<br>Evidence-based physiotherapy, delivered in the comfort of your home.</p>
                 </div>
-                <div class="link-grid">
-                    <a class="link-card" href="booking/index.html"><span>Back Pain</span><span>→</span></a>
-                    <a class="link-card" href="booking/index.html"><span>Post-Surgery Recovery</span><span>→</span></a>
-                    <a class="link-card" href="booking/index.html"><span>Stroke Rehabilitation</span><span>→</span></a>
-                    <a class="link-card" href="booking/index.html"><span>Sports Injury</span><span>→</span></a>
-                    <a class="link-card" href="booking/index.html"><span>Knee Pain</span><span>→</span></a>
-                    <a class="link-card" href="booking/index.html"><span>Shoulder Pain</span><span>→</span></a>
-                    <a class="link-card" href="booking/index.html"><span>Neck Pain</span><span>→</span></a>
-                    <a class="link-card" href="booking/index.html"><span>Sciatica</span><span>→</span></a>
+
+                <div class="conditions-bento">
+                    <div class="bento-top-row">
+                        <!-- BACK PAIN -->
+                        <a href="booking/index.html" class="bento-card large">
+                            <div class="bento-icon-bg"></div>
+                            <div class="bento-icon">
+                                <img src="images/conditions/back-pain.jpg" alt="Back Pain" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <h3>Back Pain</h3>
+                            <div class="learn-more">Learn more &rarr;</div>
+                            <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                        </a>
+
+                        <div class="bento-middle-col">
+                            <!-- POST-SURGERY -->
+                            <a href="booking/index.html" class="bento-card medium">
+                                <div class="bento-icon">
+                                    <img src="images/conditions/post-surgery.jpg" alt="Post Surgery" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                </div>
+                                <div class="bento-text">
+                                    <h3>Post-Surgery<br>Recovery</h3>
+                                    <div class="learn-more">Learn more &rarr;</div>
+                                </div>
+                                <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                            </a>
+
+                            <!-- SPORTS INJURY -->
+                            <a href="booking/index.html" class="bento-card medium">
+                                <div class="bento-icon">
+                                    <img src="images/conditions/sports-injury.jpg" alt="Sports Injury" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                </div>
+                                <div class="bento-text">
+                                    <h3>Sports Injury</h3>
+                                    <div class="learn-more">Learn more &rarr;</div>
+                                </div>
+                                <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                            </a>
+                        </div>
+
+                        <!-- STROKE REHAB -->
+                        <a href="booking/index.html" class="bento-card large">
+                            <div class="bento-icon-bg"></div>
+                            <div class="bento-icon">
+                                <img src="images/conditions/stroke-rehab.jpg" alt="Stroke Rehab" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <h3>Stroke Rehabilitation</h3>
+                            <div class="learn-more">Learn more &rarr;</div>
+                            <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                        </a>
+                    </div>
+
+                    <div class="bento-bottom-row">
+                        <!-- KNEE PAIN -->
+                        <a href="booking/index.html" class="bento-card small">
+                            <div class="bento-icon">
+                                <img src="images/conditions/knee-pain.jpg" alt="Knee Pain" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div class="bento-text">
+                                <h3>Knee Pain</h3>
+                                <div class="learn-more">Learn more &rarr;</div>
+                            </div>
+                            <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                        </a>
+
+                        <!-- SHOULDER PAIN -->
+                        <a href="booking/index.html" class="bento-card small">
+                            <div class="bento-icon">
+                                <img src="images/conditions/shoulder-pain.jpg" alt="Shoulder Pain" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div class="bento-text">
+                                <h3>Shoulder Pain</h3>
+                                <div class="learn-more">Learn more &rarr;</div>
+                            </div>
+                            <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                        </a>
+
+                        <!-- NECK PAIN -->
+                        <a href="booking/index.html" class="bento-card small">
+                            <div class="bento-icon">
+                                <img src="images/conditions/neck-pain.jpg" alt="Neck Pain" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div class="bento-text">
+                                <h3>Neck Pain</h3>
+                                <div class="learn-more">Learn more &rarr;</div>
+                            </div>
+                            <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                        </a>
+
+                        <!-- SCIATICA -->
+                        <a href="booking/index.html" class="bento-card small">
+                            <div class="bento-icon">
+                                <img src="images/conditions/sciatica.jpg" alt="Sciatica" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div class="bento-text">
+                                <h3>Sciatica</h3>
+                                <div class="learn-more">Learn more &rarr;</div>
+                            </div>
+                            <div class="bento-arrow-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" fill="none"/></svg></div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- VETTING -->
-        <section class="section">
-            <div class="container">
-                <div class="section-head">
-                    <span class="eyebrow">Safety first</span>
-                    <h2>How We Vet Our Physios</h2>
+        <section class="section" id="vetting">
+            <div class="container vet-layout">
+                <div class="vet-left">
+                    <span class="eyebrow">SAFETY FIRST</span>
+                    <h2>How Our Physios Are Verified</h2>
                     <p>Every physiotherapist goes through a structured verification process.</p>
+
+                    <div class="vet-seal-container">
+                        <svg class="vet-seal-svg" viewBox="0 0 200 200">
+                            <!-- Background and rings -->
+                            <circle cx="100" cy="100" r="96" fill="#ffffff" stroke="#B8894A" stroke-width="4" />
+                            <circle cx="100" cy="100" r="88" fill="none" stroke="#1B2A4A" stroke-width="1.5"
+                                stroke-dasharray="4 4" />
+                            <circle cx="100" cy="100" r="54" fill="none" stroke="#B8894A" stroke-width="1.5" />
+                            <circle cx="100" cy="100" r="50" fill="#ffffff" />
+
+                            <!-- Shield icon -->
+                            <path d="M100 64 L118 70 V88 C118 102 105 116 100 120 C95 116 82 102 82 88 V70 Z"
+                                fill="none" stroke="#1B2A4A" stroke-width="3" />
+                            <path d="M100 68 L114 73 V88 C114 99 104 110 100 114 C96 110 86 99 86 88 V73 Z" fill="none"
+                                stroke="#8FA88F" stroke-width="1.5" />
+                            <path d="M92 94 L97 99 L108 86" fill="none" stroke="#1B2A4A" stroke-width="4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+
+                            <!-- Text path for curved text -->
+                            <defs>
+                                <path id="top-curve" d="M36 100 A64 64 0 0 1 164 100" />
+                                <path id="bottom-curve" d="M164 100 A64 64 0 0 1 36 100" />
+                            </defs>
+                            <text fill="#B8894A" font-family="'Playfair Display', serif" font-size="18"
+                                font-weight="700" letter-spacing="4">
+                                <textPath href="#top-curve" startOffset="50%" text-anchor="middle">4-STEP</textPath>
+                            </text>
+                            <text fill="#B8894A" font-family="'Inter', sans-serif" font-size="13" font-weight="700"
+                                letter-spacing="3">
+                                <textPath href="#bottom-curve" startOffset="50%" text-anchor="middle">VERIFICATION
+                                </textPath>
+                            </text>
+
+                            <!-- Leaves/Laurel -->
+                            <g fill="#8FA88F">
+                                <!-- Left side -->
+                                <path d="M42 100 Q40 92 34 94 Q40 104 42 100" />
+                                <path d="M44 88 Q40 80 34 84 Q42 94 44 88" />
+                                <path d="M48 76 Q42 70 36 74 Q46 82 48 76" />
+                                <path d="M54 66 Q48 60 42 66 Q52 74 54 66" />
+                                <!-- Right side -->
+                                <path d="M158 100 Q160 92 166 94 Q160 104 158 100" />
+                                <path d="M156 88 Q160 80 166 84 Q158 94 156 88" />
+                                <path d="M152 76 Q158 70 164 74 Q154 82 152 76" />
+                                <path d="M146 66 Q152 60 158 66 Q148 74 146 66" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div class="trust-footer">
+                        <div class="trust-line"></div>
+                        <div class="trust-text">TRUST IN EVERY VISIT</div>
+                        <div class="trust-line"></div>
+                    </div>
                 </div>
-                <div class="vet-grid">
-                    <article class="vet-card"><span class="vet-number">01</span>
-                        <div class="vet-icon"><svg viewBox="0 0 48 48">
-                                <path d="M24 5 38 11v10c0 9-5.4 16-14 21C15.4 37 10 30 10 21V11L24 5z" />
-                                <path d="m18 24 4 4 8-9" />
-                            </svg></div>
-                        <h3>HCPC &amp; CSP Registration</h3>
-                        <p>We verify professional registration before a physiotherapist joins the network.</p>
-                    </article>
-                    <article class="vet-card"><span class="vet-number">02</span>
-                        <div class="vet-icon"><svg viewBox="0 0 48 48">
-                                <circle cx="21" cy="21" r="12" />
-                                <path d="m30 30 10 10" />
-                            </svg></div>
-                        <h3>Enhanced DBS Check</h3>
-                        <p>Home-visit physiotherapists must hold the appropriate current background checks.</p>
-                    </article>
-                    <article class="vet-card"><span class="vet-number">03</span>
-                        <div class="vet-icon"><svg viewBox="0 0 48 48">
-                                <rect x="8" y="11" width="32" height="29" rx="3" />
-                                <path d="M15 7v9M33 7v9M8 20h32" />
-                                <path d="M15 26h4M23 26h4M31 26h4M15 32h4M23 32h4M31 32h4" />
-                            </svg></div>
-                        <h3>Insurance Verified</h3>
-                        <p>Professional indemnity insurance is checked and must remain current.</p>
-                    </article>
-                    <article class="vet-card"><span class="vet-number">04</span>
-                        <div class="vet-icon"><svg viewBox="0 0 48 48">
-                                <path
-                                    d="m24 5 5.7 11.5 12.7 1.8-9.2 9 2.2 12.7L24 34l-11.4 6 2.2-12.7-9.2-9 12.7-1.8L24 5z" />
-                            </svg></div>
-                        <h3>Qualifications Review</h3>
-                        <p>Degrees, specialisations, experience and CPD records are reviewed.</p>
-                    </article>
+
+                <div class="vet-right">
+                    <div class="vet-grid">
+                        <article class="vet-card">
+                            <div class="vet-watermark">01</div>
+                            <div class="vet-icon"><svg viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg></div>
+                            <h3>HCPC &amp; CSP Registration</h3>
+                            <p>We verify professional registration before a physiotherapist joins the network.</p>
+                        </article>
+
+                        <article class="vet-card">
+                            <div class="vet-watermark">02</div>
+                            <div class="vet-icon"><svg viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg></div>
+                            <h3>Enhanced DBS Check</h3>
+                            <p>Home-visit physiotherapists must hold the appropriate current background checks.</p>
+                        </article>
+
+                        <article class="vet-card">
+                            <div class="vet-watermark">03</div>
+                            <div class="vet-icon"><svg viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                    <rect x="8" y="14" width="2" height="2" />
+                                    <rect x="12" y="14" width="2" height="2" />
+                                    <rect x="16" y="14" width="2" height="2" />
+                                </svg></div>
+                            <h3>Insurance Verified</h3>
+                            <p>Professional indemnity insurance is checked and must remain current.</p>
+                        </article>
+
+                        <article class="vet-card">
+                            <div class="vet-watermark">04</div>
+                            <div class="vet-icon"><svg viewBox="0 0 24 24">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg></div>
+                            <h3>Qualifications Review</h3>
+                            <p>Degrees, specialisations, experience and CPD records are reviewed.</p>
+                        </article>
+                    </div>
+
+                    <div class="verified-line">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        <div class="verified-line-sep"></div>
+                        Physiotherapists must complete all verification steps before joining the platform.
+                    </div>
                 </div>
-                <div class="verified-line">✓ Physiotherapists must complete all verification steps before joining the
-                    platform.</div>
             </div>
         </section>
 
