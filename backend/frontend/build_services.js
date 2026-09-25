@@ -43,6 +43,7 @@ const services = [
         subtitle: 'Recover faster. Perform stronger.<br>Get back to peak performance.',
         desc: 'Expert assessment, rehabilitation, and injury prevention for athletes, runners, and active individuals — delivered directly to your home or training ground so you can return to the sport you love.',
         image: 'Front Page.jpeg',
+        heroTheme: 'light',
         blurbs: [
             { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home & Field<br>Visits', desc: 'Convenient rehab<br>at your location' },
             { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path>', title: 'Elite Sports<br>Physios', desc: 'HCPC registered<br>performance specialists' },
@@ -81,10 +82,46 @@ const services = [
     },
     { 
         id: 'neuro-physio', 
-        title: 'Neuro Physiotherapy', 
-        subtitle: 'Regain movement. Restore independence.',
-        desc: 'Specialist neurorehabilitation for stroke, Parkinson\'s disease, multiple sclerosis and brain injuries, providing expert support in your own home.',
-        image: 'Front Page.jpeg'
+        title: 'Neurological Physiotherapy', 
+        subtitle: 'Rebuild movement. Regain independence.<br>Expert neuro-rehabilitation at home.',
+        desc: 'Expert in-home assessment and targeted therapy for individuals with conditions affecting the brain and spinal cord, focused on restoring mobility, function, and quality of life.',
+        image: 'Front Page.jpeg',
+        heroTheme: 'dark',
+        heroOverlay: {
+            text: 'REGain your<br>independence<br>and progress.',
+            handwriting: 'REGain movement.<br>gait confidence.'
+        },
+        blurbs: [
+            { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home Visits', desc: 'Convenient rehab<br>at your location' },
+            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path>', title: 'Neuro Experts', desc: 'HCPC registered<br>neuro specialists' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', title: 'Targeted Therapy', desc: 'Tailored programs<br>for your condition' },
+            { icon: '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', title: 'Evidence-Based', desc: 'Proven strategies<br>for independence' }
+        ],
+        conditionsTitle: 'Common Neuro Conditions We Help With',
+        conditionsCards: [
+            { icon: '<path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 9.5 2z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Stroke<br>Recovery' },
+            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Parkinson\'s<br>Disease' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>', title: 'Multiple<br>Sclerosis' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path>', title: 'Brain<br>Injury' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Balance<br>Disorders' },
+            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Motor Neurone<br>Disease' },
+            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Peripheral<br>Neuropathy' },
+            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Spinal Cord<br>Conditions' },
+            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Spasticity<br>Management' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Mobility<br>Retraining' }
+        ],
+        quoteBox: {
+            quote: 'Regain movement.<br>Rebuild confidence.',
+            author: 'NEXmove Physio'
+        },
+        processSteps: [
+            { icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', title: 'Consult', desc: 'Initial history & goals.' },
+            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Neuro Assessment', desc: 'Comprehensive balance & function.' },
+            { icon: '<line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="6" y1="12" x2="18" y2="12"></line>', title: 'Tailored Neuro Rehab', desc: 'Evidence-based movement therapy.' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Long-term Progression', desc: 'Ongoing support for independence.' }
+        ],
+        ctaTitle: 'Specialist Neurological Physiotherapy<br>in the Comfort of Your Home',
+        ctaDesc: 'You don\'t need to travel to a clinic. Our physiotherapists bring specialized neuro-rehabilitation expertise directly to your environment.'
     },
     { 
         id: 'musculoskeletal', 
@@ -92,11 +129,12 @@ const services = [
         subtitle: 'Move better. Feel stronger.<br>Get back to what you love.',
         desc: 'Expert assessment and treatment for back pain, neck pain, joint pain, arthritis and other musculoskeletal conditions — so you can get back to doing what you love.',
         image: 'musculoskeletal.jpg',
+        heroTheme: 'light',
         heroOverlay: {
             text: 'STRONGER<br>MOVEMENT<br>HEALTHIER<br>HAPPIER<br>YOU',
             handwriting: 'Helping you<br>move towards<br>a pain-free life'
         },
-        conditionsTitle: 'Common Musculoskeletal Conditions',
+        conditionsTitle: 'Common Musculoskeletal Conditions We Help With',
         quoteBox: {
             quote: 'Less pain.<br>More movement.<br>A healthier you.',
             author: 'NEXmove Physio'
@@ -109,47 +147,60 @@ const services = [
         title: 'Respiratory Physiotherapy', 
         subtitle: 'Breathe easier. Live comfortably.',
         desc: 'Support for COPD, asthma, post-COVID recovery and breathing rehabilitation in the comfort of your home.',
-        image: 'Front Page.jpeg'
+        image: 'Front Page.jpeg', heroTheme: 'light'
     },
     { 
         id: 'paediatric-physio', 
         title: 'Paediatric Physiotherapy', 
         subtitle: 'Supporting your child\'s development.',
         desc: 'Specialist care for developmental delay, cerebral palsy, paediatric injuries and neurological conditions.',
-        image: 'Front Page.jpeg'
+        image: 'Front Page.jpeg', heroTheme: 'light'
     },
     { 
         id: 'geriatric-care', 
         title: 'Geriatric Care', 
         subtitle: 'Maintain your independence safely.',
         desc: 'Maintain independence with falls prevention, balance training, mobility improvement and age-related weakness.',
-        image: 'Front Page.jpeg'
+        image: 'Front Page.jpeg', heroTheme: 'light'
     },
     { 
         id: 'womens-health', 
         title: 'Women\'s Health', 
         subtitle: 'Specialist care for every stage.',
         desc: 'Specialist support for pregnancy-related pain, postnatal recovery, pelvic floor and diastasis recti.',
-        image: 'Front Page.jpeg'
+        image: 'Front Page.jpeg', heroTheme: 'light'
     },
     { 
         id: 'post-surgical-rehab', 
         title: 'Post-Surgical Rehab', 
         subtitle: 'Recover safely and effectively.',
         desc: 'Rehabilitation after hip & knee replacement, ACL reconstruction, spinal surgery and shoulder surgery.',
-        image: 'Front Page.jpeg'
+        image: 'Front Page.jpeg', heroTheme: 'light'
     }
 ];
 
 services.forEach(service => {
     
     // Resolve defaults
+    const isDark = service.heroTheme === 'dark';
+    const hBg = isDark ? '#111d33' : 'var(--cream)';
+    const hTextMain = isDark ? 'white' : 'var(--navy)';
+    const hTextSub = isDark ? 'rgba(255,255,255,0.8)' : 'var(--text)';
+    const hTextMuted = isDark ? 'rgba(255,255,255,0.6)' : 'var(--muted)';
+    const hBtnBg = isDark ? '#5a7667' : 'var(--navy)';
+    const hBtnBorder = isDark ? 'rgba(255,255,255,0.3)' : 'var(--navy)';
+    const hBtnText = isDark ? 'white' : 'var(--navy)';
+    const overlayTextSize = isDark ? '24px' : '16px';
+    const overlayTextWeight = isDark ? '400' : '700';
+    const overlayFont = isDark ? "'Playfair Display', serif; font-style: italic" : "sans-serif";
+    const overlayHandwritingColor = isDark ? '#111d33' : 'var(--navy)';
+
     const blurbs = service.blurbs || defaultBlurbs;
     const heroOverlay = service.heroOverlay || {
         text: 'STRONGER<br>MOVEMENT<br>HEALTHIER<br>HAPPIER<br>YOU',
         handwriting: 'Helping you<br>move towards<br>a pain-free life'
     };
-    const conditionsTitle = service.conditionsTitle || ('Common ' + service.title.replace(' Physiotherapy', '') + ' Conditions');
+    const conditionsTitle = service.conditionsTitle || ('Common ' + service.title.replace(' Physiotherapy', '') + ' Conditions We Help With');
     const conditionsCards = service.conditionsCards || defaultConditionsCards;
     const quoteBox = service.quoteBox || {
         quote: 'Less pain.<br>More movement.<br>A healthier you.',
@@ -170,9 +221,9 @@ services.forEach(service => {
     
     const blurbsHTML = blurbs.map(b => `
         <div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5">${b.icon}</svg>
-            <h4 style="font-size: 12px; font-weight: 700; color: var(--navy); margin: 8px 0 4px; line-height: 1.2;">${b.title}</h4>
-            <p style="font-size: 11px; color: var(--muted); line-height: 1.3;">${b.desc}</p>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${hTextMain}" stroke-width="1.5">${b.icon}</svg>
+            <h4 style="font-size: 12px; font-weight: 700; color: ${hTextMain}; margin: 8px 0 4px; line-height: 1.2;">${b.title}</h4>
+            <p style="font-size: 11px; color: ${hTextMuted}; line-height: 1.3;">${b.desc}</p>
         </div>
     `).join('');
     
@@ -190,48 +241,50 @@ services.forEach(service => {
     const html = `
         <main style="background: var(--cream);">
             
-            <div class="container breadcrumb" style="padding: 20px 0; font-size: 11px; color: var(--muted); font-weight: 500;">
-                Home &gt; Our Services &gt; ${service.title}
-            </div>
+            <div style="background: ${hBg};">
+                <div class="container breadcrumb" style="padding: 20px 0; font-size: 11px; color: ${hTextMuted}; font-weight: 500;">
+                    Home &gt; Our Services &gt; ${service.title}
+                </div>
 
-            <!-- Hero -->
-            <section class="service-hero" style="padding-bottom: 40px;">
-                <div class="container">
-                    <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; min-height: unset;">
-                        
-                        <div class="hero-copy" style="padding: 20px 0 40px; justify-content: flex-start;">
-                            <span class="eyebrow" style="justify-content: flex-start; margin-bottom: 20px;">OUR SERVICES</span>
-                            <h1 style="font-family: 'Playfair Display', serif; font-size: 56px; color: var(--navy); line-height: 1.1; margin-bottom: 20px;">${service.title}</h1>
-                            <h3 style="font-size: 24px; color: var(--green); margin-bottom: 15px; font-weight: 500; line-height: 1.3;">${service.subtitle}</h3>
-                            <p style="color: var(--text); font-size: 16px; margin-bottom: 40px; max-width: 480px; line-height: 1.6;">${service.desc}</p>
+                <!-- Hero -->
+                <section class="service-hero" style="padding-bottom: 40px; overflow: hidden;">
+                    <div class="container">
+                        <div class="hero-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch; min-height: unset;">
                             
-                            <div class="hero-actions" style="display: flex; gap: 16px; margin-bottom: 60px;">
-                                <a href="../booking/index.html" class="btn btn-primary" style="background: var(--navy); color: white; border-radius: 99px; padding: 0 32px; min-height: 54px; font-size: 15px;">Book Your Assessment &rarr;</a>
-                                <a href="tel:+447436059680" class="btn btn-outline" style="border: 1px solid var(--navy); color: var(--navy); border-radius: 99px; padding: 0 24px; min-height: 54px; font-size: 15px; background: transparent;">&#9742; +44 7436 059680</a>
-                            </div>
-                            
-                            <!-- Blurbs -->
-                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
-                                ${blurbsHTML}
-                            </div>
-                        </div>
-
-                        <!-- Image Right -->
-                        <div class="hero-media" style="position: relative; border-radius: 0; min-height: unset; margin: -20px 0 0 0; overflow: visible;">
-                            <img src="../images/${service.image}" style="width: 100%; height: 100%; object-fit: cover; border-bottom-left-radius: 120px;" alt="${service.title}">
-                            
-                            <div style="position: absolute; top: 40px; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); padding: 25px; border-radius: 12px; box-shadow: var(--shadow);">
-                                <p style="font-size: 16px; font-weight: 700; color: var(--navy); line-height: 1.4; letter-spacing: 1px;">${heroOverlay.text}</p>
-                                <div style="width: 20px; height: 2px; background: var(--green); margin-top: 15px;"></div>
+                            <div class="hero-copy" style="padding: 20px 0 40px; justify-content: flex-start;">
+                                <span class="eyebrow" style="justify-content: flex-start; margin-bottom: 20px; color: ${hTextMuted}; border-color: ${isDark ? 'rgba(255,255,255,0.2)' : 'var(--navy)'};">OUR SERVICES</span>
+                                <h1 style="font-family: 'Playfair Display', serif; font-size: 56px; color: ${hTextMain}; line-height: 1.1; margin-bottom: 20px;">${service.title}</h1>
+                                <h3 style="font-size: 22px; color: ${isDark ? 'white' : 'var(--green)'}; margin-bottom: 15px; font-weight: 400; line-height: 1.3;">${service.subtitle}</h3>
+                                <p style="color: ${hTextSub}; font-size: 16px; margin-bottom: 40px; max-width: 480px; line-height: 1.6;">${service.desc}</p>
+                                
+                                <div class="hero-actions" style="display: flex; gap: 16px; margin-bottom: 60px;">
+                                    <a href="../booking/index.html" class="btn btn-primary" style="background: ${hBtnBg}; color: white; border-radius: 99px; padding: 0 32px; min-height: 54px; font-size: 14px; text-transform: uppercase;">Book Your Consultation</a>
+                                    <a href="tel:+447436059680" class="btn btn-outline" style="border: 1px solid ${hBtnBorder}; color: ${hBtnText}; border-radius: 99px; padding: 0 24px; min-height: 54px; font-size: 15px; background: transparent;">&#9742; +44 7436 059680</a>
+                                </div>
+                                
+                                <!-- Blurbs -->
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                                    ${blurbsHTML}
+                                </div>
                             </div>
 
-                            <div style="position: absolute; bottom: 80px; right: -20px; transform: rotate(-5deg); font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; color: var(--navy); line-height: 1.2;">
-                                ${heroOverlay.handwriting}
+                            <!-- Image Right -->
+                            <div class="hero-media" style="position: relative; border-radius: 0; min-height: unset; margin: -50px 0 0 0; overflow: visible; z-index: 2;">
+                                <img src="../images/${service.image}" style="width: 100%; height: 100%; object-fit: cover; border-bottom-left-radius: 120px; border-top-left-radius: ${isDark ? '300px' : '0'};" alt="${service.title}">
+                                
+                                <div style="position: absolute; top: 40px; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); padding: 25px; border-radius: 12px; box-shadow: var(--shadow);">
+                                    <p style="font-family: ${overlayFont}; font-size: ${overlayTextSize}; font-weight: ${overlayTextWeight}; color: ${overlayHandwritingColor}; line-height: 1.4; letter-spacing: ${isDark ? '0' : '1px'};">${heroOverlay.text}</p>
+                                    <div style="width: 20px; height: 2px; background: var(--green); margin-top: 15px;"></div>
+                                </div>
+
+                                <div style="position: absolute; bottom: 80px; right: -20px; transform: rotate(-5deg); font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; color: ${overlayHandwritingColor}; line-height: 1.2;">
+                                    ${heroOverlay.handwriting}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
 
             <!-- Conditions Grid -->
             <section class="section" style="padding: 60px 0; background: var(--cream2);">
@@ -292,7 +345,7 @@ services.forEach(service => {
                         </div>
                         
                         <div style="display: flex; flex-direction: column; gap: 15px; z-index: 2; position: relative; min-width: 250px;">
-                            <a href="../booking/index.html" class="btn btn-white" style="background: white; color: var(--navy); border-radius: 99px; padding: 0 25px; min-height: 50px; font-weight: 700; font-size: 14px; text-align: center;">Book Your Assessment &rarr;</a>
+                            <a href="../booking/index.html" class="btn btn-white" style="background: white; color: var(--navy); border-radius: 99px; padding: 0 25px; min-height: 50px; font-weight: 700; font-size: 14px; text-align: center; line-height: 50px;">Book Your Assessment &rarr;</a>
                             <a href="tel:+447436059680" style="color: white; font-weight: 600; font-size: 15px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                 +44 7436 059680
