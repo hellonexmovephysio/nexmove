@@ -37,16 +37,47 @@ body {
     font-size: 15px;
 }
 
-.brand-copy strong {
-    font-size: 24px;
+.brand-name {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 31px;
+    line-height: 1;
+    color: var(--navy)
 }
 
-.brand-copy small {
-    font-size: 12px;
+.brand-name span {
+    color: #5f776d
 }
 
-.brand-copy em {
-    font-size: 11px;
+.brand-sub {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-size: 9px;
+    letter-spacing: 6px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-top: 7px;
+    width: 100%
+}
+
+.brand-sub::before,
+.brand-sub::after {
+    content: "";
+    display: block;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 999px;
+    flex: 1 1 auto;
+    min-width: 18px;
+    max-width: 36px
+}
+
+.brand-tag {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #8a8d86;
+    margin-top: 7px
 }
 
 .content-area > h1 {
@@ -319,7 +350,11 @@ select {
             <div style="width: 48px; height: 48px; flex-shrink: 0;">
                 <img src="../images/nexmove-logo.png" alt="NEXmove Physio logo" style="width:100%;height:100%;object-fit:contain">
             </div>
-            <span class="brand-copy"><strong>NEX<span>move</span></strong><small>PHYSIO</small><em>MOVE BETTER. LIVE BETTER.</em></span>
+            <div>
+                <div class="brand-name">NEX<span>move</span></div>
+                <div class="brand-sub">PHYSIO</div>
+                <div class="brand-tag">MOVE BETTER. LIVE BETTER.</div>
+            </div>
         </a>
         <nav class="desktop-nav"><a href="../index.html#how">How It Works</a><a href="../index.html#conditions">Conditions⌄</a><a href="../index.html#pricing">Pricing</a><a href="../index.html#physios">For Physios</a><a href="../index.html#about">About Us</a></nav>
         <a class="phone-pill" href="tel:+447436059680">☎ <span>+44 7436 059680</span></a>
