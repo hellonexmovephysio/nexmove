@@ -328,10 +328,52 @@ const services = [
     },
     { 
         id: 'post-surgical-rehab', 
-        title: 'Post-Surgical Rehab', 
-        subtitle: 'Recover safely and effectively.',
-        desc: 'Rehabilitation after hip & knee replacement, ACL reconstruction, spinal surgery and shoulder surgery.',
-        image: 'Front Page.jpeg', heroTheme: 'light'
+        title: 'Post-Surgical Rehabilitation', 
+        subtitle: 'Safe recovery. Restored mobility.<br>Expert post-operative care at home.',
+        desc: 'Expert in-home assessment and tailored rehabilitation for individuals recovering from joint replacements (knee, hip, shoulder), ACL repairs, spinal surgery, and major trauma — delivered directly to your home so you can safely and confidently regain mobility, strength, and function.',
+        image: 'Front Page.jpeg', 
+        heroTheme: 'dark',
+        heroOverlay: {
+            text: 'SAFE RECOVERY.<br>RESTORED<br>STRENGTH.<br>CONFIDENT STEPS.',
+            handwriting: 'Your path to a<br>full recovery.'
+        },
+        blurbs: [
+            { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home Visits', desc: 'Convenient care<br>at your location' },
+            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path>', title: 'Post-Surgical<br>Specialists', desc: 'HCPC registered<br>specialists' },
+            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Protocol-Driven<br>Care', desc: 'Tailored programs for<br>every procedure' },
+            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Safe Progression', desc: 'Proven strategies to<br>minimize discomfort' }
+        ],
+        conditionsTitle: 'Common Post-Surgical Conditions We Treat',
+        conditionsCards: [
+            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Knee<br>Replacement' },
+            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Hip<br>Replacement' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'ACL & Ligament<br>Repair' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Shoulder &<br>Rotator Cuff' },
+            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Spinal & Disc<br>Surgery' },
+            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Fracture &<br>Trauma Fixation' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Joint<br>Arthroscopy' },
+            { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Foot & Ankle<br>Surgery' },
+            { icon: '<path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Scar & Swelling<br>Management' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Mobility & Stairs<br>Confidence' }
+        ],
+        quoteBox: {
+            quote: 'Safe recovery.<br>Restored mobility.<br>Back to<br>independence.',
+            author: 'NEXmove Physio'
+        },
+        processSteps: [
+            { icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', title: 'Consult', desc: 'Initial chat & surgical history.' },
+            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Assess', desc: 'Comprehensive physical review.' },
+            { icon: '<line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="6" y1="12" x2="18" y2="12"></line>', title: 'Treat', desc: 'Safe, protocol-driven exercises.' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Empower', desc: 'Long-term guidance & support.' }
+        ],
+        ctaTitle: 'Specialist Post-Surgical<br>Rehabilitation in Your Home',
+        ctaDesc: 'You don\'t need to travel to a clinic. Our physiotherapists bring specialized post-operative expertise directly to your environment.',
+        trustBar: [
+            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', text: 'Personalised care' },
+            { icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>', text: 'HCPC Registered' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', text: 'Trusted by surgeons<br>& consultants' },
+            { icon: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>', text: 'Real results' }
+        ]
     }
 ];
 
