@@ -6,20 +6,78 @@ const indexHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 const headerMatch = indexHtml.match(/<main[^>]*>/);
 const footerMatch = indexHtml.match(/<\/main>/);
 
-const beforeHeaderIndex = headerMatch.index;
-const afterHeaderIndex = headerMatch.index + headerMatch[0].length;
-const footerIndex = footerMatch.index;
+const headAndHeader = indexHtml.substring(0, headerMatch.index + headerMatch[0].length);
+const footerAndEnd = indexHtml.substring(footerMatch.index);
 
-const headAndHeader = indexHtml.substring(0, afterHeaderIndex);
-const footerAndEnd = indexHtml.substring(footerIndex);
+const defaultBlurbs = [
+    { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home Visits', desc: 'Convenient care<br>at your home' },
+    { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path>', title: 'Experienced<br>Physiotherapists', desc: 'HCPC registered' },
+    { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', title: 'Personalised<br>Treatment', desc: 'Tailored to your goals' },
+    { icon: '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', title: 'Evidence-Based<br>Care', desc: 'Proven results' }
+];
+
+const defaultSteps = [
+    { icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', title: 'Discuss', desc: 'We\'ll talk about your symptoms, medical history and daily activities.' },
+    { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>', title: 'Assess', desc: 'A thorough physical assessment to understand your movement and function.' },
+    { icon: '<line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="6" y1="12" x2="18" y2="12"></line>', title: 'Treat', desc: 'Personalised exercises, hands-on techniques and expert advice.' },
+    { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Get Back to Life', desc: 'Support to return safely to the activities you love.' }
+];
+
+const defaultConditionsCards = [
+    { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Back & lower<br>back pain' },
+    { icon: '<path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>', title: 'Neck pain<br>and stiffness' },
+    { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Shoulder<br>pain' },
+    { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Knee, hip and<br>ankle problems' },
+    { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Arthritis and<br>joint pain' },
+    { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Muscle strains<br>and ligament sprains' },
+    { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Tendon<br>problems' },
+    { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Sciatica' },
+    { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'Repetitive strain &<br>work-related injuries' },
+    { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Reduced movement,<br>strength or flexibility' }
+];
 
 const services = [
     { 
         id: 'sports-physio', 
         title: 'Sports Physiotherapy', 
-        subtitle: 'Move better. Feel stronger. Get back to what you love.',
-        desc: 'Expert assessment and treatment for sports injuries, muscle strains, ligament injuries, and other sports-related conditions — so you can get back to doing what you love.',
-        image: 'Front Page.jpeg'
+        subtitle: 'Recover faster. Perform stronger.<br>Get back to peak performance.',
+        desc: 'Expert assessment, rehabilitation, and injury prevention for athletes, runners, and active individuals — delivered directly to your home or training ground so you can return to the sport you love.',
+        image: 'Front Page.jpeg',
+        blurbs: [
+            { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home & Field<br>Visits', desc: 'Convenient rehab<br>at your location' },
+            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path>', title: 'Elite Sports<br>Physios', desc: 'HCPC registered<br>performance specialists' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', title: 'Sport-Specific<br>Rehab', desc: 'Tailored programs<br>for your discipline' },
+            { icon: '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', title: 'Evidence-Based<br>Performance', desc: 'Proven strategies<br>to minimize injury' }
+        ],
+        heroOverlay: {
+            text: 'ELITE<br>RECOVERY<br>HIGHER<br>PERFORMANCE<br>UNLIMITED<br>POTENTIAL',
+            handwriting: 'Helping you<br>reach your peak<br>performance.'
+        },
+        conditionsTitle: 'Common Sports Injuries We Help With',
+        conditionsCards: [
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Runner\'s Knee' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'ACL Rehab' },
+            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Ankle Sprains' },
+            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Hamstring<br>Strains' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Shoulder<br>Impingement' },
+            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Achilles<br>Tendinopathy' },
+            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Tennis Elbow' },
+            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Shin Splints' },
+            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Groin Strains' },
+            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Post-Surgical' }
+        ],
+        quoteBox: {
+            quote: 'Train smarter.<br>Recover faster.<br>Perform at your<br>highest level.',
+            author: 'NEXmove Physio'
+        },
+        processSteps: [
+            { icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', title: 'Performance Audit', desc: 'We\'ll discuss your symptoms, medical history and training goals.' },
+            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Sport-Specific<br>Assessment', desc: 'A thorough physical assessment to understand your sport-specific movement and function.' },
+            { icon: '<line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="6" y1="12" x2="18" y2="12"></line>', title: 'Progressive Rehab', desc: 'Personalised exercise programs, hands-on techniques and expert advice.' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Return to Play', desc: 'Support to safely return to your sport and peak performance.' }
+        ],
+        ctaTitle: 'Elite Sports Physiotherapy in the<br>Comfort of Your Home',
+        ctaDesc: 'You don\'t need to travel to a clinic. Our physiotherapists bring specialized performance expertise directly to your environment.'
     },
     { 
         id: 'neuro-physio', 
@@ -31,9 +89,20 @@ const services = [
     { 
         id: 'musculoskeletal', 
         title: 'Musculoskeletal Physiotherapy', 
-        subtitle: 'Move better. Feel stronger. Get back to what you love.',
+        subtitle: 'Move better. Feel stronger.<br>Get back to what you love.',
         desc: 'Expert assessment and treatment for back pain, neck pain, joint pain, arthritis and other musculoskeletal conditions — so you can get back to doing what you love.',
-        image: 'musculoskeletal.jpg'
+        image: 'musculoskeletal.jpg',
+        heroOverlay: {
+            text: 'STRONGER<br>MOVEMENT<br>HEALTHIER<br>HAPPIER<br>YOU',
+            handwriting: 'Helping you<br>move towards<br>a pain-free life'
+        },
+        conditionsTitle: 'Common Musculoskeletal Conditions',
+        quoteBox: {
+            quote: 'Less pain.<br>More movement.<br>A healthier you.',
+            author: 'NEXmove Physio'
+        },
+        ctaTitle: 'Physiotherapy in the<br>Comfort of Your Home',
+        ctaDesc: 'You don\'t need to travel to a clinic. Our physiotherapists come to you, allowing your assessment and rehabilitation to take place in your own environment.'
     },
     { 
         id: 'respiratory-physio', 
@@ -72,32 +141,25 @@ const services = [
     }
 ];
 
-// Helper to generate condition cards
-function getConditionCards(serviceId) {
-    let cards = [];
-    if (serviceId === 'sports-physio' || serviceId === 'musculoskeletal') {
-        cards = [
-            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Back & lower<br>back pain' },
-            { icon: '<path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>', title: 'Neck pain<br>and stiffness' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Shoulder<br>pain' },
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Knee, hip and<br>ankle problems' },
-            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Arthritis and<br>joint pain' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Muscle strains<br>and ligament sprains' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Tendon<br>problems' },
-            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Sciatica' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'Repetitive strain &<br>work-related injuries' },
-            { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Reduced movement,<br>strength or flexibility' }
-        ];
-    } else {
-        cards = [
-            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Condition 1' },
-            { icon: '<path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>', title: 'Condition 2' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle>', title: 'Condition 3' },
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Condition 4' }
-        ];
-    }
+services.forEach(service => {
     
-    return cards.map(c => `
+    // Resolve defaults
+    const blurbs = service.blurbs || defaultBlurbs;
+    const heroOverlay = service.heroOverlay || {
+        text: 'STRONGER<br>MOVEMENT<br>HEALTHIER<br>HAPPIER<br>YOU',
+        handwriting: 'Helping you<br>move towards<br>a pain-free life'
+    };
+    const conditionsTitle = service.conditionsTitle || ('Common ' + service.title.replace(' Physiotherapy', '') + ' Conditions');
+    const conditionsCards = service.conditionsCards || defaultConditionsCards;
+    const quoteBox = service.quoteBox || {
+        quote: 'Less pain.<br>More movement.<br>A healthier you.',
+        author: 'NEXmove Physio'
+    };
+    const processSteps = service.processSteps || defaultSteps;
+    const ctaTitle = service.ctaTitle || 'Physiotherapy in the<br>Comfort of Your Home';
+    const ctaDesc = service.ctaDesc || 'You don\'t need to travel to a clinic. Our physiotherapists come to you, allowing your assessment and rehabilitation to take place in your own environment.';
+
+    const conditionsHTML = conditionsCards.map(c => `
         <div style="background: #fff; border-radius: 12px; padding: 25px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03);">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2" style="margin-bottom: 15px; margin-inline: auto;">
                 ${c.icon}
@@ -105,11 +167,25 @@ function getConditionCards(serviceId) {
             <h4 style="font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.4;">${c.title}</h4>
         </div>
     `).join('');
-}
-
-services.forEach(service => {
     
-    const conditionsHTML = getConditionCards(service.id);
+    const blurbsHTML = blurbs.map(b => `
+        <div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5">${b.icon}</svg>
+            <h4 style="font-size: 12px; font-weight: 700; color: var(--navy); margin: 8px 0 4px; line-height: 1.2;">${b.title}</h4>
+            <p style="font-size: 11px; color: var(--muted); line-height: 1.3;">${b.desc}</p>
+        </div>
+    `).join('');
+    
+    const stepsHTML = processSteps.map((s, idx) => `
+        <div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <span style="background: #5a7667; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">${idx+1}</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5">${s.icon}</svg>
+            </div>
+            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px; line-height: 1.2;">${s.title}</h4>
+            <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">${s.desc}</p>
+        </div>
+    `).join('');
 
     const html = `
         <main style="background: var(--cream);">
@@ -126,7 +202,7 @@ services.forEach(service => {
                         <div class="hero-copy" style="padding: 20px 0 40px; justify-content: flex-start;">
                             <span class="eyebrow" style="justify-content: flex-start; margin-bottom: 20px;">OUR SERVICES</span>
                             <h1 style="font-family: 'Playfair Display', serif; font-size: 56px; color: var(--navy); line-height: 1.1; margin-bottom: 20px;">${service.title}</h1>
-                            <h3 style="font-size: 24px; color: var(--green); margin-bottom: 15px; font-weight: 500;">${service.subtitle}</h3>
+                            <h3 style="font-size: 24px; color: var(--green); margin-bottom: 15px; font-weight: 500; line-height: 1.3;">${service.subtitle}</h3>
                             <p style="color: var(--text); font-size: 16px; margin-bottom: 40px; max-width: 480px; line-height: 1.6;">${service.desc}</p>
                             
                             <div class="hero-actions" style="display: flex; gap: 16px; margin-bottom: 60px;">
@@ -136,26 +212,7 @@ services.forEach(service => {
                             
                             <!-- Blurbs -->
                             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
-                                <div>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <h4 style="font-size: 12px; font-weight: 700; color: var(--navy); margin: 8px 0 4px;">Home Visits</h4>
-                                    <p style="font-size: 11px; color: var(--muted);">Convenient care<br>at your home</p>
-                                </div>
-                                <div>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
-                                    <h4 style="font-size: 12px; font-weight: 700; color: var(--navy); margin: 8px 0 4px;">Experienced<br>Physiotherapists</h4>
-                                    <p style="font-size: 11px; color: var(--muted);">HCPC registered</p>
-                                </div>
-                                <div>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                    <h4 style="font-size: 12px; font-weight: 700; color: var(--navy); margin: 8px 0 4px;">Personalised<br>Treatment</h4>
-                                    <p style="font-size: 11px; color: var(--muted);">Tailored to your goals</p>
-                                </div>
-                                <div>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                                    <h4 style="font-size: 12px; font-weight: 700; color: var(--navy); margin: 8px 0 4px;">Evidence-Based<br>Care</h4>
-                                    <p style="font-size: 11px; color: var(--muted);">Proven results</p>
-                                </div>
+                                ${blurbsHTML}
                             </div>
                         </div>
 
@@ -164,12 +221,12 @@ services.forEach(service => {
                             <img src="../images/${service.image}" style="width: 100%; height: 100%; object-fit: cover; border-bottom-left-radius: 120px;" alt="${service.title}">
                             
                             <div style="position: absolute; top: 40px; right: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); padding: 25px; border-radius: 12px; box-shadow: var(--shadow);">
-                                <p style="font-size: 18px; font-weight: 700; color: var(--navy); line-height: 1.4; letter-spacing: 1px;">STRONGER<br>MOVEMENT<br>HEALTHIER<br>HAPPIER<br>YOU</p>
+                                <p style="font-size: 16px; font-weight: 700; color: var(--navy); line-height: 1.4; letter-spacing: 1px;">${heroOverlay.text}</p>
                                 <div style="width: 20px; height: 2px; background: var(--green); margin-top: 15px;"></div>
                             </div>
 
-                            <div style="position: absolute; bottom: 80px; right: -20px; transform: rotate(-5deg); font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; color: var(--navy);">
-                                Helping you<br>move towards<br>a pain-free life
+                            <div style="position: absolute; bottom: 80px; right: -20px; transform: rotate(-5deg); font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; color: var(--navy); line-height: 1.2;">
+                                ${heroOverlay.handwriting}
                             </div>
                         </div>
                     </div>
@@ -181,7 +238,7 @@ services.forEach(service => {
                 <div class="container">
                     <div class="section-head" style="margin-bottom: 40px;">
                         <span class="eyebrow">CONDITIONS WE CAN HELP WITH</span>
-                        <h2 style="font-family: 'Playfair Display', serif; font-size: 38px; color: var(--navy);">Common ${service.title.replace(' Physiotherapy', '')} Conditions</h2>
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 38px; color: var(--navy);">${conditionsTitle}</h2>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;">
@@ -190,9 +247,9 @@ services.forEach(service => {
                         <!-- Green Quote Box spans remaining space -->
                         <div style="grid-column: span 1; background: #5a7667; border-radius: 16px; padding: 30px 25px; color: white; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 10px 30px rgba(90, 118, 103, 0.2);">
                             <span style="font-size: 60px; font-family: Georgia, serif; line-height: 0.6; opacity: 0.5; margin-bottom: 20px;">&ldquo;</span>
-                            <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; line-height: 1.3; font-weight: 400; margin-bottom: 30px;">Less pain.<br>More movement.<br>A healthier you.</h3>
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 22px; line-height: 1.3; font-weight: 400; margin-bottom: 30px;">${quoteBox.quote}</h3>
                             <div style="width: 30px; height: 1px; background: rgba(255,255,255,0.3); margin-bottom: 10px;"></div>
-                            <p style="font-size: 13px; opacity: 0.9;">NEXmove Physio</p>
+                            <p style="font-size: 13px; opacity: 0.9;">${quoteBox.author}</p>
                         </div>
                     </div>
                 </div>
@@ -207,42 +264,7 @@ services.forEach(service => {
                     </div>
                     
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-                        <!-- Step 1 -->
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                                <span style="background: #5a7667; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">1</span>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                            </div>
-                            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px;">Discuss</h4>
-                            <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">We'll talk about your symptoms, medical history and daily activities.</p>
-                        </div>
-                        <!-- Step 2 -->
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                                <span style="background: #5a7667; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">2</span>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                            </div>
-                            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px;">Assess</h4>
-                            <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">A thorough physical assessment to understand your movement and function.</p>
-                        </div>
-                        <!-- Step 3 -->
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                                <span style="background: #5a7667; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">3</span>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="6" y1="12" x2="18" y2="12"></line></svg>
-                            </div>
-                            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px;">Treat</h4>
-                            <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">Personalised exercises, hands-on techniques and expert advice.</p>
-                        </div>
-                        <!-- Step 4 -->
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                                <span style="background: #5a7667; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">4</span>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5"><path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path></svg>
-                            </div>
-                            <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px;">Get Back to Life</h4>
-                            <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">Support to return safely to the activities you love.</p>
-                        </div>
+                        ${stepsHTML}
                     </div>
                 </div>
             </section>
@@ -261,12 +283,12 @@ services.forEach(service => {
                             </svg>
                         </div>
                         
-                        <div style="max-width: 320px; z-index: 2; position: relative;">
-                            <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; line-height: 1.2; margin: 0;">Physiotherapy in the<br>Comfort of Your Home</h2>
+                        <div style="max-width: 380px; z-index: 2; position: relative;">
+                            <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; line-height: 1.2; margin: 0;">${ctaTitle}</h2>
                         </div>
                         
                         <div style="max-width: 320px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 30px; z-index: 2; position: relative;">
-                            <p style="font-size: 13px; line-height: 1.6; color: #d0d7de; margin: 0;">You don't need to travel to a clinic. Our physiotherapists come to you, allowing your assessment and rehabilitation to take place in your own environment.</p>
+                            <p style="font-size: 13px; line-height: 1.6; color: #d0d7de; margin: 0;">${ctaDesc}</p>
                         </div>
                         
                         <div style="display: flex; flex-direction: column; gap: 15px; z-index: 2; position: relative; min-width: 250px;">
@@ -297,7 +319,6 @@ services.forEach(service => {
         </main>
     `;
 
-    // Fix up relative paths in header and footer
     let h = headAndHeader.replace(/(href|src)="(?!\/|http|#)([^"]+)"/g, '$1="../$2"');
     h = h.replace(/href="#/g, 'href="../index.html#');
     
@@ -307,4 +328,4 @@ services.forEach(service => {
     fs.writeFileSync(path.join(__dirname, 'services', service.id + '.html'), h + html + f);
 });
 
-console.log('Successfully generated updated beautiful service pages!');
+console.log('Successfully generated service pages with specific content!');
