@@ -17,16 +17,23 @@ async function seed() {
 
   // Seed services (from original SQLite schema)
   const services = [
-    { slug: 'home-visit', name: 'Initial Home Physiotherapy Assessment', short_description: 'We come to you', duration_minutes: 60, appointment_type: 'Home Visit', price_pence: 11000, sort_order: 1 },
-    { slug: 'online', name: 'Online Consultation', short_description: 'Video call session', duration_minutes: 45, appointment_type: 'Online Consultation', price_pence: 7500, sort_order: 2 },
-    { slug: 'follow-up', name: 'Follow-up Session', short_description: 'Existing patients', duration_minutes: 45, appointment_type: 'Home Visit', price_pence: 8500, sort_order: 3 },
+    { slug: 'home-visit', name: 'Initial Home Physiotherapy Assessment', short_description: 'We come to you', duration_minutes: 60, appointment_type: 'Home Visit', price_pence: 9000, sort_order: 1 },
+    { slug: 'online', name: 'Online Consultation', short_description: 'Video call session', duration_minutes: 30, appointment_type: 'Online Consultation', price_pence: 3500, sort_order: 2 },
+    { slug: 'follow-up', name: 'Follow-up Session', short_description: 'Existing patients', duration_minutes: 45, appointment_type: 'Home Visit', price_pence: 7500, sort_order: 3 },
+    { slug: 'package-5', name: '5 Session Package', short_description: 'Save on multiple visits', duration_minutes: 45, appointment_type: 'Home Visit', price_pence: 35000, sort_order: 4 },
   ];
 
   for (const s of services) {
     await sql`
       INSERT INTO services (slug, name, short_description, duration_minutes, appointment_type, price_pence, sort_order)
       VALUES (${s.slug}, ${s.name}, ${s.short_description}, ${s.duration_minutes}, ${s.appointment_type}, ${s.price_pence}, ${s.sort_order})
-      ON CONFLICT (slug) DO NOTHING
+      ON CONFLICT (slug) DO UPDATE SET 
+        name = EXCLUDED.name, 
+        short_description = EXCLUDED.short_description, 
+        duration_minutes = EXCLUDED.duration_minutes, 
+        appointment_type = EXCLUDED.appointment_type, 
+        price_pence = EXCLUDED.price_pence, 
+        sort_order = EXCLUDED.sort_order
     `;
   }
 
