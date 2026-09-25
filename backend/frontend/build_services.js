@@ -145,16 +145,94 @@ const services = [
     { 
         id: 'respiratory-physio', 
         title: 'Respiratory Physiotherapy', 
-        subtitle: 'Breathe easier. Live comfortably.',
-        desc: 'Support for COPD, asthma, post-COVID recovery and breathing rehabilitation in the comfort of your home.',
-        image: 'Front Page.jpeg', heroTheme: 'light'
+        subtitle: 'Breathe easier. Improve lung function.<br>Regain control of your health at home.',
+        desc: 'Expert home-based respiratory assessment and targeted chest therapy for individuals with chronic breathing conditions, post-operative recovery, and asthma management, focused on restoring lung capacity, reducing shortness of breath, and enhancing overall function and quality of life.',
+        image: 'Front Page.jpeg', 
+        heroTheme: 'light',
+        heroOverlay: {
+            text: 'IMPROVED<br>BREATHING.<br>RESTORED<br>CAPACITY.',
+            handwriting: 'Helping you find<br>your breath again.<br>Expert care.<br>Proven results.'
+        },
+        blurbs: [
+            { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home Visits', desc: 'Convenient care<br>at your location' },
+            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path>', title: 'Respiratory Experts', desc: 'HCPC registered<br>specialists' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', title: 'Lung Function Focus', desc: 'Tailored programs for<br>breathing efficiency' },
+            { icon: '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', title: 'Evidence-Based Techniques', desc: 'Proven strategies<br>for chest clearance' }
+        ],
+        conditionsTitle: 'Common Respiratory Conditions We Help With',
+        conditionsCards: [
+            { icon: '<path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 9.5 2z"></path>', title: 'COPD' },
+            { icon: '<path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Asthma<br>Management' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>', title: 'Bronchiectasis' },
+            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Post-Operative<br>Recovery' },
+            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Pneumonia<br>Recovery' },
+            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Chronic<br>Bronchitis' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Long COVID<br>Rehab' },
+            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Breathing Pattern<br>Disorders' },
+            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Lung Capacity<br>Building' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Airway Clearance<br>Techniques' }
+        ],
+        quoteBox: {
+            quote: 'Regain breath.<br>Rebuild vitality.',
+            author: 'NEXmove Physio'
+        },
+        processSteps: [
+            { icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', title: 'Consult', desc: 'Initial history & symptoms.' },
+            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Respiratory Assessment', desc: 'Comprehensive lung function & capacity.' },
+            { icon: '<line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="6" y1="12" x2="18" y2="12"></line>', title: 'Chest & Breathing Therapy', desc: 'Evidence-based techniques.' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Self-Management Plan', desc: 'Ongoing support for lung health.' }
+        ],
+        ctaTitle: 'Specialist Respiratory Physiotherapy<br>in the Comfort of Your Home',
+        ctaDesc: 'You don\'t need to travel to a clinic. Our physiotherapists bring specialized respiratory expertise directly to your environment.'
     },
     { 
         id: 'paediatric-physio', 
         title: 'Paediatric Physiotherapy', 
-        subtitle: 'Supporting your child\'s development.',
-        desc: 'Specialist care for developmental delay, cerebral palsy, paediatric injuries and neurological conditions.',
-        image: 'Front Page.jpeg', heroTheme: 'light'
+        subtitle: 'Helping children move, play, and thrive.<br>Specialist paediatric care at home.',
+        desc: 'Specialist in-home physiotherapy for infants, children, and adolescents, focusing on development, mobility, and play to help your child reach their full potential in a comfortable and familiar environment.',
+        image: 'Front Page.jpeg', 
+        heroTheme: 'dark',
+        heroOverlay: {
+            text: 'STRONGER<br>MILESTONES.<br>CONFIDENT<br>STEPS.',
+            handwriting: 'Helping your<br>little ones thrive.'
+        },
+        blurbs: [
+            { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home Visits', desc: 'Convenient care<br>at your location' },
+            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path>', title: 'Specialist<br>Paediatric Physios', desc: 'HCPC registered<br>specialists' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', title: 'Fun & Play-Based<br>Therapy', desc: 'Tailored programs for<br>children\'s engagement' },
+            { icon: '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', title: 'Developmental<br>Milestones', desc: 'Focus on motor<br>skills & growth' }
+        ],
+        conditionsTitle: 'Common Paediatric Conditions We Treat',
+        conditionsCards: [
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Developmental<br>Delay' },
+            { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'Torticollis &<br>Plagiocephaly' },
+            { icon: '<path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Cerebral<br>Palsy' },
+            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Toe<br>Walking' },
+            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Hypermobility<br>& Low Tone' },
+            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Down<br>Syndrome' },
+            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Coordination<br>& Dyspraxia' },
+            { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Postural &<br>Gait Issues' },
+            { icon: '<path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 9.5 2z"></path>', title: 'Congenital<br>Conditions' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Juvenile<br>Arthritis' }
+        ],
+        quoteBox: {
+            quote: 'Every step is a<br>milestone.<br>Growing stronger<br>every day.',
+            author: 'NEXmove Physio'
+        },
+        processSteps: [
+            { icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>', title: 'Discover', desc: 'Initial chat & family goals.' },
+            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Playful Assessment', desc: 'Comprehensive child developmental review.' },
+            { icon: '<line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="6" y1="12" x2="18" y2="12"></line>', title: 'Play-Based Therapy', desc: 'Engaging, game-focused exercises.' },
+            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Empower Family', desc: 'Long-term guidance & support.' }
+        ],
+        ctaTitle: 'Specialist Paediatric Physiotherapy<br>in the Comfort of Your Home',
+        ctaDesc: 'You don\'t need to travel to a clinic. Our physiotherapists bring specialized paediatric care directly to your child\'s environment.',
+        trustBar: [
+            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', text: 'Personalised care<br>for children' },
+            { icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>', text: 'HCPC Registered' },
+            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', text: 'Trusted by parents &<br>paediatricians' },
+            { icon: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>', text: 'Real results<br>for little ones' }
+        ]
     },
     { 
         id: 'geriatric-care', 
@@ -209,6 +287,13 @@ services.forEach(service => {
     const processSteps = service.processSteps || defaultSteps;
     const ctaTitle = service.ctaTitle || 'Physiotherapy in the<br>Comfort of Your Home';
     const ctaDesc = service.ctaDesc || 'You don\'t need to travel to a clinic. Our physiotherapists come to you, allowing your assessment and rehabilitation to take place in your own environment.';
+    
+    const trustBarItems = service.trustBar || [
+        { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', text: 'Personalised care' },
+        { icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>', text: 'HCPC registered' },
+        { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', text: 'Trusted by 500+ patients' },
+        { icon: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>', text: 'Real results' }
+    ];
 
     const conditionsHTML = conditionsCards.map(c => `
         <div style="background: #fff; border-radius: 12px; padding: 25px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03);">
@@ -236,6 +321,13 @@ services.forEach(service => {
             <h4 style="font-size: 15px; color: var(--navy); margin-bottom: 8px; line-height: 1.2;">${s.title}</h4>
             <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">${s.desc}</p>
         </div>
+    `).join('');
+    
+    const trustBarHTML = trustBarItems.map(t => `
+        <span style="display: flex; align-items: center; gap: 8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">${t.icon}</svg> 
+            <span>${t.text}</span>
+        </span>
     `).join('');
 
     const html = `
@@ -355,11 +447,8 @@ services.forEach(service => {
                     
                     <!-- Trust Bar -->
                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 40px 10px 0;">
-                        <div style="display: flex; gap: 40px; color: var(--navy); font-size: 13px; font-weight: 600;">
-                            <span style="display: flex; align-items: center; gap: 8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg> Personalised care</span>
-                            <span style="display: flex; align-items: center; gap: 8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> HCPC registered</span>
-                            <span style="display: flex; align-items: center; gap: 8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Trusted by 500+ patients</span>
-                            <span style="display: flex; align-items: center; gap: 8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Real results</span>
+                        <div style="display: flex; gap: 40px; color: var(--navy); font-size: 13px; font-weight: 600; align-items: flex-start;">
+                            ${trustBarHTML}
                         </div>
                         <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 26px; color: #3b5066; font-weight: 500;">
                             Move Better<br>Live Better
