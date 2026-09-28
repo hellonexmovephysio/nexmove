@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Join our growing network of physiotherapists, manage your availability, and connect with patients seeking physiotherapy at home.">
+    <title>Join the NEXmove Physio Network | NEXmove Physio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css"> <!-- Link to existing stylesheet if possible, or include standard styles -->
+
+    <style>
+        :root {
+            --cream: #FAF7F0;
+            --white: #FFFFFF;
+            --navy: #1B2A4A;
+            --green: #5C7A5C;
+            --gold: #B8894A;
+            --text: #26343d;
+            --muted: #667178;
+            --line: #e3dccf;
+            --shadow: 0 16px 42px rgba(27, 48, 56, .08);
+            --border-radius-card: 16px;
+        }
+        body { font-family: 'Inter', Arial, sans-serif; background: var(--cream); color: var(--text); line-height: 1.55; margin: 0; padding: 0; }
+        .container { width: min(800px, calc(100% - 40px)); margin: 0 auto; padding: 60px 0; }
+        .form-card { background: var(--white); border-radius: var(--border-radius-card); padding: 40px; box-shadow: var(--shadow); }
+        h1 { color: var(--navy); font-family: 'Playfair Display', serif; margin-top: 0; text-align: center; }
+        .subtitle { text-align: center; color: var(--muted); margin-bottom: 40px; }
+        
+        .form-section { margin-bottom: 30px; }
+        .form-section h2 { color: var(--navy); font-size: 1.25rem; border-bottom: 2px solid var(--line); padding-bottom: 10px; margin-bottom: 20px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        
+        label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text); }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea {
+            width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 1rem; box-sizing: border-box;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27, 42, 74, 0.1); }
+        textarea { resize: vertical; min-height: 100px; }
+        
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; }
+        .checkbox-group input[type="checkbox"] { margin-top: 5px; width: auto; padding: 0; border: none; }
+        
+        .btn-submit {
+            display: inline-block; width: 100%; padding: 15px; background: var(--navy); color: var(--white); font-weight: 600; font-size: 1.1rem;
+            border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s;
+        }
+        .btn-submit:hover { background: #121c32; }
+        .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
+        
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .alert-error { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .alert-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        
+        .nav-header { background: var(--navy); padding: 20px; text-align: center; }
+        .nav-header a { color: var(--white); text-decoration: none; font-weight: 600; font-size: 1.25rem; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-header">
+        <a href="/">← Back to NEXmove Physio</a>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <h1>Join the NEXmove Physio Network</h1>
+            <p class="subtitle">Join our growing network of physiotherapists, manage your availability, and connect with patients seeking physiotherapy at home.</p>
+
+            <div id="formAlert" class="alert"></div>
+
+            <form id="physioForm">
+                <!-- Personal Details -->
+                <div class="form-section">
+                    <h2>Personal Details</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="full_name">Full Name *</label>
+                            <input type="text" id="full_name" name="full_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City or Service Area *</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred_contact">Preferred Contact Method *</label>
+                        <select id="preferred_contact" name="preferred_contact" required>
+                            <option value="Email">Email</option>
+                            <option value="Phone">Phone</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Professional Details -->
+                <div class="form-section">
+                    <h2>Professional Details</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hcpc_number">HCPC Registration Number (if applicable)</label>
+                            <input type="text" id="hcpc_number" name="hcpc_number">
+                        </div>
+                        <div class="form-group">
+                            <label for="years_experience">Years of Professional Experience</label>
+                            <input type="number" id="years_experience" name="years_experience" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialisations">Areas of Specialisation</label>
+                        <input type="text" id="specialisations" name="specialisations" placeholder="e.g. MSK, Neuro, Sports Injuries">
+                    </div>
+                    <div class="form-group">
+                        <label for="qualifications">Professional Qualifications</label>
+                        <input type="text" id="qualifications" name="qualifications" placeholder="e.g. BSc Physiotherapy, MSc Sports Medicine">
+                    </div>
+                    <div class="form-group">
+                        <label for="biography">Short Professional Biography</label>
+                        <textarea id="biography" name="biography" placeholder="Tell us a bit about your professional background and approach to care..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Availability -->
+                <div class="form-section">
+                    <h2>Availability and Service Preferences</h2>
+                    <div class="form-group">
+                        <label for="areas_covered">Areas/Postcodes Covered *</label>
+                        <input type="text" id="areas_covered" name="areas_covered" required placeholder="e.g. SW1, SW2, Central London">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferred_days">Preferred Working Days</label>
+                            <input type="text" id="preferred_days" name="preferred_days" placeholder="e.g. Mon, Wed, Fri">
+                        </div>
+                        <div class="form-group">
+                            <label for="preferred_hours">Preferred Working Hours</label>
+                            <input type="text" id="preferred_hours" name="preferred_hours" placeholder="e.g. 9am - 5pm">
+                        </div>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="home_visit_availability" name="home_visit_availability" checked>
+                        <label for="home_visit_availability">I am available for home visits.</label>
+                    </div>
+                </div>
+
+                <!-- Supporting Information -->
+                <div class="form-section">
+                    <h2>Supporting Information</h2>
+                    <div class="form-group">
+                        <label for="additional_info">Additional Information (Optional)</label>
+                        <textarea id="additional_info" name="additional_info"></textarea>
+                    </div>
+                    <div class="checkbox-group" style="margin-top: 20px;">
+                        <input type="checkbox" id="consent_privacy" name="consent_privacy" required>
+                        <label for="consent_privacy">I acknowledge the <a href="/privacy-policy.html" target="_blank">privacy notice</a> and consent to my data being processed for this application. *</label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-submit">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('physioForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const alertBox = document.getElementById('formAlert');
+            const form = e.target;
+            
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+            alertBox.style.display = 'none';
+            alertBox.className = 'alert';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            data.home_visit_availability = formData.has('home_visit_availability');
+            data.consent_privacy = formData.has('consent_privacy');
+
+            try {
+                const response = await fetch('/api/physio', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alertBox.textContent = result.message || 'Application submitted successfully!';
+                    alertBox.classList.add('alert-success');
+                    alertBox.style.display = 'block';
+                    form.reset();
+                    // Scroll to top
+                    window.scrollTo({ top: alertBox.offsetTop - 50, behavior: 'smooth' });
+                } else {
+                    alertBox.textContent = result.message || 'An error occurred.';
+                    alertBox.classList.add('alert-error');
+                    alertBox.style.display = 'block';
+                    window.scrollTo({ top: alertBox.offsetTop - 50, behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alertBox.textContent = 'A network error occurred. Please try again.';
+                alertBox.classList.add('alert-error');
+                alertBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit Application';
+            }
+        });
+    </script>
+</body>
+</html>
