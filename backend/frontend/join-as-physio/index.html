@@ -60,12 +60,127 @@
         
         .nav-header { background: var(--navy); padding: 20px; text-align: center; }
         .nav-header a { color: var(--white); text-decoration: none; font-weight: 600; font-size: 1.25rem; }
+        
+        .hero-section {
+            background-color: #eef2f5;
+            padding: 60px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 40px auto 0;
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .hero-content {
+            flex: 1;
+            padding-right: 40px;
+        }
+        .hero-content h1 {
+            font-size: 2.8rem;
+            color: var(--navy);
+            margin-bottom: 20px;
+            text-align: left;
+            line-height: 1.2;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        .hero-content h2 {
+            font-size: 1.3rem;
+            color: var(--navy);
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        .hero-content p {
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .hero-btn {
+            background-color: #A38A5F;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+        .hero-btn:hover {
+            background-color: #8c7650;
+        }
+        .hero-image {
+            flex: 1;
+            position: relative;
+            min-height: 350px;
+            background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+            border-radius: 12px;
+        }
+        .hero-cursive {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2rem;
+            color: var(--navy);
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 8px;
+            transform: rotate(-5deg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            line-height: 1.2;
+        }
+        @media (max-width: 900px) {
+            .hero-section {
+                flex-direction: column;
+                margin: 20px;
+                padding: 30px;
+            }
+            .hero-content {
+                padding-right: 0;
+            }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .hero-image {
+                width: 100%;
+                margin-top: 30px;
+                min-height: 250px;
+            }
+            .hero-cursive {
+                position: relative;
+                top: 0;
+                right: 0;
+                transform: none;
+                display: block;
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="nav-header">
         <a href="/">← Back to NEXmove Physio</a>
+    </div>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Join NEXmove<br>as a Physiotherapist</h1>
+            <h2>Deliver quality physiotherapy where patients need it most.</h2>
+            <p>Be part of a growing network of qualified, compassionate and reliable physiotherapists providing high-quality physiotherapy in patients' homes and community settings across the UK.</p>
+            <a href="#physioForm" class="hero-btn">Apply to Join NEXmove &rarr;</a>
+        </div>
+        <div class="hero-image">
+            <div class="hero-cursive">Better Movement<br>Begins at Home</div>
+        </div>
     </div>
 
     <div class="container">
@@ -111,6 +226,16 @@
                 <!-- Professional Details -->
                 <div class="form-section">
                     <h2>Professional Details</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hcpc_number">HCPC Registration Number</label>
+                            <input type="text" id="hcpc_number" name="hcpc_number">
+                        </div>
+                        <div class="form-group">
+                            <label for="years_experience">Years of Professional Experience</label>
+                            <input type="number" id="years_experience" name="years_experience" min="0">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label>Are you a member of CSP professional body?</label>
                         <div class="radio-group" style="display: flex; gap: 15px;">
@@ -123,16 +248,6 @@
                         <div class="radio-group" style="display: flex; gap: 15px;">
                             <label style="font-weight: normal;"><input type="radio" name="uk_experience" value="Yes" required> Yes</label>
                             <label style="font-weight: normal;"><input type="radio" name="uk_experience" value="No"> No</label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="hcpc_number">HCPC Registration Number (if applicable)</label>
-                            <input type="text" id="hcpc_number" name="hcpc_number">
-                        </div>
-                        <div class="form-group">
-                            <label for="years_experience">Years of Professional Experience</label>
-                            <input type="number" id="years_experience" name="years_experience" min="0">
                         </div>
                     </div>
                     <div class="form-group">
