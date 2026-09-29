@@ -62,105 +62,189 @@
         .nav-header a { color: var(--white); text-decoration: none; font-weight: 600; font-size: 1.25rem; }
         
         .hero-section {
-            background-color: #eef2f5;
-            padding: 60px 40px;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f4f6f4 100%);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            max-width: 1200px;
-            margin: 40px auto 0;
-            border-radius: var(--border-radius-card);
-            box-shadow: var(--shadow);
+            width: 100%;
+            min-height: 500px;
+            box-sizing: border-box;
+            position: relative;
             overflow: hidden;
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .hero-logo {
+            height: 60px;
+            margin-bottom: 20px;
         }
         .hero-content {
             flex: 1;
-            padding-right: 40px;
+            padding: 60px 5% 60px 10%;
+            max-width: 650px;
+            z-index: 2;
+            background: transparent !important;
+            box-shadow: none !important;
         }
         .hero-content h1 {
-            font-size: 2.8rem;
+            font-size: 3.2rem;
             color: var(--navy);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: left;
-            line-height: 1.2;
+            line-height: 1.1;
             font-family: 'Inter', sans-serif;
             font-weight: 700;
+            letter-spacing: -1px;
+        }
+        .highlight-green {
+            color: #405F43;
         }
         .hero-content h2 {
             font-size: 1.3rem;
             color: var(--navy);
-            margin-bottom: 20px;
-            font-weight: 600;
+            margin-bottom: 15px;
+            font-weight: 500;
             line-height: 1.4;
         }
         .hero-content p {
             color: var(--text);
-            font-size: 1rem;
+            font-size: 1.05rem;
             margin-bottom: 30px;
             line-height: 1.6;
+            max-width: 500px;
         }
         .hero-btn {
-            background-color: #A38A5F;
+            background-color: #405F43;
             color: white;
-            padding: 15px 30px;
+            padding: 12px 20px 12px 30px;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 50px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            transition: background 0.3s;
+            gap: 15px;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            border: none;
         }
         .hero-btn:hover {
-            background-color: #8c7650;
+            background-color: #2d4530;
         }
-        .hero-image {
+        .btn-arrow {
+            background: white;
+            color: #405F43;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .hero-image-wrapper {
             flex: 1;
             position: relative;
-            min-height: 350px;
-            background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
-            border-radius: 12px;
+            max-width: 50%;
+            display: flex;
+            justify-content: flex-end;
+            align-self: stretch;
+            min-height: 500px;
+        }
+        .hero-image {
+            width: 100%;
+            min-height: 100%;
+            background: url('../images/Front%20Page.jpeg') center right/cover no-repeat;
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+            border-radius: 0;
+            box-shadow: none;
         }
         .hero-cursive {
             position: absolute;
-            top: -20px;
-            right: -20px;
+            top: 40px;
+            right: 15%;
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: var(--navy);
-            background: rgba(255,255,255,0.9);
-            padding: 10px 20px;
-            border-radius: 8px;
-            transform: rotate(-5deg);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
-            line-height: 1.2;
+            transform: rotate(-3deg);
+            text-align: right;
+            line-height: 1.1;
+            z-index: 3;
+            background: transparent !important;
+            padding: 0;
+            box-shadow: none !important;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), -2px -2px 4px rgba(255, 255, 255, 0.9);
+        }
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-bottom: 1px solid var(--line);
+            margin: -40px -40px 40px -40px;
+            border-radius: var(--border-radius-card) var(--border-radius-card) 0 0;
+            flex-wrap: wrap;
+        }
+        .container {
+            margin-top: 40px;
+            position: relative;
+            z-index: 11;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            color: #405F43;
+            background: transparent;
+            border: 2px solid #405F43;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .feature-text {
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.3;
         }
         @media (max-width: 900px) {
             .hero-section {
                 flex-direction: column;
-                margin: 20px;
-                padding: 30px;
             }
             .hero-content {
-                padding-right: 0;
+                padding: 40px 5%;
+                max-width: 100%;
             }
-            .hero-content h1 {
-                font-size: 2rem;
+            .hero-image-wrapper {
+                width: 100%;
+                max-width: 100%;
+                min-height: 300px;
             }
             .hero-image {
-                width: 100%;
-                margin-top: 30px;
-                min-height: 250px;
+                clip-path: polygon(0 10%, 100% 0, 100% 100%, 0% 100%);
             }
             .hero-cursive {
-                position: relative;
-                top: 0;
-                right: 0;
-                transform: none;
-                display: block;
-                margin-bottom: 20px;
+                font-size: 1.8rem;
+                top: 20px;
+                right: 20px;
+            }
+            .hero-features {
+                gap: 20px;
+                padding: 20px 5%;
+            }
+            .feature-item {
+                width: calc(50% - 20px);
             }
         }
     </style>
@@ -173,18 +257,42 @@
 
     <div class="hero-section">
         <div class="hero-content">
-            <h1>Join NEXmove<br>as a Physiotherapist</h1>
+            <img src="../images/nexmove-logo.png" alt="NEXmove Logo" class="hero-logo" onerror="this.style.display='none'">
+            <h1>Join NEXmove as a<br><span class="highlight-green">Physiotherapist</span></h1>
             <h2>Deliver quality physiotherapy where patients need it most.</h2>
             <p>Be part of a growing network of qualified, compassionate and reliable physiotherapists providing high-quality physiotherapy in patients' homes and community settings across the UK.</p>
-            <a href="#physioForm" class="hero-btn">Apply to Join NEXmove &rarr;</a>
+            <a href="#physioForm" class="hero-btn">
+                Apply to Join NEXmove 
+                <span class="btn-arrow">&rarr;</span>
+            </a>
         </div>
-        <div class="hero-image">
-            <div class="hero-cursive">Better Movement<br>Begins at Home</div>
+        <div class="hero-image-wrapper">
+            <div class="hero-cursive">Better<br>Movement<br>Begins<br>at Home</div>
+            <div class="hero-image"></div>
         </div>
     </div>
-
+    
     <div class="container">
         <div class="form-card">
+            <div class="hero-features">
+                <div class="feature-item">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                    <div class="feature-text">Supportive<br>Team</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
+                    <div class="feature-text">Flexible<br>Working</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+                    <div class="feature-text">Meaningful<br>Patient Care</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+                    <div class="feature-text">Career<br>Development</div>
+                </div>
+            </div>
+
             <h1>Join the NEXmove Physio Network</h1>
             <p class="subtitle">Join our growing network of physiotherapists, manage your availability, and connect with patients seeking physiotherapy at home.</p>
 
