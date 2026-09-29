@@ -38,7 +38,7 @@
         @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
         
         label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text); }
-        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea {
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="file"], select, textarea {
             width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 1rem; box-sizing: border-box;
         }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27, 42, 74, 0.1); }
@@ -111,6 +111,20 @@
                 <!-- Professional Details -->
                 <div class="form-section">
                     <h2>Professional Details</h2>
+                    <div class="form-group">
+                        <label>Are you a member of CSP professional body?</label>
+                        <div class="radio-group" style="display: flex; gap: 15px;">
+                            <label style="font-weight: normal;"><input type="radio" name="csp_member" value="Yes" required> Yes</label>
+                            <label style="font-weight: normal;"><input type="radio" name="csp_member" value="No"> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Do you have Physiotherapy work experience in UK?</label>
+                        <div class="radio-group" style="display: flex; gap: 15px;">
+                            <label style="font-weight: normal;"><input type="radio" name="uk_experience" value="Yes" required> Yes</label>
+                            <label style="font-weight: normal;"><input type="radio" name="uk_experience" value="No"> No</label>
+                        </div>
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="hcpc_number">HCPC Registration Number (if applicable)</label>
@@ -158,6 +172,47 @@
                     </div>
                 </div>
 
+                <!-- Right to Work -->
+                <div class="form-section">
+                    <h2>Right to Work</h2>
+                    <p style="color: var(--muted); margin-top: -10px; margin-bottom: 20px;">Prove your eligibility to work in the United Kingdom</p>
+                    
+                    <div class="form-group">
+                        <label>Do you have the right to work in the United Kingdom?</label>
+                        <p style="font-size: 0.9em; color: var(--muted); margin-top: -5px; margin-bottom: 10px;">You must be legally entitled to work in the UK. We may ask for proof during the verification process.</p>
+                        <div class="radio-group" style="display: flex; gap: 15px;">
+                            <label style="font-weight: normal;"><input type="radio" name="right_to_work" value="Yes" required> Yes</label>
+                            <label style="font-weight: normal;"><input type="radio" name="right_to_work" value="No"> No</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eligibility_type">Eligibility to Work *</label>
+                        <select id="eligibility_type" name="eligibility_type" required>
+                            <option value="">Select your eligibility type...</option>
+                            <option value="Visa">Visa</option>
+                            <option value="UK Citizen">UK Citizen</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Document Uploads -->
+                <div class="form-section">
+                    <h2>Document Uploads</h2>
+                    <div class="form-group">
+                        <label for="cv_upload">CV Upload *</label>
+                        <input type="file" id="cv_upload" name="cv_upload" accept=".pdf,.doc,.docx" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dbs_upload">DBS Certificate *</label>
+                        <input type="file" id="dbs_upload" name="dbs_upload" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gov_id_upload">Government ID Upload (Passport/Driver's License) *</label>
+                        <input type="file" id="gov_id_upload" name="gov_id_upload" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                </div>
+
                 <!-- Supporting Information -->
                 <div class="form-section">
                     <h2>Supporting Information</h2>
@@ -165,9 +220,45 @@
                         <label for="additional_info">Additional Information (Optional)</label>
                         <textarea id="additional_info" name="additional_info"></textarea>
                     </div>
-                    <div class="checkbox-group" style="margin-top: 20px;">
+                </div>
+
+                <!-- Agreements & Consent -->
+                <div class="form-section">
+                    <h2>Agreements & Consent</h2>
+                    <p style="color: var(--muted); margin-top: -10px; margin-bottom: 20px;">Please review and agree to the following</p>
+                    
+                    <div class="checkbox-group" style="margin-bottom: 10px;">
+                        <input type="checkbox" id="agree_tos" name="agree_tos" required>
+                        <label for="agree_tos">I agree to the FlexAura Home Physio UK Terms of Service and Practitioner Agreement *</label>
+                    </div>
+                    <div class="checkbox-group" style="margin-bottom: 10px;">
                         <input type="checkbox" id="consent_privacy" name="consent_privacy" required>
-                        <label for="consent_privacy">I acknowledge the <a href="/privacy-policy.html" target="_blank">privacy notice</a> and consent to my data being processed for this application. *</label>
+                        <label for="consent_privacy">I consent to the processing of my data as described in the Privacy Policy *</label>
+                    </div>
+                    <div class="checkbox-group" style="margin-bottom: 10px;">
+                        <input type="checkbox" id="consent_dbs" name="consent_dbs" required>
+                        <label for="consent_dbs">I understand that a DBS (Disclosure and Barring Service) check will be required and I consent to this process *</label>
+                    </div>
+                    <div class="checkbox-group" style="margin-bottom: 10px;">
+                        <input type="checkbox" id="consent_right_to_work" name="consent_right_to_work" required>
+                        <label for="consent_right_to_work">I understand and agree that my data will be used to check the right to work *</label>
+                    </div>
+                    <div class="checkbox-group" style="margin-bottom: 20px;">
+                        <input type="checkbox" id="agree_declaration" name="agree_declaration" required>
+                        <label for="agree_declaration">I agree to the Practitioner Declaration below *</label>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid var(--line); font-size: 0.9em;">
+                        <h3 style="margin-top: 0; font-size: 1.1em; color: var(--navy);">Practitioner Declaration</h3>
+                        <p>By enrolling, I confirm that for every patient session I will:</p>
+                        <ul style="padding-left: 20px; margin-bottom: 0;">
+                            <li>Provide treatment per CSP/HCPC standards and FlexAura policies</li>
+                            <li>Carry out a thorough assessment before treatment</li>
+                            <li>Explain treatment options, risks, and expected outcomes to patients</li>
+                            <li>Obtain verbal consent before each session</li>
+                            <li>Handle patient data in accordance with UK GDPR</li>
+                            <li>Maintain valid professional indemnity insurance and HCPC registration throughout my engagement</li>
+                        </ul>
                     </div>
                 </div>
 
