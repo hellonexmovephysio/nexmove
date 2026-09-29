@@ -74,9 +74,42 @@
             border-bottom: none;
             margin-bottom: 0;
         }
-        .hero-logo {
-            height: 60px;
-            margin-bottom: 20px;
+        .hero-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .hero-brand-logo {
+            width: 72px;
+            height: 72px;
+            border: 1px solid #aab5ad;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #fffdf8;
+            padding: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .hero-brand-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hero-brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+        .hero-brand-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: var(--navy);
+            font-weight: 600;
         }
         .hero-content {
             flex: 1;
@@ -113,34 +146,7 @@
             line-height: 1.6;
             max-width: 500px;
         }
-        .hero-btn {
-            background-color: #405F43;
-            color: white;
-            padding: 12px 20px 12px 30px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-            border: none;
-        }
-        .hero-btn:hover {
-            background-color: #2d4530;
-        }
-        .btn-arrow {
-            background: white;
-            color: #405F43;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: bold;
-        }
+
         .hero-image-wrapper {
             flex: 1;
             position: relative;
@@ -257,14 +263,18 @@
 
     <div class="hero-section">
         <div class="hero-content">
-            <img src="../images/nexmove-logo.png" alt="NEXmove Logo" class="hero-logo" onerror="this.style.display='none'">
+            <div class="hero-brand">
+                <div class="hero-brand-logo">
+                    <img src="../images/nexmove-logo.png" alt="NEXmove Logo" style="width:100%;height:100%;object-fit:contain">
+                </div>
+                <div class="hero-brand-text">
+                    <div class="hero-brand-title">NEXmove</div>
+                    <div class="hero-brand-subtitle">PHYSIO</div>
+                </div>
+            </div>
             <h1>Join NEXmove as a<br><span class="highlight-green">Physiotherapist</span></h1>
             <h2>Deliver quality physiotherapy where patients need it most.</h2>
             <p>Be part of a growing network of qualified, compassionate and reliable physiotherapists providing high-quality physiotherapy in patients' homes and community settings across the UK.</p>
-            <a href="#physioForm" class="hero-btn">
-                Apply to Join NEXmove 
-                <span class="btn-arrow">&rarr;</span>
-            </a>
         </div>
         <div class="hero-image-wrapper">
             <div class="hero-cursive">Better<br>Movement<br>Begins<br>at Home</div>
