@@ -135,13 +135,13 @@ async function sendAdminPhysioApplicationNotification(application) {
           <p>Log in to the Admin Dashboard to review the complete application.</p>
         </div>
       `,
-      text: \`A new "Join as Physio" application has been submitted by \${application.full_name} (\${application.email}). Please check the admin dashboard for details.\`
+      text: `A new "Join as Physio" application has been submitted by ${application.full_name} (${application.email}). Please check the admin dashboard for details.`
     });
 
-    console.log(\`Admin notification email sent successfully (Message ID: \${info.messageId})\`);
+    console.log(`Admin notification email sent successfully (Message ID: ${info.messageId})`);
     return { success: true };
   } catch (error) {
-    console.error(\`Failed to send admin notification email:\`, error);
+    console.error(`Failed to send admin notification email:`, error);
     return { success: false, error: error.message };
   }
 }
