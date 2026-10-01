@@ -2,6 +2,7 @@ const express = require('express');
 const { getDB } = require('../db/pool');
 const { authMiddleware } = require('../middleware/auth');
 const { cleanString } = require('../utils/helpers');
+const { sendAdminPhysioApplicationNotification } = require('../utils/email');
 const crypto = require('crypto');
 
 const router = express.Router();
@@ -57,6 +58,11 @@ router.post('/', async (req, res) => {
 
     // Note: Email could be sent here to admin and applicant if required using email.js
     // For now we assume they just want it saved correctly
+
+    // Send notification to admin
+    await sendAdminPhysioApplicationNotification({
+      full_name, email, phone, city, hcpc_number
+    });
 
     res.status(201).json({
       success: true,

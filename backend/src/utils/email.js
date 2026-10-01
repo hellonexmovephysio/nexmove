@@ -96,6 +96,57 @@ async function sendApprovalEmail(booking) {
   }
 }
 
+/**
+ * Sends a notification email to the admin when a new physio application is submitted.
+ * @param {Object} application 
+ * @returns {Promise<Object>} { success: boolean, error?: string }
+ */
+async function sendAdminPhysioApplicationNotification(application) {
+  if (!process.env.SMTP_PASSWORD) {
+    console.error('Email failed: SMTP_PASSWORD is not configured in environment variables.');
+    return { success: false, error: 'SMTP configuration is missing.' };
+  }
+
+  const transporter = createTransporter();
+  const fromEmail = process.env.SMTP_FROM || 'noreply@nexmove.example.com';
+  const fromName = process.env.EMAIL_FROM_NAME || 'NEXmove Physio System';
+  const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_FROM || 'admin@nexmove.example.com';
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${fromName}" <${fromEmail}>`,
+      to: adminEmail,
+      subject: 'New Physiotherapist Application Submitted',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
+          <h2 style="color: #087f80; border-bottom: 2px solid #eaf7f6; padding-bottom: 10px;">New Application Received</h2>
+          <p>A new "Join as Physio" application has been submitted.</p>
+          
+          <div style="background-color: #f5f8f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <ul style="list-style: none; padding-left: 0;">
+              <li style="margin-bottom: 10px;"><strong>Name:</strong> ${application.full_name}</li>
+              <li style="margin-bottom: 10px;"><strong>Email:</strong> ${application.email}</li>
+              <li style="margin-bottom: 10px;"><strong>Phone:</strong> ${application.phone}</li>
+              <li style="margin-bottom: 10px;"><strong>City:</strong> ${application.city}</li>
+              <li style="margin-bottom: 10px;"><strong>HCPC Number:</strong> ${application.hcpc_number || 'N/A'}</li>
+            </ul>
+          </div>
+
+          <p>Log in to the Admin Dashboard to review the complete application.</p>
+        </div>
+      `,
+      text: \`A new "Join as Physio" application has been submitted by \${application.full_name} (\${application.email}). Please check the admin dashboard for details.\`
+    });
+
+    console.log(\`Admin notification email sent successfully (Message ID: \${info.messageId})\`);
+    return { success: true };
+  } catch (error) {
+    console.error(\`Failed to send admin notification email:\`, error);
+    return { success: false, error: error.message };
+  }
+}
+
 module.exports = {
-  sendApprovalEmail
+  sendApprovalEmail,
+  sendAdminPhysioApplicationNotification
 };
