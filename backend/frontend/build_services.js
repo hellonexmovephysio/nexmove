@@ -40,7 +40,7 @@ const services = [
         title: 'Sports Physiotherapy', 
         subtitle: 'Recover faster. Perform stronger.<br>Get back to peak performance.',
         desc: 'Expert assessment, rehabilitation, and injury prevention for athletes, runners, and active individuals — delivered directly to your home or training ground so you can return to the sport you love.',
-        image: 'Front Page.jpeg',
+        image: 'sports-hero.jpg',
         heroTheme: 'light',
         blurbs: [
             { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', title: 'Home & Field<br>Visits', desc: 'Convenient rehab<br>at your location' },
