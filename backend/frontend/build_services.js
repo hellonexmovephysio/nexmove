@@ -424,7 +424,6 @@ services.forEach(service => {
             }
             <h4 style="font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 10px; font-family: 'Playfair Display', serif;">${c.title}</h4>
             ${c.desc ? `<p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; flex-grow: 1;">${c.desc}</p>` : '<div style="flex-grow: 1;"></div>'}
-            <a href="#" style="font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">Learn more <span style="background: #eaf1ed; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; color: var(--green);">&rarr;</span></a>
         </div>
     `).join('');
     
@@ -512,14 +511,6 @@ services.forEach(service => {
                     
                     <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;">
                         ${conditionsHTML}
-                        
-                        <!-- Green Quote Box spans remaining space -->
-                        <div style="grid-column: span 1; background: #5a7667; border-radius: 16px; padding: 30px 25px; color: white; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 10px 30px rgba(90, 118, 103, 0.2);">
-                            <span style="font-size: 60px; font-family: Georgia, serif; line-height: 0.6; opacity: 0.5; margin-bottom: 20px;">&ldquo;</span>
-                            <h3 style="font-family: 'Playfair Display', serif; font-size: 22px; line-height: 1.3; font-weight: 400; margin-bottom: 30px;">${quoteBox.quote}</h3>
-                            <div style="width: 30px; height: 1px; background: rgba(255,255,255,0.3); margin-bottom: 10px;"></div>
-                            <p style="font-size: 13px; opacity: 0.9;">${quoteBox.author}</p>
-                        </div>
                     </div>
                 </div>
             </section>
