@@ -24,17 +24,15 @@ const defaultSteps = [
 ];
 
 const defaultConditionsCards = [
-    { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Back & lower<br>back pain' },
-    { icon: '<path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>', title: 'Neck pain<br>and stiffness' },
-    { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Shoulder<br>pain' },
-    { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Knee, hip and<br>ankle problems' },
-    { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Arthritis and<br>joint pain' },
-    { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Muscle strains<br>and ligament sprains' },
-    { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Tendon<br>problems' },
-    { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Sciatica' },
-    { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'Repetitive strain &<br>work-related injuries' },
-    { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Reduced movement,<br>strength or flexibility' }
-];
+            { icon: '../images/conditions/Musculoskeletal/Back_and_Lower_Back_Pain.png', title: 'Back & Lower<br>Back Pain', desc: 'Relieve pain, improve posture and restore movement.' },
+            { icon: '../images/conditions/Musculoskeletal/Neck_Pain_and_Stiffness.png', title: 'Neck Pain<br>and Stiffness', desc: 'Reduce pain and tension, improve mobility and prevent recurrence.' },
+            { icon: '../images/conditions/Musculoskeletal/Shoulder_Pain.png', title: 'Shoulder<br>Pain', desc: 'Targeted treatment for rotator cuff injuries, frozen shoulder and other shoulder problems.' },
+            { icon: '../images/conditions/Musculoskeletal/Knee_Hip_and_Ankle_Problems.png', title: 'Knee, Hip and<br>Ankle Problems', desc: 'Support for pain, injuries and post-surgical rehabilitation.' },
+            { icon: '../images/conditions/Musculoskeletal/Muscle_Strains_and_Ligament_Sprains.png', title: 'Muscle Strains<br>and Ligament Sprains', desc: 'Speed up recovery and prevent future injuries.' },
+            { icon: '../images/conditions/Musculoskeletal/Tendon_Problems.png', title: 'Tendon<br>Problems', desc: 'Treatment for tendinopathy and long-term tendon issues.' },
+            { icon: '../images/conditions/Musculoskeletal/Sciatica.png', title: 'Sciatica', desc: 'Relieve nerve pain, improve mobility and support long-term management.' },
+            { icon: '../images/conditions/Musculoskeletal/Arthritis_and_Joint_Pain.png', title: 'Arthritis and<br>Joint Pain', desc: 'Manage pain, improve function and maintain independence.' }
+        ];
 
 const services = [
     { 
@@ -99,16 +97,16 @@ const services = [
         ],
         conditionsTitle: 'Common Neuro Conditions We Help With',
         conditionsCards: [
-            { icon: '<path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 9.5 2z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Stroke<br>Recovery' },
-            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Parkinson\'s<br>Disease' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>', title: 'Multiple<br>Sclerosis' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path>', title: 'Brain<br>Injury' },
-            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Balance<br>Disorders' },
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Motor Neurone<br>Disease' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Peripheral<br>Neuropathy' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Spinal Cord<br>Conditions' },
-            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Spasticity<br>Management' },
-            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Mobility<br>Retraining' }
+            { icon: '../images/conditions/Neurological/Stroke_Recovery.png', title: 'Stroke<br>Recovery', desc: 'Rehabilitation to improve movement, strength, balance and independence after stroke.' },
+            { icon: '../images/conditions/Neurological/Parkinsons_Disease.png', title: 'Parkinson\'s<br>Disease', desc: 'Targeted exercises to improve mobility, balance, posture and daily function.' },
+            { icon: '../images/conditions/Neurological/Multiple_Sclerosis.png', title: 'Multiple<br>Sclerosis', desc: 'Personalised rehabilitation to manage symptoms, maintain function and improve quality of life.' },
+            { icon: '../images/conditions/Neurological/Brain_Injury.png', title: 'Brain<br>Injury', desc: 'Specialist rehab to regain skills, improve cognitive and physical function and support daily living.' },
+            { icon: '../images/conditions/Neurological/Balance_Disorders.png', title: 'Balance<br>Disorders', desc: 'Assessment and balance training to reduce falls and improve confidence.' },
+            { icon: '../images/conditions/Neurological/Motor_Neurone_Disease.png', title: 'Motor Neurone<br>Disease', desc: 'Tailored physiotherapy to maintain mobility, comfort and independence for as long as possible.' },
+            { icon: '../images/conditions/Neurological/Peripheral_Neuropathy.png', title: 'Peripheral<br>Neuropathy', desc: 'Support to improve strength, balance, sensation and walking ability.' },
+            { icon: '../images/conditions/Neurological/Spinal_Cord_Conditions.png', title: 'Spinal Cord<br>Conditions', desc: 'Rehabilitation to improve mobility, strength, bladder and bowel function and overall independence.' },
+            { icon: '../images/conditions/Neurological/Spasticity_Management.png', title: 'Spasticity<br>Management', desc: 'Evidence-based techniques to reduce spasticity, improve movement and ease daily function.' },
+            { icon: '../images/conditions/Neurological/Mobility_Retraining.png', title: 'Mobility<br>Retraining', desc: 'Task-specific training to improve mobility, coordination and functional independence.' }
         ],
         quoteBox: {
             quote: 'Regain movement.<br>Rebuild confidence.',
@@ -161,16 +159,16 @@ const services = [
         ],
         conditionsTitle: 'Common Respiratory Conditions We Help With',
         conditionsCards: [
-            { icon: '<path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 9.5 2z"></path>', title: 'COPD' },
-            { icon: '<path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Asthma<br>Management' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>', title: 'Bronchiectasis' },
-            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Post-Operative<br>Recovery' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Pneumonia<br>Recovery' },
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Chronic<br>Bronchitis' },
-            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Long COVID<br>Rehab' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Breathing Pattern<br>Disorders' },
-            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Lung Capacity<br>Building' },
-            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Airway Clearance<br>Techniques' }
+            { icon: '../images/conditions/Respiratory/COPD.png', title: 'COPD', desc: 'Breathing exercises, airway clearance techniques and rehabilitation to improve breathlessness and quality of life.' },
+            { icon: '../images/conditions/Respiratory/Asthma_Management.png', title: 'Asthma<br>Management', desc: 'Personalised breathing techniques and exercise programmes to reduce symptoms and improve control.' },
+            { icon: '../images/conditions/Respiratory/Bronchiectasis.png', title: 'Bronchiectasis', desc: 'Airway clearance, breathing retraining and exercise to reduce infections and improve lung function.' },
+            { icon: '../images/conditions/Respiratory/Post_Operative_Recovery.png', title: 'Post-Operative<br>Recovery', desc: 'Breathing exercises and chest physiotherapy to support recovery after surgery and prevent complications.' },
+            { icon: '../images/conditions/Respiratory/Pneumonia_Recovery.png', title: 'Pneumonia<br>Recovery', desc: 'Chest clearance techniques, breathing exercises and graded activity to restore lung function and reduce recurrence.' },
+            { icon: '../images/conditions/Respiratory/Chronic_Bronchitis.png', title: 'Chronic<br>Bronchitis', desc: 'Breathing control, airway clearance and exercise to reduce symptoms and improve stamina.' },
+            { icon: '../images/conditions/Respiratory/Long_COVID_Rehab.png', title: 'Long COVID<br>Rehab', desc: 'Individualised rehabilitation to improve breathing, reduce fatigue and help you return to daily activities.' },
+            { icon: '../images/conditions/Respiratory/Breathing_Pattern_Disorders.png', title: 'Breathing Pattern<br>Disorders', desc: 'Assessment and retraining to improve breathing technique, reduce breathlessness and restore normal breathing patterns.' },
+            { icon: '../images/conditions/Respiratory/Lung_Capacity_Building.png', title: 'Lung Capacity<br>Building', desc: 'Targeted breathing exercises and progressive training to improve lung capacity, endurance and overall fitness.' },
+            { icon: '../images/conditions/Respiratory/Airway_Clearance_Techniques.png', title: 'Airway Clearance<br>Techniques', desc: 'Specialised techniques to help clear mucus, improve airway function and make breathing easier.' }
         ],
         quoteBox: {
             quote: 'Regain breath.<br>Rebuild vitality.',
@@ -204,16 +202,16 @@ const services = [
         ],
         conditionsTitle: 'Common Paediatric Conditions We Treat',
         conditionsCards: [
-            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Developmental<br>Delay' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'Torticollis &<br>Plagiocephaly' },
-            { icon: '<path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Cerebral<br>Palsy' },
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Toe<br>Walking' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Hypermobility<br>& Low Tone' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Down<br>Syndrome' },
-            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Coordination<br>& Dyspraxia' },
-            { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Postural &<br>Gait Issues' },
-            { icon: '<path d="M9.5 2A2.5 2.5 0 0 0 7 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 9.5 2z"></path>', title: 'Congenital<br>Conditions' },
-            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Juvenile<br>Arthritis' }
+            { icon: '../images/conditions/Paediatric/Developmental_Delay.png', title: 'Developmental<br>Delay', desc: 'Support to achieve movement, play and developmental milestones.' },
+            { icon: '../images/conditions/Paediatric/Torticollis_and_Placquiredocephaly.png', title: 'Torticollis &<br>Plagiocephaly', desc: 'Targeted therapy to improve neck movement, head shape and posture.' },
+            { icon: '../images/conditions/Paediatric/Cerebral_Palsy.png', title: 'Cerebral<br>Palsy', desc: 'Individualised therapy to improve mobility, strength, function and independence.' },
+            { icon: '../images/conditions/Paediatric/Toe_Walking.png', title: 'Toe<br>Walking', desc: 'Assessment and treatment to improve walking pattern, balance and posture.' },
+            { icon: '../images/conditions/Paediatric/Hypermobility_and_Low_Tone.png', title: 'Hypermobility<br>& Low Tone', desc: 'Build strength, stability and motor control to support daily activities.' },
+            { icon: '../images/conditions/Paediatric/Down_Syndrome.png', title: 'Down<br>Syndrome', desc: 'Support for motor development, strength, balance and independence.' },
+            { icon: '../images/conditions/Paediatric/Coordination_and_Dyspraxia.png', title: 'Coordination<br>& Dyspraxia', desc: 'Targeted exercises to improve coordination, motor planning and confidence.' },
+            { icon: '../images/conditions/Paediatric/Postural_and_Gait_Issues.png', title: 'Postural &<br>Gait Issues', desc: 'Assessment and treatment to improve posture, alignment and walking patterns.' },
+            { icon: '../images/conditions/Paediatric/Congenital_Conditions.png', title: 'Congenital<br>Conditions', desc: 'Specialist rehabilitation to support movement, strength and functional skills.' },
+            { icon: '../images/conditions/Paediatric/Juvenile_Arthritis.png', title: 'Juvenile<br>Arthritis', desc: 'Pain management, mobility exercises and activity support to keep children active.' }
         ],
         quoteBox: {
             quote: 'Every step is a<br>milestone.<br>Growing stronger<br>every day.',
@@ -296,16 +294,16 @@ const services = [
         ],
         conditionsTitle: 'Common Women\'s Health Conditions We Treat',
         conditionsCards: [
-            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Pelvic Floor<br>Dysfunction' },
-            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Pregnancy Back<br>& Pelvic Pain' },
-            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Diastasis<br>Recti' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Postnatal<br>Recovery' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Urinary<br>Incontinence' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Prolapse<br>Support' },
-            { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Scar<br>Management' },
-            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Sacroiliac Joint<br>Dysfunction' },
-            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Bowel<br>Health' },
-            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Menopause-Related<br>Bone Health' }
+            { icon: '../images/conditions/Womens_Health/Pelvic_Floor_Dysfunction.png', title: 'Pelvic Floor<br>Dysfunction', desc: 'Assessment and treatment to improve pelvic floor strength, control and confidence.' },
+            { icon: '../images/conditions/Womens_Health/Pregnancy_Back_and_Pelvic_Pain.png', title: 'Pregnancy Back<br>& Pelvic Pain', desc: 'Specialist support to relieve pain, improve posture and keep you active during pregnancy.' },
+            { icon: '../images/conditions/Womens_Health/Diastasis_Recti.png', title: 'Diastasis<br>Recti', desc: 'Targeted exercises and rehabilitation to restore core strength and abdominal function.' },
+            { icon: '../images/conditions/Womens_Health/Postnatal_Recovery.png', title: 'Postnatal<br>Recovery', desc: 'Personalised rehabilitation to regain strength, mobility and confidence after birth.' },
+            { icon: '../images/conditions/Womens_Health/Urinary_Incontinence.png', title: 'Urinary<br>Incontinence', desc: 'Evidence-based treatment to improve bladder control and pelvic health.' },
+            { icon: '../images/conditions/Womens_Health/Prolapse_Support.png', title: 'Prolapse<br>Support', desc: 'Specialist assessment and management to support pelvic organ prolapse and improve quality of life.' },
+            { icon: '../images/conditions/Womens_Health/Scar_Management.png', title: 'Scar<br>Management', desc: 'Treatment to improve mobility, reduce tension and optimise healing after surgery.' },
+            { icon: '../images/conditions/Womens_Health/Sacroiliac_Joint_Dysfunction.png', title: 'Sacroiliac Joint<br>Dysfunction', desc: 'Hands-on treatment and exercise to reduce pain and improve stability and function.' },
+            { icon: '../images/conditions/Womens_Health/Bowel_Health.png', title: 'Bowel<br>Health', desc: 'Support for bowel function, constipation and pelvic floor coordination.' },
+            { icon: '../images/conditions/Womens_Health/Menopause_Related_Bone_Health.png', title: 'Menopause-Related<br>Bone Health', desc: 'Exercise and lifestyle support to maintain bone strength, mobility and overall wellbeing.' }
         ],
         quoteBox: {
             quote: 'Restore strength.<br>Reclaim comfort.<br>Thrive in every<br>stage.',
@@ -416,11 +414,14 @@ services.forEach(service => {
     ];
 
     const conditionsHTML = conditionsCards.map(c => `
-        <div style="background: #fff; border-radius: 12px; padding: 25px 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03);">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2" style="margin-bottom: 15px; margin-inline: auto;">
-                ${c.icon}
-            </svg>
-            <h4 style="font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.4;">${c.title}</h4>
+        <div style="background: #fdfefd; border-radius: 12px; padding: 25px 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%;">
+            ${c.icon.endsWith('.png') || c.icon.endsWith('.jpg') ? 
+                `<img src="${c.icon}" alt="${c.title.replace('<br>', ' ')}" style="width: 50px; height: 50px; margin-bottom: 15px; margin-inline: auto; display: block; object-fit: contain;">` : 
+                `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2" style="margin-bottom: 15px; margin-inline: auto;">${c.icon}</svg>`
+            }
+            <h4 style="font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 10px; font-family: 'Playfair Display', serif;">${c.title}</h4>
+            ${c.desc ? `<p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; flex-grow: 1;">${c.desc}</p>` : '<div style="flex-grow: 1;"></div>'}
+            <a href="#" style="font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">Learn more <span style="background: #eaf1ed; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; color: var(--green);">&rarr;</span></a>
         </div>
     `).join('');
     
