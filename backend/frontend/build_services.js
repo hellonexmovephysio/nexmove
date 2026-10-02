@@ -54,16 +54,17 @@ const services = [
         },
         conditionsTitle: 'Common Sports Injuries We Help With',
         conditionsCards: [
-            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Runner\'s Knee' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'ACL Rehab' },
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Ankle Sprains' },
-            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'Hamstring<br>Strains' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Shoulder<br>Impingement' },
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Achilles<br>Tendinopathy' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Tennis Elbow' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Shin Splints' },
-            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Groin Strains' },
-            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Post-Surgical' }
+            { icon: '../images/conditions/Sports_Injuries/Runners_Knee.png', title: 'Runner\'s Knee', desc: 'Expert assessment and rehab to resolve pain and get you back to running.' },
+            { icon: '../images/conditions/Sports_Injuries/ACL_Rehab.png', title: 'ACL Rehab', desc: 'Comprehensive rehabilitation for ACL tears, both conservative and post-operative.' },
+            { icon: '../images/conditions/Sports_Injuries/Ankle_Sprains.png', title: 'Ankle Sprains', desc: 'Accelerated recovery and strengthening to prevent recurrent sprains.' },
+            { icon: '../images/conditions/Sports_Injuries/Hamstring_Strains.png', title: 'Hamstring<br>Strains', desc: 'Targeted strengthening and tissue healing to prevent re-injury.' },
+            { icon: '../images/conditions/Sports_Injuries/Shoulder_Impingement.png', title: 'Shoulder<br>Impingement', desc: 'Specialist care for overhead athletes and throwing injuries.' },
+            { icon: '../images/conditions/Sports_Injuries/Achilles_Tendinopathy.png', title: 'Achilles<br>Tendinopathy', desc: 'Evidence-based load management and strengthening for tendon health.' },
+            { icon: '../images/conditions/Sports_Injuries/Tennis_Elbow.png', title: 'Tennis Elbow', desc: 'Effective treatment to relieve pain and improve grip strength.' },
+            { icon: '../images/conditions/Sports_Injuries/Shin_Splints.png', title: 'Shin Splints', desc: 'Biomechanical assessment and rehab to address the root cause of shin pain.' },
+            { icon: '../images/conditions/Sports_Injuries/Groin_Strains.png', title: 'Groin Strains', desc: 'Rehabilitation tailored to improve adductor strength and hip stability.' },
+            { icon: '../images/conditions/Sports_Injuries/Post_Surgical_Rehab.png', title: 'Post-Surgical<br>Rehab', desc: 'Guided recovery following sports-related surgeries.' }
+        
         ],
         quoteBox: {
             quote: 'Train smarter.<br>Recover faster.<br>Perform at your<br>highest level.',
@@ -251,16 +252,17 @@ const services = [
         ],
         conditionsTitle: 'Common Senior Mobility Conditions We Treat',
         conditionsCards: [
-            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Balance &<br>Falls' },
-            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Osteoarthritis' },
-            { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', title: 'Post-Hospital<br>Care' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Joint<br>Replacement' },
-            { icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', title: 'General<br>Weakness' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Osteoporosis' },
-            { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Chair<br>Transfers' },
-            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Reduced<br>Mobility' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Parkinson\'s<br>Care' },
-            { icon: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>', title: 'Stair<br>Confidence' }
+            { icon: '../images/conditions/Senior_Mobility/Balance_and_Falls.png', title: 'Balance &<br>Falls', desc: 'Targeted exercises to improve stability and prevent falls.' },
+            { icon: '../images/conditions/Senior_Mobility/Osteoarthritis.png', title: 'Osteoarthritis', desc: 'Evidence-based management to reduce pain and improve joint function.' },
+            { icon: '../images/conditions/Senior_Mobility/Post_Hospital_Care.png', title: 'Post-Hospital<br>Care', desc: 'Rehabilitation to regain strength and independence after a hospital stay.' },
+            { icon: '../images/conditions/Senior_Mobility/Joint_Replacement.png', title: 'Joint<br>Replacement', desc: 'Comprehensive rehab following hip, knee, or other joint replacements.' },
+            { icon: '../images/conditions/Senior_Mobility/General_Weakness.png', title: 'General<br>Weakness', desc: 'Progressive strengthening to combat deconditioning and frailty.' },
+            { icon: '../images/conditions/Senior_Mobility/Osteoporosis.png', title: 'Osteoporosis', desc: 'Safe exercise programs to improve bone health and reduce fracture risk.' },
+            { icon: '../images/conditions/Senior_Mobility/Chair_Transfers.png', title: 'Chair<br>Transfers', desc: 'Training to safely get in and out of chairs and bed.' },
+            { icon: '../images/conditions/Senior_Mobility/Reduced_Mobility.png', title: 'Reduced<br>Mobility', desc: 'Support to maintain or improve walking and functional independence.' },
+            { icon: '../images/conditions/Senior_Mobility/Parkinsons_Care.png', title: 'Parkinson\'s<br>Care', desc: 'Specialized interventions to address mobility and balance changes.' },
+            { icon: '../images/conditions/Senior_Mobility/Stair_Confidence.png', title: 'Stair<br>Confidence', desc: 'Practical strategies and exercises for safe stair negotiation.' }
+        
         ],
         quoteBox: {
             quote: 'Stay active.<br>Stay safe.<br>Stay independent<br>at home.',
@@ -343,16 +345,17 @@ const services = [
         ],
         conditionsTitle: 'Common Post-Surgical Conditions We Treat',
         conditionsCards: [
-            { icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>', title: 'Knee<br>Replacement' },
-            { icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>', title: 'Hip<br>Replacement' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>', title: 'ACL & Ligament<br>Repair' },
-            { icon: '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path>', title: 'Shoulder &<br>Rotator Cuff' },
-            { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line>', title: 'Spinal & Disc<br>Surgery' },
-            { icon: '<path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', title: 'Fracture &<br>Trauma Fixation' },
-            { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', title: 'Joint<br>Arthroscopy' },
-            { icon: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', title: 'Foot & Ankle<br>Surgery' },
-            { icon: '<path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 5 0v-15A2.5 2.5 0 0 0 14.5 2z"></path>', title: 'Scar & Swelling<br>Management' },
-            { icon: '<path d="M13 4v16"></path><path d="M17 4v16"></path><path d="M19 4H5"></path><path d="M19 20H5"></path>', title: 'Mobility & Stairs<br>Confidence' }
+            { icon: '../images/conditions/Post_Surgical/Knee_Replacement.png', title: 'Knee<br>Replacement', desc: 'Rehabilitation to restore range of motion, strength, and function.' },
+            { icon: '../images/conditions/Post_Surgical/Hip_Replacement.png', title: 'Hip<br>Replacement', desc: 'Guided recovery to regain mobility and return to daily activities.' },
+            { icon: '../images/conditions/Post_Surgical/ACL_and_Ligament_Repair.png', title: 'ACL & Ligament<br>Repair', desc: 'Comprehensive rehab protocols for optimal graft healing and return to sport.' },
+            { icon: '../images/conditions/Post_Surgical/Shoulder_and_Rotator_Cuff.png', title: 'Shoulder &<br>Rotator Cuff', desc: 'Careful progression to restore shoulder mechanics and strength.' },
+            { icon: '../images/conditions/Post_Surgical/Spinal_and_Disc_Surgery.png', title: 'Spinal & Disc<br>Surgery', desc: 'Safe rehabilitation to improve core stability and spinal mobility.' },
+            { icon: '../images/conditions/Post_Surgical/Fracture_and_Trauma_Fixation.png', title: 'Fracture &<br>Trauma Fixation', desc: 'Rehab following internal fixation (ORIF) or external fixation.' },
+            { icon: '../images/conditions/Post_Surgical/Joint_Arthroscopy.png', title: 'Joint<br>Arthroscopy', desc: 'Early mobilization and strengthening following keyhole surgery.' },
+            { icon: '../images/conditions/Post_Surgical/Foot_and_Ankle_Surgery.png', title: 'Foot & Ankle<br>Surgery', desc: 'Rehabilitation for Achilles repair, bunion surgery, and ankle stabilization.' },
+            { icon: '../images/conditions/Post_Surgical/Scar_and_Swelling_Management.png', title: 'Scar & Swelling<br>Management', desc: 'Techniques to optimize tissue healing and reduce edema.' },
+            { icon: '../images/conditions/Post_Surgical/Mobility_and_Stairs_Confidence.png', title: 'Mobility & Stairs<br>Confidence', desc: 'Regaining functional independence in the home environment.' }
+        
         ],
         quoteBox: {
             quote: 'Safe recovery.<br>Restored mobility.<br>Back to<br>independence.',
