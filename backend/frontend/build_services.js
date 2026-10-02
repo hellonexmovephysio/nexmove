@@ -146,7 +146,7 @@ const services = [
         title: 'Respiratory Physiotherapy', 
         subtitle: 'Breathe easier. Improve lung function.<br>Regain control of your health at home.',
         desc: 'Expert home-based respiratory assessment and targeted chest therapy for individuals with chronic breathing conditions, post-operative recovery, and asthma management, focused on restoring lung capacity, reducing shortness of breath, and enhancing overall function and quality of life.',
-        image: 'Front Page.jpeg', 
+        image: 'respiratory-hero.jpg', 
         heroTheme: 'light',
         heroOverlay: {
             text: 'IMPROVED<br>BREATHING.<br>RESTORED<br>CAPACITY.',
@@ -189,7 +189,7 @@ const services = [
         title: 'Paediatric Physiotherapy', 
         subtitle: 'Helping children move, play, and thrive.<br>Specialist paediatric care at home.',
         desc: 'Specialist in-home physiotherapy for infants, children, and adolescents, focusing on development, mobility, and play to help your child reach their full potential in a comfortable and familiar environment.',
-        image: 'Front Page.jpeg', 
+        image: 'paediatric-hero.jpg', 
         heroTheme: 'dark',
         heroOverlay: {
             text: 'STRONGER<br>MILESTONES.<br>CONFIDENT<br>STEPS.',
@@ -238,7 +238,7 @@ const services = [
         title: 'Geriatric Physiotherapy', 
         subtitle: 'Maintain independence. Prevent falls.<br>Move safely at home.',
         desc: 'Gentle, compassionate in-home physiotherapy tailored for seniors and older adults. We focus on enhancing balance, preserving joint mobility, strengthening muscles, and restoring confidence in everyday movements without clinic travel.',
-        image: 'Front Page.jpeg', 
+        image: 'geriatric-hero.jpg', 
         heroTheme: 'dark',
         heroOverlay: {
             text: 'GREATER<br>CONFIDENCE.<br>SAFE<br>MOBILITY.<br>ACTIVE<br>LIVING.',
@@ -282,7 +282,7 @@ const services = [
         title: 'Women\'s Health Physiotherapy', 
         subtitle: 'Empowering women through every stage of life.<br>Specialist pelvic health & postnatal care at home.',
         desc: 'Expert, discreet in-home physiotherapy for pelvic floor dysfunction, pregnancy-related pain, and postnatal recovery, providing personalized care to help you feel strong and confident.',
-        image: 'Front Page.jpeg', 
+        image: 'womens-hero.jpg', 
         heroTheme: 'dark',
         heroOverlay: {
             text: 'RESTORE<br>STRENGTH.<br>RECLAIM<br>COMFORT.',
