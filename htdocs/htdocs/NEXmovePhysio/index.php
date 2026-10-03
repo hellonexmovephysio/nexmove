@@ -521,7 +521,7 @@ button{cursor:pointer}
         </nav>
 <div class="socials">
 
-    <a href="https://instagram.com/@nexmovephysio"
+    <a href="https://www.instagram.com/nexmovephysio?utm_source=qr&igsi=bWN6ZG9raHN5bWRq"
        target="_blank"
        aria-label="Instagram">
 
