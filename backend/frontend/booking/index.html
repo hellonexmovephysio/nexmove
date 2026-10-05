@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0f2d49">
 <title>Book Your Home Physiotherapy Session | NEXmove Physio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="assets/styles.css">
 
 <style>
@@ -342,25 +346,405 @@ select {
     }
 }
 </style>
+<link rel="stylesheet" href="assets/pixel-booking.css">
 </head>
 <body>
-<header class="site-header">
-    <div class="nav-wrap">
-        <a class="brand" href="../index.html" aria-label="NEXmove Physio home">
-            <div style="width: 48px; height: 48px; flex-shrink: 0;">
-                <img src="../images/nexmove-logo.png" alt="NEXmove Physio logo" style="width:100%;height:100%;object-fit:contain">
+
+<nexmove-booking-header id="nexmoveBookingHeader"></nexmove-booking-header>
+<script id="nexmove-booking-header-isolated-v1">
+(() => {
+    const host = document.getElementById('nexmoveBookingHeader');
+    if (!host || host.shadowRoot) return;
+
+    const root = host.attachShadow({ mode: 'open' });
+
+    root.innerHTML = `
+        <style>
+            :host {
+                --cream:#FAF7F0;
+                --navy:#1B2A4A;
+                --green:#5C7A5C;
+                --gold:#B8894A;
+                --text:#26343d;
+                --line:#e3dccf;
+
+                display:block;
+                position:sticky;
+                top:0;
+                z-index:2147483000;
+                width:100%;
+                background:rgba(250,247,240,.90);
+                backdrop-filter:blur(12px);
+                -webkit-backdrop-filter:blur(12px);
+                border-bottom:1px solid rgba(27,42,74,.07);
+                box-shadow:0 8px 28px rgba(27,42,74,.025);
+                font-family:'Inter',Arial,Helvetica,sans-serif;
+                letter-spacing:-0.005em;
+                color:var(--text);
+            }
+
+            *, *::before, *::after {
+                box-sizing:border-box;
+            }
+
+            a {
+                color:inherit;
+                text-decoration:none;
+            }
+
+            img {
+                display:block;
+                max-width:100%;
+            }
+
+            button {
+                font:inherit;
+                cursor:pointer;
+            }
+
+            .container {
+                width:min(1240px,calc(100% - 56px));
+                margin:0 auto;
+            }
+
+            .header-row {
+                min-height:88px;
+                display:flex;
+                align-items:center;
+                gap:28px;
+            }
+
+            
+            .brand {
+                display:flex;
+                align-items:center;
+                gap:15px;
+                flex:0 0 auto;
+            }
+
+            /* Exact page-1 brand lockup behaviour */
+            .brand > div:last-child {
+                line-height:1.55;
+            }
+
+            .logo {
+                width:62px;
+                height:62px;
+                border:1px solid #aab5ad;
+                border-radius:50%;
+                display:grid;
+                place-items:center;
+                background:#fffdf8;
+                box-shadow:0 8px 20px rgba(27,42,74,.06);
+            }
+
+            .logo img {
+                width:100%;
+                height:100%;
+                object-fit:contain;
+                display:block;
+                max-width:100%;
+            }
+
+            .brand-name {
+                font-family:Georgia,"Times New Roman",serif;
+                font-size:29px;
+                line-height:1;
+                color:var(--navy);
+            }
+
+            .brand-name span {
+                color:#5f776d;
+            }
+
+            .brand-sub {
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                gap:9px;
+                font-size:9px;
+                letter-spacing:6px;
+                font-weight:800;
+                color:var(--navy);
+                margin-top:7px;
+                width:100%;
+            }
+
+            .brand-sub::before,
+            .brand-sub::after {
+                content:"";
+                display:block;
+                height:2px;
+                background:var(--gold);
+                border-radius:999px;
+                flex:1 1 auto;
+                min-width:18px;
+                max-width:36px;
+            }
+
+            .brand-tag {
+                font-size:8px;
+                letter-spacing:2px;
+                color:#8a8d86;
+                margin-top:7px;
+            }
+
+
+            .desktop-nav {
+                display:flex;
+                align-items:center;
+                gap:28px;
+                margin-left:auto;
+                font-family:'Inter',Arial,Helvetica,sans-serif;
+            }
+
+            .desktop-nav > a {
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                font-family:'Inter',Arial,Helvetica,sans-serif;
+                font-size:14px;
+                line-height:1.2;
+                font-weight:700;
+                white-space:nowrap;
+                color:var(--text);
+            }
+
+            .desktop-nav > a:not(.phone-btn) {
+                position:relative;
+                font-weight:600;
+            }
+
+            .desktop-nav > a:not(.phone-btn)::after {
+                content:"";
+                position:absolute;
+                left:0;
+                right:100%;
+                bottom:-8px;
+                height:1.5px;
+                background:var(--green);
+                transition:right .22s ease;
+            }
+
+            .desktop-nav > a:not(.phone-btn):hover {
+                color:var(--green);
+            }
+
+            .desktop-nav > a:not(.phone-btn):hover::after {
+                right:0;
+            }
+
+            .phone-btn {
+                padding:13px 20px;
+                font-family:'Inter',Arial,Helvetica,sans-serif;
+                font-size:14px;
+                border-radius:999px;
+                background:var(--navy);
+                color:#fff !important;
+                font-weight:700;
+                box-shadow:0 10px 24px rgba(27,42,74,.16);
+            }
+
+            .phone-btn:visited,
+            .phone-btn:hover,
+            .phone-btn:active {
+                color:#fff !important;
+            }
+
+            .socials {
+                display:flex;
+                align-items:center;
+                gap:12px;
+                margin-top:15px;
+                margin-right:142px;
+                flex:0 0 auto;
+            }
+
+            .socials a {
+                width:42px;
+                height:42px;
+                flex:0 0 42px;
+                display:grid;
+                place-items:center;
+                background:#fff;
+                border-radius:50%;
+                color:#315d50;
+                border:1px solid rgba(49,93,80,.15);
+                box-shadow:0 4px 12px rgba(0,0,0,.08);
+                transition:.25s ease;
+            }
+
+            .socials a svg {
+                width:21px;
+                height:21px;
+                fill:none;
+                stroke:currentColor;
+                stroke-width:1.8;
+                stroke-linecap:round;
+                stroke-linejoin:round;
+                pointer-events:none;
+            }
+
+            .socials a:hover {
+                background:#315d50;
+                color:#fff;
+                transform:translateY(-3px);
+            }
+
+            .menu-btn {
+                display:none;
+                margin-left:auto;
+                width:45px;
+                height:45px;
+                padding:0;
+                border:0;
+                background:transparent;
+            }
+
+            .menu-btn span {
+                display:block;
+                height:2px;
+                background:var(--navy);
+                margin:7px 0;
+            }
+
+            .mobile-nav {
+                display:none;
+                background:var(--cream);
+                border-top:1px solid var(--line);
+                padding:8px 20px 18px;
+            }
+
+            .mobile-nav.active {
+                display:block;
+            }
+
+            .mobile-nav a {
+                display:block;
+                padding:12px 0;
+                border-bottom:1px solid var(--line);
+                font-size:14px;
+                font-weight:700;
+            }
+
+            @media (max-width:1150px) {
+                .socials { margin-right:0; }
+                .desktop-nav { gap:19px; }
+                .desktop-nav > a { font-size:13px; }
+            }
+
+            @media (max-width:960px) {
+                .container { width:min(100% - 40px,960px); }
+                .desktop-nav { display:none; }
+                .menu-btn { display:block; }
+                .header-row { min-height:104px; }
+                .logo {
+                    width:58px;
+                    height:58px;
+                    flex-basis:58px;
+                }
+                .brand-name { font-size:24px; }
+                .brand-tag { display:none; }
+            }
+
+            @media (max-width:680px) {
+                .container { width:calc(100% - 28px); }
+            }
+
+            @media (max-width:430px) {
+                .container { width:calc(100% - 20px); }
+                .header-row { min-height:78px; }
+                .logo {
+                    width:50px;
+                    height:50px;
+                    flex-basis:50px;
+                }
+                .brand-name { font-size:21px; }
+                .brand-sub {
+                    font-size:7px;
+                    letter-spacing:3px;
+                    gap:6px;
+                }
+                .brand-sub::before,
+                .brand-sub::after {
+                    min-width:12px;
+                    max-width:22px;
+                    height:1.5px;
+                }
+                .socials { display:none; }
+            }
+        </style>
+
+        <div class="container header-row">
+            <a class="brand" href="../index.html#top" aria-label="NEXmove Physio home">
+                <div class="logo">
+                    <img src="../images/nexmove-logo.png" alt="NEXmove Physio logo">
+                </div>
+                <div>
+                    <div class="brand-name">NEX<span>move</span></div>
+                    <div class="brand-sub">PHYSIO</div>
+                    <div class="brand-tag">MOVE BETTER. LIVE BETTER.</div>
+                </div>
+            </a>
+
+            <nav class="desktop-nav" aria-label="Main navigation">
+                <a href="../index.html#how">How It Works</a>
+                <a href="../index.html#conditions">Conditions</a>
+                <a href="../index.html#pricing">Pricing</a>
+                <a href="../index.html#physios">Career</a>
+                <a href="../index.html#about">About Us</a>
+                <a class="phone-btn" href="tel:+447436059680">☎ +44 7436 059680</a>
+            </nav>
+
+            <div class="socials">
+                <a href="https://www.instagram.com/nexmovephysio?utm_source=qr&amp;igsi=bWN6ZG9raHN5bWRq"
+                   target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <circle cx="17.5" cy="6.5" r="1"></circle>
+                    </svg>
+                </a>
+
+                <a href="https://wa.me/447436059680"
+                   target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.7A8.5 8.5 0 1 1 20.5 11.5z"></path>
+                    </svg>
+                </a>
             </div>
-            <div>
-                <div class="brand-name">NEX<span>move</span></div>
-                <div class="brand-sub">PHYSIO</div>
-                <div class="brand-tag">MOVE BETTER. LIVE BETTER.</div>
-            </div>
-        </a>
-        <nav class="desktop-nav"><a href="../index.html#how">How It Works</a><a href="../index.html#conditions">Conditions⌄</a><a href="../index.html#pricing">Pricing</a><a href="../index.html#physios">For Physios</a><a href="../index.html#about">About Us</a></nav>
-        <a class="phone-pill" href="tel:+447436059680">☎ <span>+44 7436 059680</span></a>
-    </div>
-    <div class="trustbar"><span>◉ HCPC Registered</span><span>◉ DBS Checked</span><span>♢ Fully Insured</span><span>♢ GDPR Secure</span><span>⌖ Home Visits Across the UK</span></div>
-</header>
+
+            <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <nav class="mobile-nav" aria-label="Mobile navigation">
+            <a href="../index.html#how">How It Works</a>
+            <a href="../index.html#conditions">Conditions</a>
+            <a href="../index.html#pricing">Pricing</a>
+            <a href="../index.html#physios">Career</a>
+            <a href="../index.html#about">About Us</a>
+            <a href="tel:+447436059680">☎ +44 7436 059680</a>
+        </nav>
+    `;
+
+    const menuBtn = root.querySelector('.menu-btn');
+    const mobileNav = root.querySelector('.mobile-nav');
+
+    menuBtn?.addEventListener('click', () => {
+        const open = mobileNav.classList.toggle('active');
+        menuBtn.setAttribute('aria-expanded', String(open));
+    });
+
+    mobileNav?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            menuBtn?.setAttribute('aria-expanded', 'false');
+        });
+    });
+})();
+</script>
 
 <main class="page-shell">
 <section class="content-area">
@@ -372,14 +756,14 @@ select {
     <form id="bookingForm">
         <div class="form-grid">
             <section class="panel service-panel">
-                <h2><span>♙</span>A. Choose Your Service</h2>
+                <h2 class="step-heading"><span class="step-badge">A</span><span class="step-title"><strong>Choose your service</strong><small>Select the appointment type that suits you.</small></span></h2>
                 <div class="service-grid" id="serviceGrid">
                     Loading services...
                 </div>
             </section>
 
             <section class="panel details-panel">
-                <h2><span>♙</span>B. Your Details</h2>
+                <h2 class="step-heading"><span class="step-badge">B</span><span class="step-title"><strong>Your details</strong><small>Tell us who the appointment is for.</small></span></h2>
                 <div class="field-grid">
                     <label>Full Name<input name="full_name" autocomplete="name" placeholder="e.g. John Smith" required></label>
                     <label>Email Address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
@@ -389,49 +773,49 @@ select {
             </section>
 
             <section class="panel address-panel">
-                <h2><span>⌖</span>C. Visit Address</h2>
+                <h2 class="step-heading"><span class="step-badge">C</span><span class="step-title"><strong>Visit address</strong><small>Where should your physiotherapist visit?</small></span></h2>
                 <div class="address-grid">
                     <label>Postcode<div class="postcode-row"><input name="postcode" autocomplete="postal-code" placeholder="SW1A 1AA" required><button type="button" id="findAddress">Find Address</button></div></label>
                     <label>Address<input name="address_line1" autocomplete="street-address" placeholder="10 Downing Street" required></label>
                     <label>City / Town<input name="city" autocomplete="address-level2" placeholder="London" required></label>
-                    <label>Access Details (e.g. buzzer, parking)<input name="access_details" placeholder="Ring bell at main entrance"></label>
+                    <label>Access details <span class="optional-label">Optional</span><input name="access_details" placeholder="e.g. buzzer, parking or entrance details"></label>
                 </div>
                 <p id="addressHint" class="hint" aria-live="polite"></p>
             </section>
 
             <section class="panel condition-panel" id="conditions">
-                <h2><span>◇</span>D. What Do You Need Help With?</h2>
+                <h2 class="step-heading"><span class="step-badge">D</span><span class="step-title"><strong>What do you need help with?</strong><small>Choose the main reason for your appointment.</small></span></h2>
                 <div class="condition-grid" id="conditionGrid">
                     Loading conditions...
                 </div>
             </section>
 
             <section class="panel clinical-panel">
-                <h2><span>▯</span>E. Quick Clinical Information</h2>
+                <h2 class="step-heading"><span class="step-badge">E</span><span class="step-title"><strong>Quick clinical information</strong><small>A few details help us prepare for your visit.</small></span></h2>
                 <div class="clinical-grid">
                     <label>How long have you had this issue?<select name="issue_duration"><option>Less than 1 week</option><option>1–2 weeks</option><option selected>2–6 weeks</option><option>6–12 weeks</option><option>3–6 months</option><option>More than 6 months</option></select></label>
                     <label>Pain level (0–10)<div class="range-row"><output id="painValue">4</output><input id="painRange" name="pain_level" type="range" min="0" max="10" value="4"></div></label>
-                    <label class="span2">Describe your symptoms<textarea name="symptoms" rows="2" placeholder="e.g. Dull ache in lower back, worse in the morning..."></textarea></label>
+                    <label class="span2">Describe your symptoms <span class="optional-label">Optional</span><textarea name="symptoms" rows="2" placeholder="e.g. Dull ache in lower back, worse in the morning..."></textarea></label>
                     <label class="toggle-line">Do you use a mobility aid?<input class="toggle" type="checkbox" name="mobility_aid"></label>
                     <label class="toggle-line">Are you at risk of falls?<input class="toggle" type="checkbox" name="fall_risk"></label>
                 </div>
             </section>
 
             <section class="panel appointment-panel">
-                <h2><span>▣</span>F. Preferred Appointment</h2>
+                <h2 class="step-heading"><span class="step-badge">F</span><span class="step-title"><strong>Preferred appointment</strong><small>Tell us when you would prefer to be seen.</small></span></h2>
                 <div class="appointment-grid">
                     <label class="span3">Preferred Date<input name="preferred_date" id="preferredDate" type="date" required></label>
                     <span class="field-label span3">Preferred Time</span>
-                    <label class="time-card selected"><input type="radio" name="preferred_time" value="Morning (9am–12pm)" checked><b>▣ Morning</b><small>9am – 12pm</small></label>
-                    <label class="time-card"><input type="radio" name="preferred_time" value="Afternoon (12pm–5pm)"><b>◷ Afternoon</b><small>12pm – 5pm</small></label>
-                    <label class="time-card"><input type="radio" name="preferred_time" value="Evening (5pm–8pm)"><b>◐ Evening</b><small>5pm – 8pm</small></label>
-                    <label class="span3">Therapist Preference<select name="therapist_id" id="therapistSelect"><option value="">No preference – any available therapist</option></select></label>
+                    <label class="time-card selected"><input type="radio" name="preferred_time" value="Morning (9am–12pm)" checked><b>Morning</b><small>9am – 12pm</small></label>
+                    <label class="time-card"><input type="radio" name="preferred_time" value="Afternoon (12pm–5pm)"><b>Afternoon</b><small>12pm – 5pm</small></label>
+                    <label class="time-card"><input type="radio" name="preferred_time" value="Evening (5pm–8pm)"><b>Evening</b><small>5pm – 8pm</small></label>
+                    <label class="span3 therapist-field">Therapist preference <span class="optional-label">Optional</span><select name="therapist_id" id="therapistSelect"><option value="">No preference – any available therapist</option></select><small class="field-help">Leave this as “No preference” for the quickest availability.</small></label>
                 </div>
             </section>
 
             <section class="panel consent-panel">
-                <h2><span>♢</span>G. Consent</h2>
-                <label class="check-line"><input type="checkbox" name="consent_privacy" required><span>I have read and agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms &amp; Conditions</a>.</span></label>
+                <h2 class="step-heading"><span class="step-badge">G</span><span class="step-title"><strong>Consent</strong><small>Review and confirm before continuing.</small></span></h2>
+                <label class="check-line"><input type="checkbox" name="consent_privacy" required><span>I have read and agree to the <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="terms-and-conditions.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>.</span></label>
                 <label class="check-line"><input type="checkbox" name="consent_updates"><span>I agree to receive appointment updates and occasional health tips via email or SMS.</span></label>
             </section>
         </div>
@@ -458,63 +842,102 @@ select {
 </main>
 <script src="../js/api.js"></script>
 <script>
+const isLocalPreview = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+// Safe demo data mirrors the live service/condition catalogue.
+// It is used ONLY on localhost so the page can be fully tested without
+// connecting to the production API, database or payment flow.
+const LOCAL_PREVIEW_DATA = {
+    services: [
+        { id: 'preview-home-visit', slug: 'home-visit', name: 'Initial Home Physiotherapy Assessment', short_description: 'We come to you', duration_minutes: 60, appointment_type: 'Home Visit', price_pence: 9000 },
+        { id: 'preview-online', slug: 'online', name: 'Online Consultation', short_description: 'Video call session', duration_minutes: 30, appointment_type: 'Online Consultation', price_pence: 3500 },
+        { id: 'preview-follow-up', slug: 'follow-up', name: 'Follow-up Session', short_description: 'Existing patients', duration_minutes: 45, appointment_type: 'Home Visit', price_pence: 7500 },
+        { id: 'preview-package-5', slug: 'package-5', name: '5 Session Package', short_description: 'Save on multiple visits', duration_minutes: 45, appointment_type: 'Home Visit', price_pence: 35000 }
+    ],
+    conditions: [
+        { id: 'preview-back-pain', label: 'Back Pain' },
+        { id: 'preview-neck-pain', label: 'Neck Pain' },
+        { id: 'preview-knee-pain', label: 'Knee Pain' },
+        { id: 'preview-shoulder-pain', label: 'Shoulder Pain' },
+        { id: 'preview-mobility', label: 'Mobility' },
+        { id: 'preview-post-op', label: 'Post-Op Rehab' },
+        { id: 'preview-neurology', label: 'Neurology' },
+        { id: 'preview-elderly-care', label: 'Elderly Care' },
+        { id: 'preview-other', label: 'Other' }
+    ],
+    therapists: []
+};
+
+function renderFormData(data) {
+    const serviceGrid = document.getElementById('serviceGrid');
+    serviceGrid.innerHTML = '';
+    data.services.forEach((service, index) => {
+        const icon = service.slug === 'home-visit' ? '⌂' : (service.slug === 'online' ? '▣' : '◌');
+        const title = service.slug === 'home-visit' ? 'Home Visit' : service.name;
+        const price = (service.price_pence / 100).toFixed(2);
+        const html = `
+            <label class="service-card ${index === 0 ? 'selected' : ''}">
+                <input type="radio" name="service_id" value="${service.id}" ${index === 0 ? 'checked' : ''}
+                       data-name="${service.name}"
+                       data-duration="${service.duration_minutes}"
+                       data-type="${service.appointment_type}"
+                       data-price="${price}">
+                <span class="service-icon">${icon}</span>
+                <span class="service-text"><b>${title}</b><small>${service.short_description}</small></span>
+                <span class="selected-dot">●</span>
+            </label>`;
+        serviceGrid.insertAdjacentHTML('beforeend', html);
+    });
+
+    const conditionGrid = document.getElementById('conditionGrid');
+    conditionGrid.innerHTML = '';
+    data.conditions.forEach(cond => {
+        const html = `<label class="condition-chip" role="radio" aria-checked="false"><input type="radio" name="condition_id" value="${cond.id}"><span>${cond.label}</span></label>`;
+        conditionGrid.insertAdjacentHTML('beforeend', html);
+    });
+
+    const therapistSelect = document.getElementById('therapistSelect');
+    (data.therapists || []).forEach(therapist => {
+        if (therapist.id === 1) return;
+        const opt = document.createElement('option');
+        opt.value = therapist.id;
+        opt.textContent = therapist.display_name;
+        therapistSelect.appendChild(opt);
+    });
+
+    updateSummary();
+    bindServiceCards();
+    bindConditionChips();
+    bindTimeCards();
+    bindPainSlider();
+    bindPostcode();
+    bindDateInput();
+}
+
+function showFormLoadError(message) {
+    const serviceGrid = document.getElementById('serviceGrid');
+    const conditionGrid = document.getElementById('conditionGrid');
+    if (serviceGrid) serviceGrid.innerHTML = `<div class="load-error">${message}</div>`;
+    if (conditionGrid) conditionGrid.innerHTML = `<div class="load-error">${message}</div>`;
+    document.getElementById('sumService').textContent = 'Unavailable';
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Fetch Form Data
+    if (isLocalPreview) {
+        renderFormData(LOCAL_PREVIEW_DATA);
+        return;
+    }
+
     try {
         const res = await apiFetch('/api/bookings/form-data');
         const json = await res.json();
-        
-        if (json.success && json.data) {
-            // Render Services
-            const serviceGrid = document.getElementById('serviceGrid');
-            serviceGrid.innerHTML = '';
-            json.data.services.forEach((service, index) => {
-                const icon = service.slug === 'home-visit' ? '⌂' : (service.slug === 'online' ? '▣' : '◌');
-                const title = service.slug === 'home-visit' ? 'Home Visit' : service.name;
-                const price = (service.price_pence / 100).toFixed(2);
-                
-                const html = `
-                    <label class="service-card ${index === 0 ? 'selected' : ''}">
-                        <input type="radio" name="service_id" value="${service.id}" ${index === 0 ? 'checked' : ''}
-                               data-name="${service.name}"
-                               data-duration="${service.duration_minutes}"
-                               data-type="${service.appointment_type}"
-                               data-price="${price}">
-                        <span class="service-icon">${icon}</span>
-                        <span class="service-text"><b>${title}</b><small>${service.short_description}</small></span>
-                        <span class="selected-dot">●</span>
-                    </label>
-                `;
-                serviceGrid.insertAdjacentHTML('beforeend', html);
-            });
-            
-            // Render Conditions
-            const conditionGrid = document.getElementById('conditionGrid');
-            conditionGrid.innerHTML = '';
-            json.data.conditions.forEach(cond => {
-                const html = `<label class="condition-chip"><input type="radio" name="condition_id" value="${cond.id}"><span>${cond.label}</span></label>`;
-                conditionGrid.insertAdjacentHTML('beforeend', html);
-            });
-            
-            // Render Therapists
-            const therapistSelect = document.getElementById('therapistSelect');
-            json.data.therapists.forEach(therapist => {
-                if (therapist.id === 1) return; // Skip dummy or default therapist if matching PHP logic
-                const opt = document.createElement('option');
-                opt.value = therapist.id;
-                opt.textContent = therapist.display_name;
-                therapistSelect.appendChild(opt);
-            });
-            
-            updateSummary();
-            bindServiceCards();
-            bindTimeCards();
-            bindPainSlider();
-            bindPostcode();
-            bindDateInput();
+        if (!res.ok || !json.success || !json.data) {
+            throw new Error(json.message || 'Unable to load booking options');
         }
+        renderFormData(json.data);
     } catch (err) {
         console.error('Failed to load form data:', err);
+        showFormLoadError('Booking options could not be loaded. Please refresh or contact NEXmove for assistance.');
     }
 });
 
@@ -528,6 +951,23 @@ function bindServiceCards() {
             if (input.checked) {
                 input.closest('.service-card').classList.add('selected');
                 updateSummary();
+            }
+        });
+    });
+}
+
+function bindConditionChips() {
+    const chips = document.querySelectorAll('.condition-chip input[name="condition_id"]');
+    chips.forEach(input => {
+        input.addEventListener('change', () => {
+            document.querySelectorAll('.condition-chip').forEach(chip => {
+                chip.classList.remove('selected');
+                chip.setAttribute('aria-checked', 'false');
+            });
+            if (input.checked) {
+                const chip = input.closest('.condition-chip');
+                chip.classList.add('selected');
+                chip.setAttribute('aria-checked', 'true');
             }
         });
     });
@@ -601,6 +1041,13 @@ document.getElementById('submitFormBtn').addEventListener('click', async (e) => 
     data.consent_updates = form.elements['consent_updates'].checked;
     
     const submitBtn = document.getElementById('submitFormBtn');
+
+    if (isLocalPreview) {
+        msg.textContent = 'Local preview only — no booking or payment has been submitted.';
+        msg.style.color = '#5f735d';
+        return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.style.opacity = '0.7';
     msg.textContent = 'Processing Payment...';
@@ -633,5 +1080,33 @@ document.getElementById('submitFormBtn').addEventListener('click', async (e) => 
     }
 });
 </script>
+
+<script id="booking-home-header-menu-v3">
+(() => {
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileNav = document.getElementById("mobileNav");
+    if (!menuBtn || !mobileNav) return;
+
+    menuBtn.addEventListener("click", function () {
+        const open = mobileNav.classList.toggle("active");
+        menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    document.querySelectorAll("#mobileNav a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            mobileNav.classList.remove("active");
+            menuBtn.setAttribute("aria-expanded", "false");
+        });
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            mobileNav.classList.remove("active");
+            menuBtn.setAttribute("aria-expanded", "false");
+        }
+    });
+})();
+</script>
+
 </body>
 </html>

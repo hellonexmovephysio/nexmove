@@ -1,0 +1,363 @@
+/* NEXmove booking — One UI inspired interaction layer
+   Frontend-only: layout, readability, reachability and selection feedback. */
+:root{
+  --ui-bg:#f7f7f5;
+  --ui-surface:#ffffff;
+  --ui-surface-soft:#f4f6f4;
+  --ui-selected:#edf4ee;
+  --ui-border:#e1e5e1;
+  --ui-border-strong:#b7c2ba;
+  --ui-navy:#142d4f;
+  --ui-green:#61785f;
+  --ui-green-dark:#496247;
+  --ui-gold:#d2a54a;
+  --ui-ink:#253740;
+  --ui-muted:#708078;
+  --ui-danger:#9a4a3e;
+  --ui-radius-xl:24px;
+  --ui-radius-lg:20px;
+  --ui-radius-md:16px;
+  --ui-radius-sm:12px;
+  --ui-shadow:0 8px 28px rgba(27,42,50,.06);
+  --ui-shadow-soft:0 3px 12px rgba(27,42,50,.045);
+}
+
+/* One UI principles translated to web: focused task flow, natural reachability,
+   comfortable visual hierarchy, and responsive controls. */
+#bookingForm,
+.summary-card,
+.steps,
+.trustbar,
+.service-card,
+.condition-chip,
+.time-card,
+input,select,textarea,button{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+body{background:linear-gradient(180deg,#fff 0,#faf9f6 36%,#fff 100%)}
+.page-shell{
+  width:min(1280px,calc(100% - 40px));
+  grid-template-columns:minmax(0,1fr) 340px;
+  gap:28px;
+  margin-top:24px;
+}
+.content-area{min-width:0}
+
+/* High-level booking progress — restrained and readable */
+.steps{
+  justify-content:flex-start;
+  gap:10px;
+  min-height:42px;
+  margin:0 0 14px;
+  color:#65736d;
+  font-size:13px;
+  font-weight:520;
+}
+.steps span{gap:8px}
+.steps b{
+  width:28px;height:28px;
+  border:1px solid #d6ddd8;
+  background:#fff;
+  color:#64736d;
+  font-size:12px;
+  font-weight:650;
+}
+.steps .active{color:var(--ui-navy);font-weight:700}
+.steps .active b{background:var(--ui-navy);border-color:var(--ui-navy);color:#fff;box-shadow:0 3px 10px rgba(20,45,79,.16)}
+.steps i{width:64px;border-color:#d7ddd8}
+
+.content-area>h1{margin-top:8px}
+.subtitle{margin-bottom:16px}
+.urgent-note{border-radius:14px;padding:12px 14px;margin-bottom:16px}
+
+/* Form flow: A & D span the width, information groups sit in natural pairs. */
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.service-panel,.condition-panel,.consent-panel{grid-column:1/-1}
+.details-panel{grid-column:1}
+.address-panel{grid-column:2}
+.clinical-panel{grid-column:1}
+.appointment-panel{grid-column:2}
+
+.panel{
+  background:rgba(255,255,255,.98);
+  border:1px solid #e9ece8;
+  border-radius:var(--ui-radius-lg);
+  padding:20px;
+  box-shadow:var(--ui-shadow-soft);
+}
+.panel:hover{border-color:#e2e7e2}
+
+/* A–G section header — large letter badge + short instruction */
+.panel h2.step-heading{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:0 0 17px;
+  color:var(--ui-ink);
+}
+.step-badge{
+  width:36px;height:36px;min-width:36px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:#edf2ed;
+  color:var(--ui-green-dark)!important;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important;
+  font-size:14px!important;
+  font-weight:750!important;
+}
+.step-title{display:flex!important;flex-direction:column;gap:2px!important;color:inherit!important}
+.step-title strong{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:17px;
+  line-height:1.25;
+  font-weight:720;
+  color:#334750;
+}
+.step-title small{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:12.5px;
+  line-height:1.35;
+  font-weight:450;
+  color:#78867f;
+}
+
+/* Labels and optional badges */
+.field-grid,.address-grid,.clinical-grid,.appointment-grid{gap:13px 14px}
+.field-grid>label,.address-grid>label,.clinical-grid>label,.appointment-grid>label,.field-label{
+  gap:7px;
+  color:#465a62;
+  font-size:13px;
+  font-weight:620;
+  line-height:1.35;
+}
+.optional-label{
+  display:inline-flex;
+  align-self:flex-start;
+  padding:2px 7px;
+  margin-left:5px;
+  border-radius:999px;
+  background:#f0f2f0;
+  color:#7d8782;
+  font-size:10px;
+  font-weight:550;
+  line-height:1.4;
+}
+.field-help{margin-top:-1px;color:#7d8984;font-size:11.5px;font-weight:430;line-height:1.35}
+
+/* Soft filled fields — One UI style focus without loud underlines */
+input[type="text"],input[type="email"],input[type="tel"],input[type="date"],input:not([type]),select,textarea,
+.postcode-row input,.field-grid input,.address-grid input,.appointment-grid input{
+  min-height:50px;
+  padding:12px 14px;
+  border:1px solid var(--ui-border);
+  border-radius:var(--ui-radius-sm);
+  background:var(--ui-surface-soft);
+  color:var(--ui-ink);
+  font-size:15px;
+  font-weight:430;
+  line-height:1.35;
+  box-shadow:none;
+  outline:none;
+  transition:border-color .16s ease,background .16s ease,box-shadow .16s ease;
+}
+input[type="date"]{font-weight:430!important;color:#4a5d64!important}
+select{font-weight:430!important;color:#40535b!important}
+.therapist-field select{font-weight:430!important}
+textarea{min-height:92px;resize:vertical}
+input::placeholder,textarea::placeholder{color:#929c97;opacity:1;font-weight:400}
+input:hover,select:hover,textarea:hover{background:#f8faf8;border-color:#cdd5cf}
+input:focus,select:focus,textarea:focus{
+  background:#fff;
+  border-color:#7d9480;
+  box-shadow:0 0 0 4px rgba(97,120,95,.12);
+}
+
+.postcode-row{gap:10px}
+.postcode-row button,#findAddress{
+  min-height:50px;
+  padding:0 18px;
+  border-radius:var(--ui-radius-sm);
+  background:var(--ui-navy);
+  box-shadow:0 4px 12px rgba(20,45,79,.13);
+  font-size:13px;
+  font-weight:700;
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.postcode-row button:hover,#findAddress:hover{transform:translateY(-1px);box-shadow:0 7px 16px rgba(20,45,79,.16)}
+.postcode-row button:active,#findAddress:active{transform:none}
+
+/* Services — four equal high-clarity cards */
+.service-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.service-card{
+  min-height:112px;
+  padding:15px 34px 14px 14px;
+  align-items:flex-start;
+  gap:10px;
+  border:1px solid var(--ui-border);
+  border-radius:var(--ui-radius-md);
+  background:#fff;
+  box-shadow:none;
+  transition:border-color .16s ease,background .16s ease,box-shadow .16s ease,transform .12s ease;
+}
+.service-card:hover{transform:translateY(-1px);border-color:#bdc8bf;box-shadow:0 6px 16px rgba(30,47,56,.06)}
+.service-card.selected,.service-card:has(input:checked){
+  border-color:#708a72;
+  background:var(--ui-selected);
+  box-shadow:0 0 0 3px rgba(97,120,95,.10);
+}
+.service-icon{
+  width:34px;height:34px;min-width:34px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:#f3f5f2;
+  color:#667d67;
+  font-size:18px;
+}
+.service-text{gap:5px;padding-top:2px}
+.service-text b{font-size:14px!important;line-height:1.25!important;color:#31454e;font-weight:700}
+.service-text small{font-size:12px!important;line-height:1.35!important;color:#74817c;white-space:normal}
+.selected-dot{font-size:0;right:11px;top:11px;opacity:0}
+.selected-dot:before{content:'✓';display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ui-green);color:#fff;font-size:12px;font-weight:800}
+.service-card.selected .selected-dot,.service-card:has(input:checked) .selected-dot{opacity:1}
+
+/* Conditions — clean Samsung-like choice tiles, no decorative diamonds/bullets */
+.condition-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.condition-chip{position:relative;cursor:pointer;min-width:0}
+.condition-chip span{
+  min-height:52px;
+  padding:10px 38px 10px 14px;
+  border:1px solid var(--ui-border);
+  border-radius:var(--ui-radius-md);
+  background:#fff;
+  color:#43565f;
+  font-size:13.5px!important;
+  font-weight:590;
+  line-height:1.25!important;
+  display:flex;
+  align-items:center;
+  transition:border-color .16s ease,background .16s ease,box-shadow .16s ease,transform .12s ease;
+}
+.condition-chip span:before{content:none!important}
+.condition-chip span:after{
+  content:'✓';
+  position:absolute;
+  right:12px;top:50%;
+  transform:translateY(-50%) scale(.85);
+  width:22px;height:22px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--ui-green);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  opacity:0;
+  transition:opacity .14s ease,transform .14s ease;
+}
+.condition-chip:hover span{border-color:#bdc8bf;background:#fafcf9;transform:translateY(-1px)}
+.condition-chip.selected span,.condition-chip:has(input:checked) span{
+  border-color:#728a74;
+  background:var(--ui-selected);
+  color:#2f4a39;
+  box-shadow:0 0 0 3px rgba(97,120,95,.09);
+}
+.condition-chip.selected span:after,.condition-chip:has(input:checked) span:after{opacity:1;transform:translateY(-50%) scale(1)}
+
+.service-card input[type="radio"],.time-card input[type="radio"],.condition-chip input[type="radio"]{
+  position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none;
+}
+
+/* Preferred time — simple segmented choice, no icon noise */
+.time-card{
+  min-height:72px;
+  padding:12px;
+  border:1px solid var(--ui-border);
+  border-radius:var(--ui-radius-md);
+  background:#fff;
+  transition:border-color .16s ease,background .16s ease,box-shadow .16s ease,transform .12s ease;
+}
+.time-card:hover{border-color:#bdc8bf;transform:translateY(-1px)}
+.time-card.selected,.time-card:has(input:checked){border-color:#728a74;background:var(--ui-selected);box-shadow:0 0 0 3px rgba(97,120,95,.09)}
+.time-card b{font-size:13px!important;line-height:1.25!important;font-weight:650;color:#40535b}
+.time-card small{font-size:11.5px!important;line-height:1.3!important;margin-top:4px;color:#7a8681}
+
+.range-row input[type="range"]{background:transparent;box-shadow:none;border:0;padding:0;min-height:auto;accent-color:var(--ui-green)}
+.toggle{min-height:auto!important}
+.toggle-line{font-weight:520!important}
+
+/* Consent — larger touch targets, links open separately so entered data stays in place */
+.check-line{gap:11px;align-items:flex-start!important;padding:4px 0;font-size:13px!important;font-weight:430!important;color:#53646b}
+.check-line span{font-size:13px!important;font-weight:430!important;line-height:1.5}
+.check-line input[type="checkbox"]{width:20px;height:20px;min-height:20px;margin-top:1px;accent-color:var(--ui-green)}
+.check-line a{font-weight:620;text-decoration-thickness:1px;text-underline-offset:2px;color:#29485a}
+
+/* Summary — quiet hierarchy, still branded */
+.summary-card{
+  border-radius:var(--ui-radius-xl);
+  padding:25px 22px 20px;
+  box-shadow:var(--ui-shadow);
+  min-height:0;
+}
+.summary-card>h2{font-size:25px;line-height:1.2}
+.help-box{border-radius:var(--ui-radius-md);padding:15px 16px;gap:10px}
+.continue-btn{height:54px;border-radius:var(--ui-radius-md);font-size:15px;transition:transform .12s ease,box-shadow .12s ease}
+.continue-btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(210,165,74,.22)}
+.continue-btn:active{transform:none}
+
+.service-card:focus-within,.condition-chip:focus-within,.time-card:focus-within,button:focus-visible,a:focus-visible{
+  outline:3px solid rgba(79,115,98,.20);outline-offset:3px;
+}
+
+/* Desktop/laptop */
+@media(max-width:1180px){
+  .page-shell{grid-template-columns:minmax(0,1fr) 315px;gap:22px}
+  .service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .condition-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* Tablet */
+@media(max-width:900px){
+  .page-shell{width:min(760px,calc(100% - 28px));grid-template-columns:1fr}
+  .summary-card{position:static;order:initial;margin-top:4px}
+  .desktop-nav{display:none}
+  .form-grid{grid-template-columns:1fr}
+  .service-panel,.details-panel,.address-panel,.condition-panel,.clinical-panel,.appointment-panel,.consent-panel{grid-column:1}
+  .service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .condition-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Mobile */
+@media(max-width:640px){
+  .page-shell{width:min(100% - 20px,560px);margin-top:13px}
+  .panel{padding:16px;border-radius:18px}
+  .form-grid{gap:12px}
+  .steps{justify-content:center;font-size:12px;gap:6px;margin-bottom:12px}
+  .steps i{width:24px}
+  .steps b{width:26px;height:26px}
+  .step-badge{width:34px;height:34px;min-width:34px}
+  .step-title strong{font-size:16px}
+  .step-title small{font-size:12px}
+  .service-grid{grid-template-columns:1fr}
+  .service-card{min-height:86px}
+  .field-grid,.address-grid,.clinical-grid,.appointment-grid{grid-template-columns:1fr}
+  .span2,.span3{grid-column:1}
+  .condition-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .condition-chip span{min-height:50px;padding:9px 34px 9px 11px;font-size:12.5px!important}
+  input[type="text"],input[type="email"],input[type="tel"],input[type="date"],input:not([type]),select,textarea,
+  .postcode-row input,.field-grid input,.address-grid input,.appointment-grid input{font-size:16px;min-height:50px}
+  .postcode-row{grid-template-columns:1fr}
+  .postcode-row button,#findAddress{width:100%}
+  .summary-card{padding:20px 16px;border-radius:20px}
+  .summary-card>h2{font-size:22px}
+}
+
+@media(max-width:390px){
+  .page-shell{width:calc(100% - 16px)}
+  .panel{padding:14px}
+  .condition-grid{grid-template-columns:1fr}
+  .condition-chip span{min-height:48px}
+  .steps span{gap:5px}.steps i{width:14px}
+}
+
+/* Clear failure state if live API cannot load choices */
+.load-error{grid-column:1/-1;padding:14px 16px;border:1px solid #ead9bd;border-radius:14px;background:#fff8eb;color:#6b5432;font-size:14px;line-height:1.45}
