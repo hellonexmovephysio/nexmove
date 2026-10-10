@@ -3144,6 +3144,28 @@
             transform: translateY(-3px)
         }
     </style>
+
+<style id="nexmove-phase1-header-breakpoint">
+/* Match the approved homepage header behaviour on tablets/small laptops. */
+@media (max-width: 1239px) {
+  .site-header .desktop-nav { display: none !important; }
+  .site-header .menu-btn {
+    display: block !important;
+    flex: 0 0 45px !important;
+    width: 45px !important;
+    min-width: 45px !important;
+    height: 45px !important;
+  }
+  .site-header .header-row { min-width: 0 !important; }
+  .site-header .brand { min-width: 0 !important; flex: 0 1 auto !important; }
+}
+@media (max-width: 420px) {
+  .site-header .socials { display: none !important; }
+  .site-header .header-row { gap: 12px !important; }
+  .site-header .brand { gap: 10px !important; }
+  .site-header .menu-btn { margin-left: auto !important; }
+}
+</style>
 </head>
 
 <body id="top">
@@ -3168,19 +3190,19 @@
                 <a href="../index.html#pricing">Pricing</a>
                 <a href="../index.html#physios">For Physios</a>
                 <a href="../index.html#about">About Us</a>
-                <a class="phone-btn" href="tel:+44 7436 059680">☎ +44 7436 059680</a>
+                <a class="phone-btn" href="tel:+447436059680">☎ +44 7436 059680</a>
                 <a class="phone-btn" href="../booking/index.html">BOOK NOW</a>
             </nav>
 
             <div class="socials">
-                <a href="https://www.instagram.com/nexmovephysio?utm_source=qr&igsi=bWN6ZG9raHN5bWRq" target="_blank" aria-label="Instagram">
+                <a href="https://www.instagram.com/nexmovephysio?utm_source=qr&igsi=bWN6ZG9raHN5bWRq" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24">
                         <rect x="3" y="3" width="18" height="18" rx="5"></rect>
                         <circle cx="12" cy="12" r="4"></circle>
                         <circle cx="17.5" cy="6.5" r="1"></circle>
                     </svg>
                 </a>
-                <a href="https://wa.me/447436059680" target="_blank" aria-label="WhatsApp">
+                <a href="https://wa.me/447436059680" target="_blank" aria-label="WhatsApp" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24">
                         <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.7A8.5 8.5 0 1 1 20.5 11.5z"></path>
                     </svg>
@@ -3626,11 +3648,11 @@
             </div>
             <div>
                 <h4>Services</h4>
-                <a href="#specialisations">Musculoskeletal</a>
-                <a href="#specialisations">Sports Physio</a>
-                <a href="#specialisations">Neuro Physio</a>
-                <a href="#specialisations">Post-Surgical Rehab</a>
-                <a href="#specialisations">Elderly Physio</a>
+                <a href="../index.html#specialisations">Musculoskeletal</a>
+                <a href="../index.html#specialisations">Sports Physio</a>
+                <a href="../index.html#specialisations">Neuro Physio</a>
+                <a href="../index.html#specialisations">Post-Surgical Rehab</a>
+                <a href="../index.html#specialisations">Elderly Physio</a>
             </div>
             <div>
                 <h4>Company</h4>
@@ -3649,11 +3671,11 @@
         </div>
         <div class="container footer-bottom">
             <span>&copy; 2026 NEXmove Physio. All rights reserved.</span>
-            <div><a href="#">Privacy Policy</a><a href="#">Terms &amp; Conditions</a></div>
+            <div><a href="../booking/privacy-policy.html">Privacy Policy</a><a href="../booking/terms-and-conditions.html">Terms &amp; Conditions</a></div>
         </div>
     </footer>
 
-    <script src="js/api.js"></script>
+    <script src="../js/api.js"></script>
     <script>
         const menuBtn = document.getElementById("menuBtn");
         const mobileNav = document.getElementById("mobileNav");
