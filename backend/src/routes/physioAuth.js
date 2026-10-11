@@ -9,9 +9,17 @@ const {
   setPhysioSessionCookie,
   clearPhysioSessionCookie,
 } = require('../middleware/physioAuth');
-const { sendPhysioPasswordResetEmail, sendAdminPhysioApplicationNotification } = require('../utils/email');
+const {
+  sendPhysioPasswordResetEmail,
+  sendPhysioVerificationEmail,
+  sendAdminPhysioApplicationNotification,
+} = require('../utils/email');
 
 const router = express.Router();
+
+const DOCUMENT_TYPES = ['cv', 'indemnity', 'qualification', 'dbs', 'right_to_work'];
+const DOCUMENT_MIMES = ['application/pdf', 'image/jpeg', 'image/png'];
+const DOCUMENT_MAX_BYTES = 5 * 1024 * 1024;
 
 function normaliseEmail(value) {
   return String(value || '').trim().toLowerCase();
@@ -28,6 +36,9 @@ function publicUser(row) {
     email: row.email,
     phone: row.phone || '',
     account_status: row.account_status,
+    practitioner_status: row.practitioner_status || 'Applicant',
+    email_verified: Boolean(row.email_verified_at),
+    email_verified_at: row.email_verified_at || null,
     created_at: row.created_at,
   };
 }
@@ -41,6 +52,51 @@ async function getApplicationByUser(sql, userId) {
     LIMIT 1
   `;
   return rows[0] || null;
+}
+
+function createOneTimeToken() {
+  const token = crypto.randomBytes(32).toString('hex');
+  const hash = crypto.createHash('sha256').update(token).digest('hex');
+  return { token, hash };
+}
+
+function documentKey() {
+  const source = process.env.PHYSIO_DOCUMENT_KEY || process.env.JWT_SECRET;
+  if (!source) throw new Error('Document encryption key is not configured');
+  return crypto.createHash('sha256').update(String(source)).digest();
+}
+
+function encryptDocument(buffer) {
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv('aes-256-gcm', documentKey(), iv);
+  const encrypted = Buffer.concat([cipher.update(buffer), cipher.final()]);
+  return { encrypted, iv, authTag: cipher.getAuthTag() };
+}
+
+function safeFileName(value) {
+  const name = String(value || 'document').replace(/[\\/\0\r\n]/g, '_').trim();
+  return cleanString(name || 'document', 255);
+}
+
+function detectMime(buffer, claimed) {
+  if (!Buffer.isBuffer(buffer) || !buffer.length) return null;
+  if (buffer.length >= 4 && buffer.subarray(0, 4).toString('hex') === '25504446') return 'application/pdf';
+  if (buffer.length >= 3 && buffer.subarray(0, 3).toString('hex') === 'ffd8ff') return 'image/jpeg';
+  if (buffer.length >= 8 && buffer.subarray(0, 8).toString('hex') === '89504e470d0a1a0a') return 'image/png';
+  return DOCUMENT_MIMES.includes(claimed) ? claimed : null;
+}
+
+function applicationSummary(application) {
+  if (!application) return null;
+  return {
+    id: application.id,
+    application_ref: application.application_ref,
+    status: application.status,
+    verification_status: application.verification_status || 'Not Requested',
+    verification_notes: application.verification_notes || '',
+    created_at: application.created_at,
+    updated_at: application.updated_at,
+  };
 }
 
 // POST /api/physio-auth/signup
@@ -68,9 +124,7 @@ router.post('/signup', async (req, res) => {
     }
 
     const sql = getDB();
-    const existing = await sql`
-      SELECT id FROM physio_users WHERE email = ${email} LIMIT 1
-    `;
+    const existing = await sql`SELECT id FROM physio_users WHERE email = ${email} LIMIT 1`;
     if (existing.length) {
       return res.status(409).json({
         success: false,
@@ -79,20 +133,40 @@ router.post('/signup', async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
+    const verification = createOneTimeToken();
+    const verificationExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
     const rows = await sql`
-      INSERT INTO physio_users (full_name, email, phone, password_hash)
-      VALUES (${fullName}, ${email}, ${phone}, ${passwordHash})
-      RETURNING id, full_name, email, phone, account_status, created_at
+      INSERT INTO physio_users (
+        full_name, email, phone, password_hash,
+        email_verification_token_hash, email_verification_expires_at
+      )
+      VALUES (
+        ${fullName}, ${email}, ${phone}, ${passwordHash},
+        ${verification.hash}, ${verificationExpiry.toISOString()}
+      )
+      RETURNING id, full_name, email, phone, account_status, practitioner_status,
+                email_verified_at, created_at
     `;
 
     const user = rows[0];
     setPhysioSessionCookie(res, user);
 
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const mail = await sendPhysioVerificationEmail({
+      full_name: user.full_name,
+      email: user.email,
+      verify_url: `${baseUrl}/physio/verify-email.html?token=${encodeURIComponent(verification.token)}&email=${encodeURIComponent(user.email)}`,
+    });
+
     return res.status(201).json({
       success: true,
-      message: 'Your practitioner account has been created.',
+      message: mail.success
+        ? 'Your account has been created. Check your email to verify your address.'
+        : 'Your account has been created, but the verification email could not be sent. Use Resend verification email.',
+      email_sent: Boolean(mail.success),
       user: publicUser(user),
-      next: '/physio/application.html',
+      next: `/physio/verify-email.html?email=${encodeURIComponent(user.email)}`,
     });
   } catch (err) {
     console.error('Practitioner signup error:', err);
@@ -112,15 +186,12 @@ router.post('/login', async (req, res) => {
     }
 
     const sql = getDB();
-    const rows = await sql`
-      SELECT * FROM physio_users WHERE email = ${email} LIMIT 1
-    `;
+    const rows = await sql`SELECT * FROM physio_users WHERE email = ${email} LIMIT 1`;
     const user = rows[0];
 
     if (!user || !(await bcrypt.compare(password, user.password_hash))) {
       return res.status(401).json({ success: false, message: 'Email or password is incorrect.' });
     }
-
     if (user.account_status !== 'Active') {
       return res.status(403).json({ success: false, message: 'This practitioner account is not active.' });
     }
@@ -128,15 +199,18 @@ router.post('/login', async (req, res) => {
     setPhysioSessionCookie(res, user);
     const application = await getApplicationByUser(sql, user.id);
 
+    let next = '/physio/application.html';
+    if (!user.email_verified_at) {
+      next = `/physio/verify-email.html?email=${encodeURIComponent(user.email)}`;
+    } else if (application) {
+      next = '/physio/dashboard.html';
+    }
+
     return res.json({
       success: true,
       user: publicUser(user),
-      application: application ? {
-        id: application.id,
-        application_ref: application.application_ref,
-        status: application.status,
-      } : null,
-      next: application ? '/physio/dashboard.html' : '/join-as-physio/index.html',
+      application: applicationSummary(application),
+      next,
     });
   } catch (err) {
     console.error('Practitioner login error:', err);
@@ -144,10 +218,99 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// POST /api/physio-auth/logout
 router.post('/logout', (req, res) => {
   clearPhysioSessionCookie(res);
   res.json({ success: true });
+});
+
+// POST /api/physio-auth/verify-email
+router.post('/verify-email', async (req, res) => {
+  try {
+    await ensurePhysioPortalSchema();
+    const token = String(req.body.token || '');
+    if (!token) return res.status(400).json({ success: false, message: 'Verification token is missing.' });
+
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const sql = getDB();
+    const rows = await sql`
+      SELECT *
+      FROM physio_users
+      WHERE email_verification_token_hash = ${tokenHash}
+        AND email_verification_expires_at > NOW()
+      LIMIT 1
+    `;
+
+    if (!rows.length) {
+      return res.status(400).json({ success: false, message: 'This verification link is invalid or has expired.' });
+    }
+
+    const updated = await sql`
+      UPDATE physio_users
+      SET email_verified_at = COALESCE(email_verified_at, NOW()),
+          email_verification_token_hash = NULL,
+          email_verification_expires_at = NULL,
+          updated_at = NOW()
+      WHERE id = ${rows[0].id}
+      RETURNING *
+    `;
+
+    setPhysioSessionCookie(res, updated[0]);
+    const application = await getApplicationByUser(sql, updated[0].id);
+
+    res.json({
+      success: true,
+      message: 'Your email has been verified.',
+      next: application ? '/physio/dashboard.html' : '/physio/application.html',
+    });
+  } catch (err) {
+    console.error('Practitioner email verification error:', err);
+    res.status(500).json({ success: false, message: 'We could not verify your email right now.' });
+  }
+});
+
+// POST /api/physio-auth/resend-verification
+router.post('/resend-verification', async (req, res) => {
+  const generic = {
+    success: true,
+    message: 'If that account still needs verification, a new email has been sent.',
+  };
+
+  try {
+    await ensurePhysioPortalSchema();
+    const email = normaliseEmail(req.body.email);
+    if (!validEmail(email)) return res.json(generic);
+
+    const sql = getDB();
+    const rows = await sql`
+      SELECT id, full_name, email, email_verified_at
+      FROM physio_users
+      WHERE email = ${email}
+      LIMIT 1
+    `;
+    if (!rows.length || rows[0].email_verified_at) return res.json(generic);
+
+    const verification = createOneTimeToken();
+    const expiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    await sql`
+      UPDATE physio_users
+      SET email_verification_token_hash = ${verification.hash},
+          email_verification_expires_at = ${expiry.toISOString()},
+          updated_at = NOW()
+      WHERE id = ${rows[0].id}
+    `;
+
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    await sendPhysioVerificationEmail({
+      full_name: rows[0].full_name,
+      email: rows[0].email,
+      verify_url: `${baseUrl}/physio/verify-email.html?token=${encodeURIComponent(verification.token)}&email=${encodeURIComponent(rows[0].email)}`,
+    });
+
+    res.json(generic);
+  } catch (err) {
+    console.error('Practitioner resend verification error:', err);
+    res.status(500).json({ success: false, message: 'We could not resend the verification email right now.' });
+  }
 });
 
 // GET /api/physio-auth/me
@@ -156,7 +319,8 @@ router.get('/me', physioAuthMiddleware, async (req, res) => {
     await ensurePhysioPortalSchema();
     const sql = getDB();
     const rows = await sql`
-      SELECT id, full_name, email, phone, account_status, created_at
+      SELECT id, full_name, email, phone, account_status, practitioner_status,
+             email_verified_at, created_at
       FROM physio_users
       WHERE id = ${req.physio.id}
       LIMIT 1
@@ -170,13 +334,7 @@ router.get('/me', physioAuthMiddleware, async (req, res) => {
     res.json({
       success: true,
       user: publicUser(rows[0]),
-      application: application ? {
-        id: application.id,
-        application_ref: application.application_ref,
-        status: application.status,
-        created_at: application.created_at,
-        updated_at: application.updated_at,
-      } : null,
+      application: applicationSummary(application),
     });
   } catch (err) {
     console.error('Practitioner me error:', err);
@@ -184,7 +342,6 @@ router.get('/me', physioAuthMiddleware, async (req, res) => {
   }
 });
 
-// GET /api/physio-auth/application
 router.get('/application', physioAuthMiddleware, async (req, res) => {
   try {
     await ensurePhysioPortalSchema();
@@ -197,22 +354,23 @@ router.get('/application', physioAuthMiddleware, async (req, res) => {
   }
 });
 
-// POST /api/physio-auth/application
 router.post('/application', physioAuthMiddleware, async (req, res) => {
   try {
     await ensurePhysioPortalSchema();
     const sql = getDB();
 
     const userRows = await sql`
-      SELECT id, full_name, email, phone
+      SELECT id, full_name, email, phone, email_verified_at
       FROM physio_users
       WHERE id = ${req.physio.id}
       LIMIT 1
     `;
-    if (!userRows.length) {
-      return res.status(401).json({ success: false, message: 'Practitioner account not found.' });
-    }
+    if (!userRows.length) return res.status(401).json({ success: false, message: 'Practitioner account not found.' });
     const user = userRows[0];
+
+    if (!user.email_verified_at) {
+      return res.status(403).json({ success: false, message: 'Verify your email before submitting your application.' });
+    }
 
     const existing = await getApplicationByUser(sql, req.physio.id);
     if (existing) {
@@ -249,20 +407,16 @@ router.post('/application', physioAuthMiddleware, async (req, res) => {
     if (!qualifications) errors.push('Please enter your physiotherapy qualifications.');
     if (!consentPrivacy) errors.push('Privacy consent is required.');
     if (!agreeDeclaration) errors.push('Please confirm the applicant declaration.');
-
-    if (errors.length) {
-      return res.status(422).json({ success: false, message: errors[0], errors });
-    }
+    if (errors.length) return res.status(422).json({ success: false, message: errors[0], errors });
 
     const applicationRef = 'NEX-PHY-' + crypto.randomBytes(5).toString('hex').toUpperCase();
-
     const rows = await sql`
       INSERT INTO physio_applications (
         application_ref, physio_user_id, full_name, email, phone, city, preferred_contact,
         hcpc_number, years_experience, specialisations, qualifications, biography,
         areas_covered, preferred_days, preferred_hours, home_visit_availability,
         right_to_work, eligibility_type, csp_member, uk_experience,
-        additional_info, consent_privacy, agree_declaration, status
+        additional_info, consent_privacy, agree_declaration, status, verification_status
       ) VALUES (
         ${applicationRef}, ${req.physio.id}, ${user.full_name}, ${user.email}, ${user.phone || ''},
         ${city}, ${preferredContact}, ${hcpcNumber},
@@ -270,9 +424,9 @@ router.post('/application', physioAuthMiddleware, async (req, res) => {
         ${specialisations}, ${qualifications}, ${biography},
         ${areasCovered}, ${preferredDays}, ${preferredHours}, ${homeVisitAvailability},
         ${rightToWork}, ${eligibilityType}, ${cspMember}, ${ukExperience},
-        ${additionalInfo}, ${consentPrivacy}, ${agreeDeclaration}, 'Pending'
+        ${additionalInfo}, ${consentPrivacy}, ${agreeDeclaration}, 'Pending', 'Not Requested'
       )
-      RETURNING id, application_ref, status, created_at
+      RETURNING id, application_ref, status, verification_status, created_at
     `;
 
     await sendAdminPhysioApplicationNotification({
@@ -295,32 +449,199 @@ router.post('/application', physioAuthMiddleware, async (req, res) => {
   }
 });
 
-// POST /api/physio-auth/forgot-password
+// GET /api/physio-auth/documents
+router.get('/documents', physioAuthMiddleware, async (req, res) => {
+  try {
+    await ensurePhysioPortalSchema();
+    const sql = getDB();
+    const rows = await sql`
+      SELECT id, document_type, original_name, mime_type, file_size, status,
+             reviewer_notes, created_at, updated_at
+      FROM physio_verification_documents
+      WHERE physio_user_id = ${req.physio.id}
+      ORDER BY document_type, created_at DESC
+    `;
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Practitioner documents list error:', err);
+    res.status(500).json({ success: false, message: 'Could not load verification documents.' });
+  }
+});
+
+// POST /api/physio-auth/documents/:type
+router.post(
+  '/documents/:type',
+  physioAuthMiddleware,
+  express.raw({ type: 'application/octet-stream', limit: DOCUMENT_MAX_BYTES }),
+  async (req, res) => {
+    try {
+      await ensurePhysioPortalSchema();
+      const type = cleanString(req.params.type || '', 40);
+      if (!DOCUMENT_TYPES.includes(type)) {
+        return res.status(400).json({ success: false, message: 'Unsupported document type.' });
+      }
+
+      const sql = getDB();
+      const application = await getApplicationByUser(sql, req.physio.id);
+      if (!application) return res.status(404).json({ success: false, message: 'Submit your application first.' });
+
+      const verificationStatus = application.verification_status || 'Not Requested';
+      if (!['Required', 'Submitted', 'Issue'].includes(verificationStatus)) {
+        return res.status(403).json({
+          success: false,
+          message: 'Verification documents can be uploaded only after NEXmove requests them.',
+        });
+      }
+
+      const buffer = Buffer.isBuffer(req.body) ? req.body : Buffer.from(req.body || []);
+      if (!buffer.length) return res.status(400).json({ success: false, message: 'Choose a document to upload.' });
+      if (buffer.length > DOCUMENT_MAX_BYTES) return res.status(413).json({ success: false, message: 'Document must be 5 MB or smaller.' });
+
+      const claimedMime = cleanString(req.headers['x-file-mime'] || '', 100);
+      const mime = detectMime(buffer, claimedMime);
+      if (!mime || !DOCUMENT_MIMES.includes(mime)) {
+        return res.status(415).json({ success: false, message: 'Upload a PDF, JPG or PNG document.' });
+      }
+
+      const originalName = safeFileName(req.headers['x-file-name']);
+      const encrypted = encryptDocument(buffer);
+
+      await sql`
+        DELETE FROM physio_verification_documents
+        WHERE physio_user_id = ${req.physio.id}
+          AND document_type = ${type}
+          AND status <> 'Verified'
+      `;
+
+      const rows = await sql`
+        INSERT INTO physio_verification_documents (
+          physio_user_id, application_id, document_type, original_name, mime_type,
+          file_size, encrypted_data, iv, auth_tag, status
+        ) VALUES (
+          ${req.physio.id}, ${application.id}, ${type}, ${originalName}, ${mime},
+          ${buffer.length}, ${encrypted.encrypted}, ${encrypted.iv}, ${encrypted.authTag}, 'Submitted'
+        )
+        RETURNING id, document_type, original_name, mime_type, file_size, status, created_at
+      `;
+
+      await sql`
+        UPDATE physio_applications
+        SET verification_status = 'Submitted', updated_at = NOW()
+        WHERE id = ${application.id}
+          AND verification_status IN ('Required', 'Issue')
+      `;
+
+      res.status(201).json({ success: true, message: 'Document uploaded securely.', document: rows[0] });
+    } catch (err) {
+      if (err && err.type === 'entity.too.large') {
+        return res.status(413).json({ success: false, message: 'Document must be 5 MB or smaller.' });
+      }
+      console.error('Practitioner document upload error:', err);
+      res.status(500).json({ success: false, message: 'We could not upload that document right now.' });
+    }
+  }
+);
+
+// GET /api/physio-auth/profile
+router.get('/profile', physioAuthMiddleware, async (req, res) => {
+  try {
+    await ensurePhysioPortalSchema();
+    const sql = getDB();
+    const profileRows = await sql`
+      SELECT * FROM physio_profiles WHERE physio_user_id = ${req.physio.id} LIMIT 1
+    `;
+    const application = await getApplicationByUser(sql, req.physio.id);
+    res.json({ success: true, profile: profileRows[0] || null, application });
+  } catch (err) {
+    console.error('Practitioner profile get error:', err);
+    res.status(500).json({ success: false, message: 'Could not load your profile.' });
+  }
+});
+
+// PUT /api/physio-auth/profile
+router.put('/profile', physioAuthMiddleware, async (req, res) => {
+  try {
+    await ensurePhysioPortalSchema();
+    const sql = getDB();
+    const userRows = await sql`
+      SELECT id, full_name, practitioner_status FROM physio_users WHERE id = ${req.physio.id} LIMIT 1
+    `;
+    if (!userRows.length) return res.status(404).json({ success: false, message: 'Practitioner account not found.' });
+    if (userRows[0].practitioner_status !== 'Active') {
+      return res.status(403).json({ success: false, message: 'Your practitioner profile becomes editable after activation.' });
+    }
+
+    const displayName = cleanString(req.body.display_name || userRows[0].full_name, 255);
+    const biography = cleanString(req.body.biography || '', 2000);
+    const areasCovered = cleanString(req.body.areas_covered || '', 2000);
+    const preferredDays = cleanString(req.body.preferred_days || '', 255);
+    const preferredHours = cleanString(req.body.preferred_hours || '', 255);
+    const specialisations = cleanString(req.body.specialisations || '', 2000);
+
+    const rows = await sql`
+      UPDATE physio_profiles
+      SET display_name = ${displayName},
+          biography = ${biography},
+          areas_covered = ${areasCovered},
+          preferred_days = ${preferredDays},
+          preferred_hours = ${preferredHours},
+          specialisations = ${specialisations},
+          updated_at = NOW()
+      WHERE physio_user_id = ${req.physio.id}
+      RETURNING *
+    `;
+    if (!rows.length) return res.status(404).json({ success: false, message: 'Practitioner profile is not active yet.' });
+    res.json({ success: true, message: 'Profile updated.', profile: rows[0] });
+  } catch (err) {
+    console.error('Practitioner profile update error:', err);
+    res.status(500).json({ success: false, message: 'Could not update your profile.' });
+  }
+});
+
+// GET /api/physio-auth/appointments
+router.get('/appointments', physioAuthMiddleware, async (req, res) => {
+  try {
+    await ensurePhysioPortalSchema();
+    const sql = getDB();
+    const users = await sql`
+      SELECT practitioner_status FROM physio_users WHERE id = ${req.physio.id} LIMIT 1
+    `;
+    if (!users.length || users[0].practitioner_status !== 'Active') {
+      return res.status(403).json({ success: false, message: 'Assigned appointments are available after practitioner activation.' });
+    }
+
+    const rows = await sql`
+      SELECT b.id, b.booking_ref, b.full_name, b.phone, b.postcode, b.address_line1, b.city,
+             b.preferred_date, b.preferred_time, b.status, b.symptoms, b.access_details,
+             s.name AS service_name
+      FROM bookings b
+      LEFT JOIN services s ON s.id = b.service_id
+      WHERE b.physio_user_id = ${req.physio.id}
+      ORDER BY b.preferred_date DESC, b.preferred_time DESC
+    `;
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Practitioner appointments get error:', err);
+    res.status(500).json({ success: false, message: 'Could not load assigned appointments.' });
+  }
+});
+
 router.post('/forgot-password', async (req, res) => {
   try {
     await ensurePhysioPortalSchema();
     const email = normaliseEmail(req.body.email);
-
-    const generic = {
-      success: true,
-      message: 'If an account exists for that email, a reset link has been sent.',
-    };
-
+    const generic = { success: true, message: 'If an account exists for that email, a reset link has been sent.' };
     if (!validEmail(email)) return res.json(generic);
 
     const sql = getDB();
-    const rows = await sql`
-      SELECT id, full_name, email FROM physio_users WHERE email = ${email} LIMIT 1
-    `;
+    const rows = await sql`SELECT id, full_name, email FROM physio_users WHERE email = ${email} LIMIT 1`;
     if (!rows.length) return res.json(generic);
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const reset = createOneTimeToken();
     const expiry = new Date(Date.now() + 60 * 60 * 1000);
-
     await sql`
       UPDATE physio_users
-      SET password_reset_token_hash = ${tokenHash},
+      SET password_reset_token_hash = ${reset.hash},
           password_reset_expires_at = ${expiry.toISOString()},
           updated_at = NOW()
       WHERE id = ${rows[0].id}
@@ -330,9 +651,8 @@ router.post('/forgot-password', async (req, res) => {
     await sendPhysioPasswordResetEmail({
       full_name: rows[0].full_name,
       email: rows[0].email,
-      reset_url: `${baseUrl}/physio/reset-password.html?token=${encodeURIComponent(token)}`,
+      reset_url: `${baseUrl}/physio/reset-password.html?token=${encodeURIComponent(reset.token)}`,
     });
-
     return res.json(generic);
   } catch (err) {
     console.error('Practitioner forgot password error:', err);
@@ -340,7 +660,6 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// POST /api/physio-auth/reset-password
 router.post('/reset-password', async (req, res) => {
   try {
     await ensurePhysioPortalSchema();
@@ -361,10 +680,7 @@ router.post('/reset-password', async (req, res) => {
         AND password_reset_expires_at > NOW()
       LIMIT 1
     `;
-
-    if (!rows.length) {
-      return res.status(400).json({ success: false, message: 'This reset link is invalid or has expired.' });
-    }
+    if (!rows.length) return res.status(400).json({ success: false, message: 'This reset link is invalid or has expired.' });
 
     const passwordHash = await bcrypt.hash(password, 12);
     await sql`
@@ -375,7 +691,6 @@ router.post('/reset-password', async (req, res) => {
           updated_at = NOW()
       WHERE id = ${rows[0].id}
     `;
-
     return res.json({ success: true, message: 'Your password has been reset. You can now sign in.' });
   } catch (err) {
     console.error('Practitioner reset password error:', err);
