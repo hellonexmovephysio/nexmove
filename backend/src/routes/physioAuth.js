@@ -74,7 +74,9 @@ function encryptDocument(buffer) {
 }
 
 function safeFileName(value) {
-  const name = String(value || 'document').replace(/[\\/\0\r\n]/g, '_').trim();
+  let raw = String(value || 'document');
+  try { raw = decodeURIComponent(raw); } catch (_) {}
+  const name = raw.replace(/[\\/\0\r\n]/g, '_').trim();
   return cleanString(name || 'document', 255);
 }
 
