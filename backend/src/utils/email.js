@@ -230,12 +230,17 @@ async function sendPhysioApplicationStatusEmail(application) {
   const fromName = process.env.EMAIL_FROM_NAME || 'NEXmove Physio';
   const status = application.status || 'Pending';
   const verification = application.verification_status || 'Not Requested';
+  const practitionerStatus = application.practitioner_status || '';
 
   let guidance = 'You can sign in to the NEXmove Practitioner Portal to see the latest status.';
-  if (verification === 'Required') {
-    guidance = 'Please sign in to the NEXmove Practitioner Portal and upload the requested verification documents.';
+  if (practitionerStatus === 'Active') {
+    guidance = 'Your NEXmove practitioner account is now active. Sign in to manage your practitioner profile and view appointments assigned to you.';
+  } else if (verification === 'Required') {
+    guidance = 'Action required: sign in to the NEXmove Practitioner Portal and upload the requested verification documents.';
+  } else if (verification === 'Issue') {
+    guidance = 'Action required: NEXmove has left feedback on one or more verification documents. Sign in to review the note and upload an updated document.';
   } else if (verification === 'Verified' && status === 'Approved') {
-    guidance = 'Your application and verification have been approved. NEXmove will contact you about practitioner activation.';
+    guidance = 'Your application and verification are approved. Your practitioner account is ready for final activation by NEXmove.';
   }
 
   try {
@@ -250,13 +255,14 @@ async function sendPhysioApplicationStatusEmail(application) {
           <p>Your NEXmove practitioner application has been updated.</p>
           <div style="background:#f7f4ed;padding:18px;border-radius:12px;margin:20px 0">
             <p style="margin:0 0 6px"><strong>Application status:</strong> ${status}</p>
-            <p style="margin:0"><strong>Verification status:</strong> ${verification}</p>
+            <p style="margin:0 0 6px"><strong>Verification status:</strong> ${verification}</p>
+            ${practitionerStatus ? `<p style="margin:0"><strong>Practitioner status:</strong> ${practitionerStatus}</p>` : ''}
           </div>
           <p>${guidance}</p>
           <p><a href="${application.portal_url}" style="color:#1B2A4A;font-weight:700">Open Practitioner Portal</a></p>
         </div>
       `,
-      text: `Hello ${application.full_name || 'Practitioner'},\n\nApplication status: ${status}\nVerification status: ${verification}\n\n${guidance}\n\n${application.portal_url}\n`
+      text: `Hello ${application.full_name || 'Practitioner'},\n\nApplication status: ${status}\nVerification status: ${verification}${practitionerStatus ? `\nPractitioner status: ${practitionerStatus}` : ''}\n\n${guidance}\n\n${application.portal_url}\n`
     });
     return { success: true, messageId: info.messageId };
   } catch (error) {
