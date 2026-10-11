@@ -83,7 +83,7 @@ function detectMime(buffer, claimed) {
   if (buffer.length >= 4 && buffer.subarray(0, 4).toString('hex') === '25504446') return 'application/pdf';
   if (buffer.length >= 3 && buffer.subarray(0, 3).toString('hex') === 'ffd8ff') return 'image/jpeg';
   if (buffer.length >= 8 && buffer.subarray(0, 8).toString('hex') === '89504e470d0a1a0a') return 'image/png';
-  return DOCUMENT_MIMES.includes(claimed) ? claimed : null;
+  return null;
 }
 
 function applicationSummary(application) {
@@ -519,7 +519,7 @@ router.post(
           file_size, encrypted_data, iv, auth_tag, status
         ) VALUES (
           ${req.physio.id}, ${application.id}, ${type}, ${originalName}, ${mime},
-          ${buffer.length}, ${encrypted.encrypted}, ${encrypted.iv}, ${encrypted.authTag}, 'Submitted'
+          ${buffer.length}, ${encrypted.encrypted.toString('base64')}, ${encrypted.iv.toString('base64')}, ${encrypted.authTag.toString('base64')}, 'Submitted'
         )
         RETURNING id, document_type, original_name, mime_type, file_size, status, created_at
       `;
