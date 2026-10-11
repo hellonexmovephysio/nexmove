@@ -9,7 +9,7 @@ const {
   setPhysioSessionCookie,
   clearPhysioSessionCookie,
 } = require('../middleware/physioAuth');
-const { sendPhysioPasswordResetEmail } = require('../utils/email');
+const { sendPhysioPasswordResetEmail, sendAdminPhysioApplicationNotification } = require('../utils/email');
 
 const router = express.Router();
 
@@ -274,6 +274,14 @@ router.post('/application', physioAuthMiddleware, async (req, res) => {
       )
       RETURNING id, application_ref, status, created_at
     `;
+
+    await sendAdminPhysioApplicationNotification({
+      full_name: user.full_name,
+      email: user.email,
+      phone: user.phone || '',
+      city,
+      hcpc_number: hcpcNumber,
+    });
 
     res.status(201).json({
       success: true,
