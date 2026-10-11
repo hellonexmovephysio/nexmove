@@ -4297,7 +4297,9 @@ textarea:focus-visible {
 /* Premium refresh — Physiotherapy, Simplified only */
 .simplified {
     position: relative;
-    overflow: hidden;
+    /* Use clip rather than hidden so the inner #how heading remains a valid
+       viewport scroll-snap target while decorative overflow stays clipped. */
+    overflow: clip;
     padding: clamp(92px, 8vw, 132px) 0 !important;
     background:
         radial-gradient(circle at 12% 14%, rgba(183,154,91,.10), transparent 30%),
