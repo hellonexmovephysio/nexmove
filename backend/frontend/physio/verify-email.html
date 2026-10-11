@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Verify your email for the NEXmove Practitioner Portal.">
+<title>Verify Email | NEXmove Physio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<main class="portal-shell">
+  <div class="portal-wrap">
+    <div class="portal-brand">
+      <img class="portal-logo" src="../images/nexmove-logo.png" alt="NEXmove Physio">
+      <h1>Verify your email</h1>
+      <p>We verify each practitioner email before accepting an application.</p>
+    </div>
+    <section class="portal-card">
+      <div id="notice" class="notice show success" role="alert">Check your inbox for your verification link.</div>
+      <div id="verifyPanel">
+        <p class="section-copy">Click the verification link we sent to your registered email. The link is valid for 24 hours.</p>
+        <form id="resendForm">
+          <div class="form-group">
+            <label for="email">Registered email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <button id="resendBtn" class="btn btn-primary" type="submit">Resend verification email</button>
+        </form>
+      </div>
+      <div class="portal-links"><a href="/physio/">← Back to sign in</a></div>
+    </section>
+  </div>
+</main>
+<script>
+const notice=document.getElementById('notice');
+const params=new URLSearchParams(location.search);
+const token=params.get('token')||'';
+const email=params.get('email')||'';
+document.getElementById('email').value=email;
+function show(message,type='success'){notice.textContent=message;notice.className='notice show '+type}
+async function verify(){
+  if(!token)return;
+  show('Verifying your email…','success');
+  try{
+    const res=await fetch('/api/physio-auth/verify-email',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({token})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.message||'Email verification failed.');
+    show('Email verified. Opening your practitioner application…','success');
+    setTimeout(()=>location.replace(data.next||'/physio/application.html'),800);
+  }catch(err){show(err.message,'error')}
+}
+verify();
+document.getElementById('resendForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=document.getElementById('resendBtn');
+  btn.disabled=true;btn.textContent='Sending…';
+  try{
+    const res=await fetch('/api/physio-auth/resend-verification',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:document.getElementById('email').value})});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.message||'Could not resend verification email.');
+    show(data.message||'If verification is still required, a new email has been sent.','success');
+  }catch(err){show(err.message,'error')}finally{btn.disabled=false;btn.textContent='Resend verification email'}
+});
+</script>
+</body>
+</html>
