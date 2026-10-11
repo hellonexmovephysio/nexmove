@@ -68,6 +68,142 @@
 .portal-table th,.portal-table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
 .portal-table th{color:var(--navy);background:var(--soft)}
 .hidden{display:none!important}
+
+/* 11 Oct 2026 — approved NEXmove practitioner dashboard colour refinement.
+   Visual-only: no workflow, API, form or booking logic changes. */
+body{
+  background:linear-gradient(145deg,#f7f8f3 0%,#fffdf8 52%,#f7f4ee 100%);
+}
+.portal-card.wide{
+  background:#fffefb;
+  border:1px solid #e7e0d6;
+  box-shadow:0 24px 64px rgba(27,42,74,.10);
+}
+.topnav{
+  color:#10264a;
+}
+.ref-box{
+  background:#faf7ef;
+  border-color:#e5d9c5;
+}
+.progress-step:before{
+  background:#deded8;
+}
+.progress-step.done:before{
+  background:#5f815f;
+}
+.progress-step.current:before{
+  background:#c49a45;
+}
+.progress-step.done{
+  color:#527052;
+}
+.progress-step.current{
+  color:#725419;
+}
+.state-hero{
+  background:linear-gradient(135deg,#fffefb 0%,#fbf8f0 100%);
+  border-color:#e7dcc7;
+}
+.state-badge{
+  background:#edf2f7;
+  color:#19345b;
+}
+.state-badge.action{
+  background:#f8e8bc;
+  color:#765613;
+}
+.state-badge.good{
+  background:#e7f2e5;
+  color:#285d35;
+}
+.action-banner{
+  border-color:#eacb87;
+  background:#fffaf0;
+  color:#684d1e;
+}
+.admin-message{
+  border-left-color:#5e865c;
+  background:#f2f7ef;
+  color:#2f4f37;
+  box-shadow:inset 0 0 0 1px #dbe8d8;
+}
+.admin-message strong{
+  color:#18395b;
+}
+.meta{
+  background:#faf8f2;
+  border-color:#e4ddd1;
+}
+.dashboard-section{
+  background:#fffefb;
+  border-color:#e5ddcf;
+}
+.docs-summary{
+  background:#eaf3e6;
+  color:#285b36;
+}
+.doc-card{
+  background:#faf8f2;
+  border-color:#e3dbcf;
+}
+.doc-chip{
+  background:#edf1f4;
+  color:#31465f;
+}
+.doc-chip.verified{
+  background:#e4f0e1;
+  color:#256039;
+}
+.doc-chip.issue{
+  background:#fff0ef;
+  color:#9b302d;
+}
+.doc-chip.submitted{
+  background:#f7e9bd;
+  color:#795813;
+}
+.doc-chip.missing{
+  background:#eef1f2;
+  color:#657077;
+}
+.feedback{
+  background:#fff3f1;
+  border-color:#efc7c2;
+  color:#8a312e;
+}
+.locked-note{
+  margin-top:auto;
+  padding:10px 11px;
+  border-radius:10px;
+  background:#eef6eb;
+  color:#28603a;
+}
+.doc-card input[type=file]{
+  border:1px solid #d7dce2;
+  border-radius:9px;
+  color:#25354c;
+}
+.upload-bar{
+  background:linear-gradient(135deg,#0f2d53 0%,#123b68 100%);
+  box-shadow:0 14px 30px rgba(15,45,83,.16);
+}
+.upload-bar small{
+  color:#dce5ef;
+}
+.upload-bar .btn{
+  background:linear-gradient(180deg,#f2cf78 0%,#deb352 100%);
+  color:#142a46;
+  border:1px solid #d2a743;
+  box-shadow:0 7px 18px rgba(181,137,54,.20);
+}
+.upload-bar .btn:hover:not(:disabled){
+  background:linear-gradient(180deg,#f5d783 0%,#e2b95c 100%);
+}
+.portal-table th{
+  background:#f4f6f1;
+}
+
 @media(max-width:760px){
   .portal-card.wide{padding:22px}
   .dashboard-head,.state-row,.section-top,.upload-bar{flex-direction:column}
