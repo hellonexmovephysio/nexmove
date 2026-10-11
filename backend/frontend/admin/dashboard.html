@@ -398,6 +398,7 @@
                             <td>${formatDate(row.appointment_date)}<br>${formatTime(row.appointment_time)}</td>
                             <td>${escapeHTML(row.message)}</td>
                             <td><span class="badge ${escapeHTML(row.status.toLowerCase())}">${escapeHTML(row.status)}</span></td>
+                            <td>${escapeHTML(row.practitioner_name || 'Unassigned')}</td>
                             <td>${formatDateTime(row.created_at)}</td>
                             <td>
                                 <div class="actions">
