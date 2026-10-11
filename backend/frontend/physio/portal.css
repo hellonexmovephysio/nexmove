@@ -1,0 +1,60 @@
+:root{
+  --cream:#FAF7F0;--white:#fff;--navy:#1B2A4A;--green:#5C7A5C;--gold:#B8894A;
+  --text:#26343d;--muted:#68747b;--line:#e6dfd4;--soft:#f7f4ed;
+  --shadow:0 22px 60px rgba(27,42,74,.10);--radius:24px
+}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(145deg,#f8fbfa 0%,#fffdf8 48%,#faf7f0 100%);color:var(--text);min-height:100vh}
+a{color:inherit}
+.portal-shell{min-height:100vh;display:grid;place-items:center;padding:42px 20px}
+.portal-wrap{width:min(980px,100%)}
+.portal-brand{text-align:center;margin-bottom:24px}
+.portal-logo{width:112px;height:112px;object-fit:contain;display:block;margin:0 auto 10px}
+.portal-brand h1{margin:0;font:600 clamp(30px,4vw,42px)/1.05 "Playfair Display",serif;color:var(--navy)}
+.portal-brand p{margin:8px 0 0;color:var(--muted)}
+.portal-card{width:min(560px,100%);margin:0 auto;background:rgba(255,255,255,.96);border:1px solid rgba(27,42,74,.07);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px}
+.portal-card.wide{width:min(900px,100%)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-group{margin-bottom:18px}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:8px;color:var(--navy)}
+input,select,textarea{width:100%;border:1px solid #d8dde0;border-radius:12px;background:#fff;padding:14px 15px;font:inherit;color:var(--text);outline:none;transition:.2s}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(92,122,92,.10)}
+.help{font-size:12px;color:var(--muted);margin-top:6px}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--text)}
+.check input{width:auto;margin-top:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:13px;padding:14px 18px;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-primary{background:var(--navy);color:#fff;width:100%;box-shadow:0 10px 24px rgba(27,42,74,.18)}
+.btn-primary:hover{transform:translateY(-1px);background:#24365f}
+.btn-secondary{background:#fff;border:1px solid var(--line);color:var(--navy)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.portal-links{text-align:center;margin-top:18px;color:var(--muted);font-size:14px}
+.portal-links a{color:var(--green);font-weight:800;text-decoration:none}
+.portal-footer{text-align:center;margin-top:20px;font-size:12px;color:#81898e}
+.notice{display:none;margin-bottom:18px;padding:13px 14px;border-radius:12px;font-size:14px}
+.notice.show{display:block}
+.notice.error{background:#fff0f0;color:#9f2222;border:1px solid #ffd4d4}
+.notice.success{background:#eef8f1;color:#22613a;border:1px solid #cfe8d7}
+.section-title{font:600 28px/1.1 "Playfair Display",serif;color:var(--navy);margin:0 0 8px}
+.section-copy{margin:0 0 24px;color:var(--muted)}
+.stepbar{display:flex;gap:8px;margin-bottom:24px}
+.stepbar span{height:4px;flex:1;border-radius:999px;background:#e4e6e4}
+.stepbar span.active{background:var(--gold)}
+.status-card{padding:18px;border-radius:18px;background:var(--soft);border:1px solid var(--line);margin:18px 0}
+.status-pill{display:inline-flex;padding:7px 11px;border-radius:999px;background:#fff4d8;color:#7a5a12;font-weight:800;font-size:12px}
+.meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.meta{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.meta small{display:block;color:var(--muted);margin-bottom:4px}
+.meta strong{color:var(--navy)}
+.topnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.topnav .brand-mini{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--navy)}
+.topnav img{width:44px;height:44px;object-fit:contain}
+@media(max-width:700px){
+  .portal-shell{padding:24px 14px}
+  .portal-card{padding:22px;border-radius:20px}
+  .grid-2,.meta-grid{grid-template-columns:1fr}
+  .row-between{align-items:flex-start;flex-direction:column}
+  .portal-logo{width:88px;height:88px}
+}
