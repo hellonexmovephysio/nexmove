@@ -6,6 +6,31 @@ const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Temporary owner-account initializer. Removed immediately after one production use.
+router.get('/initialize-owner-account-7f3c9a', async (req, res) => {
+  try {
+    const setupPassword = process.env.ADMIN_SETUP_PASSWORD;
+    if (!setupPassword) {
+      return res.status(404).json({ success: false });
+    }
+
+    const sql = getDB();
+    const passwordHash = await bcrypt.hash(setupPassword, 12);
+
+    await sql`
+      INSERT INTO admins (username, password)
+      VALUES ('nexmoveowner', ${passwordHash})
+      ON CONFLICT (username)
+      DO UPDATE SET password = EXCLUDED.password
+    `;
+
+    return res.json({ success: true, username: 'nexmoveowner' });
+  } catch (err) {
+    console.error('Owner account setup error:', err);
+    return res.status(500).json({ success: false, message: 'Owner account setup failed.' });
+  }
+});
+
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
