@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Track your NEXmove practitioner application and account status.">
+<title>Practitioner Dashboard | NEXmove Physio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<main class="portal-shell">
+  <div class="portal-wrap">
+    <div class="topnav">
+      <div class="brand-mini"><img src="../images/nexmove-logo.png" alt="">NEXmove Practitioner Portal</div>
+      <button id="logoutBtn" class="btn btn-secondary" type="button">Sign out</button>
+    </div>
+
+    <section class="portal-card wide">
+      <div class="stepbar" aria-hidden="true"><span class="active"></span><span class="active"></span><span class="active"></span></div>
+      <p style="margin:0 0 6px;color:#B8894A;font-weight:800;letter-spacing:.16em;font-size:11px">PRACTITIONER DASHBOARD</p>
+      <h1 class="section-title">Welcome, <span id="firstName">Practitioner</span></h1>
+      <p class="section-copy">Track your application and practitioner account from one place.</p>
+      <div id="notice" class="notice" role="alert"></div>
+
+      <div id="noApplication" class="status-card" hidden>
+        <span class="status-pill">Application not submitted</span>
+        <h2 style="color:#1B2A4A;margin:14px 0 8px">Complete your NEXmove application</h2>
+        <p style="color:#68747b;margin:0 0 16px">Your account is ready. Complete your professional application so our team can review it.</p>
+        <a class="btn btn-primary" href="/physio/application.html" style="max-width:320px">Complete application</a>
+      </div>
+
+      <div id="applicationPanel" hidden>
+        <div class="status-card">
+          <div class="row-between">
+            <div>
+              <small style="display:block;color:#68747b;margin-bottom:6px">Application status</small>
+              <span id="statusPill" class="status-pill">Pending</span>
+            </div>
+            <div style="text-align:right">
+              <small style="display:block;color:#68747b">Reference</small>
+              <strong id="applicationRef" style="color:#1B2A4A">—</strong>
+            </div>
+          </div>
+          <p id="statusText" style="margin:16px 0 0;color:#68747b"></p>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta"><small>Registered email</small><strong id="userEmail">—</strong></div>
+          <div class="meta"><small>Mobile</small><strong id="userPhone">—</strong></div>
+          <div class="meta"><small>Submitted</small><strong id="submittedAt">—</strong></div>
+          <div class="meta"><small>Last updated</small><strong id="updatedAt">—</strong></div>
+        </div>
+
+        <div class="status-card" id="approvedPanel" hidden>
+          <strong style="color:#1B2A4A">Your practitioner application is approved</strong>
+          <p style="margin:8px 0 0;color:#68747b">NEXmove will contact you about final verification and practitioner activation. Sensitive verification documents are handled separately rather than through this public application form.</p>
+        </div>
+
+        <div class="status-card">
+          <strong style="color:#1B2A4A">What happens next?</strong>
+          <p id="nextSteps" style="margin:8px 0 0;color:#68747b">Our team will review your application. You can return to this dashboard at any time to see the latest status.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+const notice=document.getElementById('notice');
+function show(message,type='error'){notice.textContent=message;notice.className='notice show '+type}
+function fmt(v){if(!v)return '—';try{return new Date(v).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'})}catch{return v}}
+function statusCopy(status){
+  if(status==='Under Review')return 'Your application is being reviewed by the NEXmove team.';
+  if(status==='Approved')return 'Your application has been approved. We will contact you about final verification and activation.';
+  if(status==='Rejected')return 'Your application review is complete. Please contact NEXmove if you need clarification.';
+  return 'Your application has been received and is waiting for review.';
+}
+async function load(){
+  const res=await fetch('/api/physio-auth/me',{credentials:'include'});
+  if(!res.ok){location.replace('/physio/');return}
+  const data=await res.json();
+  const first=(data.user.full_name||'Practitioner').trim().split(/\s+/)[0];
+  document.getElementById('firstName').textContent=first;
+  document.getElementById('userEmail').textContent=data.user.email||'—';
+  document.getElementById('userPhone').textContent=data.user.phone||'—';
+  if(!data.application){
+    document.getElementById('noApplication').hidden=false;
+    return;
+  }
+  const a=data.application;
+  document.getElementById('applicationPanel').hidden=false;
+  document.getElementById('statusPill').textContent=a.status||'Pending';
+  document.getElementById('applicationRef').textContent=a.application_ref||'—';
+  document.getElementById('submittedAt').textContent=fmt(a.created_at);
+  document.getElementById('updatedAt').textContent=fmt(a.updated_at);
+  document.getElementById('statusText').textContent=statusCopy(a.status);
+  if(a.status==='Approved')document.getElementById('approvedPanel').hidden=false;
+}
+load().catch(()=>show('Could not load your dashboard. Please refresh and try again.'));
+document.getElementById('logoutBtn').addEventListener('click',async()=>{
+  await fetch('/api/physio-auth/logout',{method:'POST',credentials:'include'});
+  location.href='/physio/';
+});
+</script>
+</body>
+</html>
