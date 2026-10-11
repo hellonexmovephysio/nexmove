@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Complete your NEXmove physiotherapist application.">
+<title>Practitioner Application | NEXmove Physio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<main class="portal-shell">
+  <div class="portal-wrap">
+    <div class="topnav">
+      <div class="brand-mini"><img src="../images/nexmove-logo.png" alt="">NEXmove Practitioner Portal</div>
+      <button id="logoutBtn" class="btn btn-secondary" type="button">Sign out</button>
+    </div>
+
+    <section class="portal-card wide">
+      <div class="stepbar" aria-hidden="true"><span class="active"></span><span class="active"></span><span></span></div>
+      <h1 class="section-title">Complete your application</h1>
+      <p class="section-copy">Tell us about your professional background, clinical interests and home-visit availability. Verification documents are requested only after initial review.</p>
+      <div id="notice" class="notice" role="alert"></div>
+
+      <div class="status-card">
+        <div class="grid-2">
+          <div class="meta"><small>Applicant</small><strong id="accountName">Loading…</strong></div>
+          <div class="meta"><small>Registered email</small><strong id="accountEmail">Loading…</strong></div>
+        </div>
+      </div>
+
+      <form id="applicationForm">
+        <h2 class="section-title" style="font-size:22px;margin-top:28px">Professional details</h2>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="city">Current town / city</label>
+            <input id="city" name="city" type="text" required>
+          </div>
+          <div class="form-group">
+            <label for="preferred_contact">Preferred contact</label>
+            <select id="preferred_contact" name="preferred_contact">
+              <option>Email</option><option>Phone</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="hcpc_number">HCPC registration number</label>
+            <input id="hcpc_number" name="hcpc_number" type="text" required placeholder="e.g. PH123456">
+          </div>
+          <div class="form-group">
+            <label for="years_experience">Years of physiotherapy experience</label>
+            <input id="years_experience" name="years_experience" type="number" min="0" max="60" inputmode="numeric">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="specialisations">Clinical specialisations</label>
+          <textarea id="specialisations" name="specialisations" required placeholder="e.g. MSK, sports rehabilitation, stroke rehabilitation, post-surgical rehabilitation"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="qualifications">Physiotherapy qualifications</label>
+          <textarea id="qualifications" name="qualifications" required placeholder="Degree, postgraduate qualifications and relevant certifications"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="biography">Professional summary</label>
+          <textarea id="biography" name="biography" placeholder="Briefly describe your clinical experience and approach to patient care"></textarea>
+        </div>
+
+        <h2 class="section-title" style="font-size:22px;margin-top:34px">Home-visit coverage & availability</h2>
+        <div class="form-group">
+          <label for="areas_covered">Areas / postcodes you can cover</label>
+          <textarea id="areas_covered" name="areas_covered" required placeholder="e.g. Glasgow G1–G5, Paisley, East Kilbride"></textarea>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="preferred_days">Preferred working days</label>
+            <input id="preferred_days" name="preferred_days" type="text" placeholder="e.g. Monday, Wednesday, Friday">
+          </div>
+          <div class="form-group">
+            <label for="preferred_hours">Preferred hours</label>
+            <input id="preferred_hours" name="preferred_hours" type="text" placeholder="e.g. 09:00–17:00 / evenings">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="check"><input type="checkbox" name="home_visit_availability" value="true"><span>I am available to provide physiotherapy in patients' homes.</span></label>
+        </div>
+
+        <h2 class="section-title" style="font-size:22px;margin-top:34px">Eligibility</h2>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="right_to_work">Current right to work in the UK</label>
+            <select id="right_to_work" name="right_to_work" required>
+              <option value="">Select</option><option value="yes">Yes</option><option value="no">No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="eligibility_type">Right-to-work / visa category</label>
+            <input id="eligibility_type" name="eligibility_type" type="text" placeholder="e.g. British/Irish, settled status, Skilled Worker">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="csp_member">CSP member</label>
+            <select id="csp_member" name="csp_member"><option value="no">No</option><option value="yes">Yes</option></select>
+          </div>
+          <div class="form-group">
+            <label for="uk_experience">UK physiotherapy experience</label>
+            <select id="uk_experience" name="uk_experience"><option value="no">No</option><option value="yes">Yes</option></select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="additional_info">Anything else you would like us to know?</label>
+          <textarea id="additional_info" name="additional_info"></textarea>
+        </div>
+
+        <div class="status-card">
+          <strong style="color:#1B2A4A">What happens next?</strong>
+          <p style="margin:8px 0 0;color:#68747b">NEXmove reviews your application first. If suitable, we will request any required verification documents such as professional indemnity evidence, DBS/Disclosure information and right-to-work evidence through an appropriate secure process.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="check"><input type="checkbox" name="consent_privacy" value="true" required><span>I consent to NEXmove processing my application information for recruitment and practitioner onboarding.</span></label>
+        </div>
+        <div class="form-group">
+          <label class="check"><input type="checkbox" name="agree_declaration" value="true" required><span>I confirm that the information I have provided is accurate to the best of my knowledge.</span></label>
+        </div>
+
+        <button id="submitBtn" class="btn btn-primary" type="submit">Submit application</button>
+      </form>
+    </section>
+  </div>
+</main>
+
+<script>
+const form=document.getElementById('applicationForm'),notice=document.getElementById('notice'),btn=document.getElementById('submitBtn');
+function show(message,type='error'){notice.textContent=message;notice.className='notice show '+type;notice.scrollIntoView({behavior:'smooth',block:'center'})}
+async function loadAccount(){
+  const res=await fetch('/api/physio-auth/me',{credentials:'include'});
+  if(!res.ok){location.replace('/physio/');return}
+  const data=await res.json();
+  if(data.application){location.replace('/physio/dashboard.html');return}
+  document.getElementById('accountName').textContent=data.user.full_name;
+  document.getElementById('accountEmail').textContent=data.user.email;
+}
+loadAccount().catch(()=>location.replace('/physio/'));
+document.getElementById('logoutBtn').addEventListener('click',async()=>{
+  await fetch('/api/physio-auth/logout',{method:'POST',credentials:'include'});location.href='/physio/';
+});
+form.addEventListener('submit',async e=>{
+  e.preventDefault(); btn.disabled=true;btn.textContent='Submitting…';notice.className='notice';
+  const fd=new FormData(form),payload=Object.fromEntries(fd.entries());
+  payload.home_visit_availability=fd.has('home_visit_availability');
+  payload.consent_privacy=fd.has('consent_privacy');
+  payload.agree_declaration=fd.has('agree_declaration');
+  payload.right_to_work=fd.get('right_to_work')==='yes';
+  payload.csp_member=fd.get('csp_member')==='yes';
+  payload.uk_experience=fd.get('uk_experience')==='yes';
+  try{
+    const res=await fetch('/api/physio-auth/application',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Application submission failed.');
+    show('Application submitted successfully. Opening your dashboard…','success');
+    setTimeout(()=>location.href='/physio/dashboard.html',700);
+  }catch(err){show(err.message)}finally{btn.disabled=false;btn.textContent='Submit application'}
+});
+</script>
+</body>
+</html>
