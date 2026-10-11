@@ -146,7 +146,45 @@ async function sendAdminPhysioApplicationNotification(application) {
   }
 }
 
+
+async function sendPhysioPasswordResetEmail(account) {
+  if (!process.env.SMTP_PASSWORD) {
+    console.error('Practitioner password reset email failed: SMTP_PASSWORD is not configured.');
+    return { success: false, error: 'SMTP configuration is missing.' };
+  }
+
+  const transporter = createTransporter();
+  const fromEmail = process.env.SMTP_FROM || 'noreply@nexmove.example.com';
+  const fromName = process.env.EMAIL_FROM_NAME || 'NEXmove Physio';
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${fromName}" <${fromEmail}>`,
+      to: account.email,
+      subject: 'Reset your NEXmove Practitioner Portal password',
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#26343d;line-height:1.6">
+          <h2 style="color:#1B2A4A">Reset your practitioner password</h2>
+          <p>Hello <strong>${account.full_name || 'Practitioner'}</strong>,</p>
+          <p>Use the button below to reset your NEXmove Practitioner Portal password. This link expires in 60 minutes.</p>
+          <p style="margin:28px 0">
+            <a href="${account.reset_url}" style="display:inline-block;background:#1B2A4A;color:#fff;text-decoration:none;padding:13px 20px;border-radius:10px;font-weight:700">Reset password</a>
+          </p>
+          <p>If you did not request this, you can ignore this email.</p>
+          <p style="color:#667178;font-size:13px">For security, never share this reset link with anyone.</p>
+        </div>
+      `,
+      text: `Hello ${account.full_name || 'Practitioner'},\n\nReset your NEXmove Practitioner Portal password using this link:\n${account.reset_url}\n\nThis link expires in 60 minutes.\n`
+    });
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error(`Failed to send practitioner password reset email to ${account.email}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
 module.exports = {
   sendApprovalEmail,
-  sendAdminPhysioApplicationNotification
+  sendAdminPhysioApplicationNotification,
+  sendPhysioPasswordResetEmail
 };
