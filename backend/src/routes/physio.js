@@ -14,6 +14,7 @@ const router = express.Router();
 const VALID_STATUSES = ['Pending', 'Under Review', 'Approved', 'Rejected'];
 const VALID_VERIFICATION_STATUSES = ['Not Requested', 'Required', 'Submitted', 'Verified', 'Issue'];
 const VALID_DOC_STATUSES = ['Submitted', 'Verified', 'Issue'];
+const REQUIRED_DOCUMENT_TYPES = ['cv', 'qualification', 'indemnity', 'dbs', 'right_to_work'];
 
 function documentKey() {
   const source = process.env.PHYSIO_DOCUMENT_KEY || process.env.JWT_SECRET;
@@ -29,6 +30,55 @@ function decryptDocument(row) {
 
 function safeDownloadName(value) {
   return String(value || 'document').replace(/[\\/\0\r\n"]/g, '_').trim() || 'document';
+}
+
+async function getVerificationSummary(sql, applicationId) {
+  const rows = await sql`
+    SELECT id, document_type, original_name, mime_type, file_size, status,
+           reviewer_notes, created_at, updated_at
+    FROM physio_verification_documents
+    WHERE application_id = ${applicationId}
+    ORDER BY created_at DESC
+  `;
+
+  const latestByType = new Map();
+  for (const row of rows) {
+    if (REQUIRED_DOCUMENT_TYPES.includes(row.document_type) && !latestByType.has(row.document_type)) {
+      latestByType.set(row.document_type, row);
+    }
+  }
+
+  const items = REQUIRED_DOCUMENT_TYPES.map((type) => {
+    const doc = latestByType.get(type) || null;
+    return {
+      document_type: type,
+      status: doc ? doc.status : 'Missing',
+      document_id: doc ? doc.id : null,
+      original_name: doc ? doc.original_name : null,
+      reviewer_notes: doc ? (doc.reviewer_notes || '') : '',
+      updated_at: doc ? doc.updated_at : null,
+    };
+  });
+
+  const verifiedCount = items.filter((item) => item.status === 'Verified').length;
+  const issueCount = items.filter((item) => item.status === 'Issue').length;
+  const uploadedCount = items.filter((item) => item.status !== 'Missing').length;
+
+  return {
+    required_count: REQUIRED_DOCUMENT_TYPES.length,
+    verified_count: verifiedCount,
+    uploaded_count: uploadedCount,
+    issue_count: issueCount,
+    all_verified: verifiedCount === REQUIRED_DOCUMENT_TYPES.length,
+    items,
+  };
+}
+
+function aggregateVerificationStatus(summary) {
+  if (summary.issue_count > 0) return 'Issue';
+  if (summary.all_verified) return 'Verified';
+  if (summary.uploaded_count > 0) return 'Submitted';
+  return 'Required';
 }
 
 // POST /api/physio — legacy application endpoint retained for backward compatibility.
@@ -156,7 +206,8 @@ router.get('/admin/:id', authMiddleware, async (req, res) => {
       ORDER BY document_type, created_at DESC
     `;
 
-    res.json({ success: true, data: rows[0], documents: docs });
+    const verificationSummary = await getVerificationSummary(sql, id);
+    res.json({ success: true, data: rows[0], documents: docs, verification_summary: verificationSummary });
   } catch (err) {
     console.error('Get application error:', err);
     res.status(500).json({ success: false, message: 'Server error.' });
@@ -278,7 +329,52 @@ router.put('/admin/:id/document/:docId', authMiddleware, async (req, res) => {
     `;
     if (!rows.length) return res.status(404).json({ success: false, message: 'Document not found.' });
 
-    res.json({ success: true, message: 'Document review updated.', data: rows[0] });
+    const summary = await getVerificationSummary(sql, applicationId);
+    const aggregateStatus = aggregateVerificationStatus(summary);
+
+    const apps = await sql`
+      UPDATE physio_applications
+      SET verification_status = ${aggregateStatus}, updated_at = NOW()
+      WHERE id = ${applicationId}
+      RETURNING *
+    `;
+    const application = apps[0];
+
+    if (application && application.physio_user_id) {
+      await sql`
+        UPDATE physio_users
+        SET practitioner_status = CASE
+          WHEN practitioner_status = 'Active' THEN practitioner_status
+          ELSE 'Verification'
+        END,
+        updated_at = NOW()
+        WHERE id = ${application.physio_user_id}
+      `;
+    }
+
+    if (application && (aggregateStatus === 'Issue' || aggregateStatus === 'Verified')) {
+      const baseUrl = `${req.protocol}://${req.get('host')}`;
+      await sendPhysioApplicationStatusEmail({
+        full_name: application.full_name,
+        email: application.email,
+        status: application.status,
+        verification_status: aggregateStatus,
+        practitioner_status: aggregateStatus === 'Verified' ? 'Ready for activation' : 'Verification',
+        portal_url: `${baseUrl}/physio/`,
+      });
+    }
+
+    res.json({
+      success: true,
+      message: status === 'Issue'
+        ? 'Document marked as needing changes. The practitioner will see your note.'
+        : status === 'Verified'
+          ? 'Document verified successfully.'
+          : 'Document review updated.',
+      data: rows[0],
+      verification_status: aggregateStatus,
+      verification_summary: summary,
+    });
   } catch (err) {
     console.error('Admin document review error:', err);
     res.status(500).json({ success: false, message: 'Could not update document review.' });
@@ -302,12 +398,20 @@ router.put('/admin/:id/activate', authMiddleware, async (req, res) => {
     if (!app.physio_user_id) {
       return res.status(409).json({ success: false, message: 'This legacy application is not linked to a practitioner portal account.' });
     }
-    if (app.status !== 'Approved') {
-      return res.status(409).json({ success: false, message: 'Approve the application before activating the practitioner.' });
+    const verificationSummary = await getVerificationSummary(sql, id);
+    if (!verificationSummary.all_verified) {
+      return res.status(409).json({
+        success: false,
+        message: `Verification is incomplete: ${verificationSummary.verified_count} of ${verificationSummary.required_count} required documents are verified.`,
+        verification_summary: verificationSummary,
+      });
     }
-    if ((app.verification_status || 'Not Requested') !== 'Verified') {
-      return res.status(409).json({ success: false, message: 'Mark verification as Verified before activation.' });
-    }
+
+    await sql`
+      UPDATE physio_applications
+      SET status = 'Approved', verification_status = 'Verified', updated_at = NOW()
+      WHERE id = ${id}
+    `;
 
     await sql`
       INSERT INTO physio_profiles (
@@ -337,7 +441,21 @@ router.put('/admin/:id/activate', authMiddleware, async (req, res) => {
       WHERE id = ${app.physio_user_id}
     `;
 
-    res.json({ success: true, message: 'Practitioner activated successfully.' });
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    await sendPhysioApplicationStatusEmail({
+      full_name: app.full_name,
+      email: app.email,
+      status: 'Approved',
+      verification_status: 'Verified',
+      practitioner_status: 'Active',
+      portal_url: `${baseUrl}/physio/`,
+    });
+
+    res.json({
+      success: true,
+      message: 'Practitioner approved and activated successfully.',
+      verification_summary: verificationSummary,
+    });
   } catch (err) {
     console.error('Practitioner activation error:', err);
     res.status(500).json({ success: false, message: 'Could not activate practitioner.' });
