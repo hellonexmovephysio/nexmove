@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="NEXmove Practitioner Portal for registered physiotherapy applicants and practitioners.">
+<title>NEXmove Practitioner Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<main class="portal-shell">
+  <div class="portal-wrap">
+    <div class="portal-brand">
+      <img class="portal-logo" src="../images/nexmove-logo.png" alt="NEXmove Physio">
+      <h1>Practitioner Portal</h1>
+      <p>Sign in to manage your NEXmove practitioner account.</p>
+    </div>
+
+    <section class="portal-card" aria-labelledby="login-title">
+      <h2 id="login-title" class="section-title">Welcome back</h2>
+      <p class="section-copy">Use the email address you registered with.</p>
+      <div id="notice" class="notice" role="alert"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="Enter your registered email">
+        </div>
+        <div class="form-group">
+          <div class="row-between">
+            <label for="password">Password</label>
+            <a href="forgot-password.html" style="font-size:13px;color:#5C7A5C;text-decoration:none;font-weight:700">Forgot password?</a>
+          </div>
+          <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Enter your password">
+        </div>
+        <button id="submitBtn" class="btn btn-primary" type="submit">Sign in</button>
+      </form>
+      <div class="portal-links">New to NEXmove? <a href="signup.html">Apply to join →</a></div>
+    </section>
+
+    <div class="portal-footer">NEXmove Physio UK · Practitioner Portal</div>
+  </div>
+</main>
+<script>
+const form=document.getElementById('loginForm'),notice=document.getElementById('notice'),btn=document.getElementById('submitBtn');
+function show(message,type='error'){notice.textContent=message;notice.className='notice show '+type}
+fetch('/api/physio-auth/me',{credentials:'include'}).then(r=>r.ok?r.json():null).then(d=>{
+  if(d?.success) location.replace(d.application?'/physio/dashboard.html':'/physio/application.html');
+}).catch(()=>{});
+form.addEventListener('submit',async e=>{
+  e.preventDefault(); btn.disabled=true; btn.textContent='Signing in…'; notice.className='notice';
+  try{
+    const res=await fetch('/api/physio-auth/login',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(Object.fromEntries(new FormData(form)))});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Sign in failed.');
+    location.href=data.next||'/physio/dashboard.html';
+  }catch(err){show(err.message)}finally{btn.disabled=false;btn.textContent='Sign in'}
+});
+</script>
+</body>
+</html>
