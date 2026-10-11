@@ -10,26 +10,78 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="portal.css">
 <style>
-.dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.dashboard-section{margin-top:20px;padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff}
-.dashboard-section h2{margin:0 0 8px;font:600 22px/1.2 "Playfair Display",serif;color:var(--navy)}
-.dashboard-section p{color:var(--muted)}
-.doc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.doc-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--soft)}
-.doc-card strong{color:var(--navy)}
-.doc-status{display:inline-block;margin-top:7px;font-size:12px;font-weight:800;color:#7a5a12}
-.doc-card input{margin-top:10px;padding:8px;background:#fff}
+.portal-shell{align-items:start}
+.portal-card.wide{padding:34px}
+.dashboard-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}
+.kicker{margin:0 0 7px;color:var(--gold);font-weight:800;letter-spacing:.16em;font-size:11px}
+.ref-box{text-align:right;padding:11px 14px;border:1px solid var(--line);border-radius:14px;background:var(--soft);min-width:180px}
+.ref-box small{display:block;color:var(--muted);margin-bottom:3px}
+.ref-box strong{color:var(--navy);font-size:13px}
+.progress-track{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:22px 0 28px}
+.progress-step{position:relative;padding-top:19px;color:var(--muted);font-size:11px;font-weight:700;text-align:center}
+.progress-step:before{content:"";position:absolute;left:0;right:0;top:5px;height:5px;border-radius:999px;background:#e8e8e3}
+.progress-step.done:before{background:var(--green)}
+.progress-step.current:before{background:var(--gold)}
+.progress-step.current{color:var(--navy)}
+.state-hero{border-radius:22px;padding:24px;border:1px solid var(--line);background:linear-gradient(135deg,#fff 0%,#fbfaf6 100%);margin-bottom:20px}
+.state-row{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.state-title{margin:0;color:var(--navy);font:600 26px/1.15 "Playfair Display",serif}
+.state-copy{margin:9px 0 0;color:var(--muted);max-width:720px}
+.state-badge{display:inline-flex;align-items:center;white-space:nowrap;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800;background:#eef2f7;color:var(--navy)}
+.state-badge.action{background:#fff1e8;color:#9a4d1e}
+.state-badge.good{background:#edf7ef;color:#24613a}
+.action-banner{display:none;margin-top:16px;padding:15px 16px;border-radius:15px;border:1px solid #eed9bd;background:#fff9ef;color:#6f5125}
+.action-banner.show{display:block}
+.action-banner strong{display:block;color:var(--navy);margin-bottom:4px}
+.admin-message{margin:18px 0;padding:16px 18px;border-left:4px solid var(--gold);background:#fff9ef;border-radius:12px;color:var(--text)}
+.admin-message strong{display:block;color:var(--navy);margin-bottom:5px}
+.dashboard-section{margin-top:20px;padding:22px;border:1px solid var(--line);border-radius:20px;background:#fff}
+.section-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}
+.dashboard-section h2{margin:0;font:600 24px/1.2 "Playfair Display",serif;color:var(--navy)}
+.dashboard-section .lead{margin:7px 0 0;color:var(--muted)}
+.docs-summary{font-size:13px;font-weight:800;color:var(--navy);background:var(--soft);padding:8px 11px;border-radius:999px;white-space:nowrap}
+.doc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.doc-card{border:1px solid var(--line);border-radius:17px;padding:16px;background:var(--soft);min-height:170px;display:flex;flex-direction:column}
+.doc-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.doc-card h3{margin:0;color:var(--navy);font-size:16px}
+.doc-chip{font-size:11px;font-weight:800;padding:6px 9px;border-radius:999px;background:#eef2f7;color:var(--navy);white-space:nowrap}
+.doc-chip.verified{background:#e9f7ec;color:#22613a}
+.doc-chip.issue{background:#fff0ef;color:#a3322d}
+.doc-chip.submitted{background:#fff5df;color:#7a5a12}
+.doc-chip.missing{background:#eef2f7;color:#5f6770}
+.doc-file{margin:9px 0 0;color:var(--muted);font-size:12px;word-break:break-word}
+.feedback{margin:11px 0 0;padding:11px 12px;border-radius:11px;background:#fff0ef;border:1px solid #f0cbc8;color:#7f2d2a;font-size:13px}
+.feedback strong{display:block;margin-bottom:3px}
+.doc-help{margin:10px 0 0;color:var(--muted);font-size:12px}
+.doc-card input[type=file]{margin-top:auto;padding:9px;background:#fff;font-size:12px}
+.locked-note{margin-top:auto;padding-top:12px;color:#22613a;font-size:12px;font-weight:700}
+.upload-bar{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:16px;padding:14px 16px;border-radius:15px;background:var(--navy);color:#fff}
+.upload-bar small{display:block;color:#d8dfeb;margin-top:3px}
+.upload-bar .btn{width:auto;background:#fff;color:var(--navy);min-width:210px}
+.upload-bar .btn:disabled{opacity:.55}
+.meta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.meta{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:14px}
+.meta small{display:block;color:var(--muted);margin-bottom:4px}
+.meta strong{color:var(--navy)}
 .table-scroll{overflow:auto}
 .portal-table{width:100%;border-collapse:collapse;min-width:720px}
 .portal-table th,.portal-table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
 .portal-table th{color:var(--navy);background:var(--soft)}
-.inline-actions{display:flex;gap:10px;flex-wrap:wrap}
 .hidden{display:none!important}
-@media(max-width:760px){.dashboard-grid,.doc-grid{grid-template-columns:1fr}.dashboard-section{padding:15px}}
+@media(max-width:760px){
+  .portal-card.wide{padding:22px}
+  .dashboard-head,.state-row,.section-top,.upload-bar{flex-direction:column}
+  .ref-box{text-align:left;width:100%}
+  .progress-track{grid-template-columns:1fr;gap:5px}
+  .progress-step{text-align:left;padding:8px 0 8px 18px}
+  .progress-step:before{left:0;right:auto;top:10px;width:7px;height:7px}
+  .doc-grid,.meta-grid{grid-template-columns:1fr}
+  .upload-bar .btn{width:100%}
+}
 </style>
 </head>
 <body>
-<main class="portal-shell" style="align-items:start">
+<main class="portal-shell">
   <div class="portal-wrap">
     <div class="topnav">
       <div class="brand-mini"><img src="../images/nexmove-logo.png" alt="">NEXmove Practitioner Portal</div>
@@ -37,51 +89,90 @@
     </div>
 
     <section class="portal-card wide">
-      <p style="margin:0 0 6px;color:#B8894A;font-weight:800;letter-spacing:.16em;font-size:11px">PRACTITIONER DASHBOARD</p>
-      <h1 class="section-title">Welcome, <span id="firstName">Practitioner</span></h1>
-      <p class="section-copy">Your application, verification, profile and assigned appointments are managed here.</p>
-      <div id="notice" class="notice" role="alert"></div>
-
-      <div id="noApplication" class="status-card" hidden>
-        <span class="status-pill">Application not submitted</span>
-        <h2 style="color:#1B2A4A;margin:14px 0 8px">Complete your NEXmove application</h2>
-        <p style="color:#68747b;margin:0 0 16px">Your account is ready. Complete your professional application so our team can review it.</p>
-        <a class="btn btn-primary" href="/physio/application.html" style="max-width:320px">Complete application</a>
+      <div class="dashboard-head">
+        <div>
+          <p class="kicker">YOUR NEXMOVE JOURNEY</p>
+          <h1 class="section-title">Welcome, <span id="firstName">Practitioner</span></h1>
+          <p class="section-copy" style="margin-bottom:0">One place to see exactly where your application stands and what, if anything, you need to do next.</p>
+        </div>
+        <div id="refBox" class="ref-box hidden"><small>Application reference</small><strong id="applicationRef">—</strong></div>
       </div>
 
-      <div id="applicationPanel" hidden>
-        <div class="dashboard-grid">
-          <div class="status-card">
-            <small style="display:block;color:#68747b;margin-bottom:6px">Application status</small>
-            <span id="statusPill" class="status-pill">Pending</span>
-            <p id="statusText" style="margin:14px 0 0;color:#68747b"></p>
+      <div id="progressTrack" class="progress-track">
+        <div class="progress-step done" data-step="1">Account verified</div>
+        <div class="progress-step" data-step="2">Application sent</div>
+        <div class="progress-step" data-step="3">NEXmove review</div>
+        <div class="progress-step" data-step="4">Verification</div>
+        <div class="progress-step" data-step="5">Active practitioner</div>
+      </div>
+
+      <div id="notice" class="notice" role="alert"></div>
+
+      <div id="noApplication" class="state-hero hidden">
+        <div class="state-row">
+          <div>
+            <h2 class="state-title">Your account is ready</h2>
+            <p class="state-copy">Complete your professional application. After submission, NEXmove will review it and this dashboard will guide you through every next step.</p>
           </div>
-          <div class="status-card">
-            <small style="display:block;color:#68747b;margin-bottom:6px">Verification status</small>
-            <span id="verificationPill" class="status-pill">Not Requested</span>
-            <p id="verificationText" style="margin:14px 0 0;color:#68747b"></p>
+          <span class="state-badge action">Action required</span>
+        </div>
+        <a class="btn btn-primary" href="/physio/application.html" style="max-width:300px;margin-top:18px">Complete application</a>
+      </div>
+
+      <div id="applicationPanel" class="hidden">
+        <div class="state-hero">
+          <div class="state-row">
+            <div>
+              <h2 id="stateTitle" class="state-title">Application received</h2>
+              <p id="stateCopy" class="state-copy"></p>
+            </div>
+            <span id="stateBadge" class="state-badge">Pending</span>
           </div>
+          <div id="actionBanner" class="action-banner">
+            <strong id="actionTitle"></strong>
+            <span id="actionText"></span>
+          </div>
+        </div>
+
+        <div id="adminMessage" class="admin-message hidden">
+          <strong>Message from NEXmove</strong>
+          <span id="adminMessageText"></span>
         </div>
 
         <div class="meta-grid">
-          <div class="meta"><small>Application reference</small><strong id="applicationRef">—</strong></div>
-          <div class="meta"><small>Practitioner status</small><strong id="practitionerStatus">Applicant</strong></div>
-          <div class="meta"><small>Registered email</small><strong id="userEmail">—</strong></div>
-          <div class="meta"><small>Mobile</small><strong id="userPhone">—</strong></div>
+          <div class="meta"><small>Application</small><strong id="appStatus">—</strong></div>
+          <div class="meta"><small>Verification</small><strong id="verificationStatus">—</strong></div>
+          <div class="meta"><small>Practitioner status</small><strong id="practitionerStatus">—</strong></div>
           <div class="meta"><small>Submitted</small><strong id="submittedAt">—</strong></div>
           <div class="meta"><small>Last updated</small><strong id="updatedAt">—</strong></div>
+          <div class="meta"><small>Registered email</small><strong id="userEmail">—</strong></div>
         </div>
 
         <div id="verificationSection" class="dashboard-section hidden">
-          <h2>Verification documents</h2>
-          <p>NEXmove has requested verification. Upload only the requested documents. Files are encrypted before storage and are visible only to authorised NEXmove administrators.</p>
-          <div id="verificationNote" class="status-card hidden"></div>
+          <div class="section-top">
+            <div>
+              <h2>Verification documents</h2>
+              <p id="verificationLead" class="lead">Choose all documents you want to send, then upload them together with one button.</p>
+            </div>
+            <div id="docsSummary" class="docs-summary">0 of 5 verified</div>
+          </div>
           <div id="documentsGrid" class="doc-grid"></div>
+          <div id="uploadBar" class="upload-bar hidden">
+            <div>
+              <strong id="selectedCount">0 files selected</strong>
+              <small id="uploadHint">Select one or more documents above. Nothing is uploaded until you press the button.</small>
+            </div>
+            <button id="uploadAllBtn" class="btn" type="button" disabled>Upload selected documents</button>
+          </div>
         </div>
 
         <div id="profileSection" class="dashboard-section hidden">
-          <h2>Practitioner profile</h2>
-          <p>Keep your service areas and availability up to date. These details do not change your original recruitment application.</p>
+          <div class="section-top">
+            <div>
+              <h2>Your practitioner profile</h2>
+              <p class="lead">Your account is active. Keep your working areas and availability current.</p>
+            </div>
+          </div>
           <form id="profileForm">
             <div class="grid-2">
               <div class="form-group"><label for="display_name">Display name</label><input id="display_name" name="display_name" type="text" required></div>
@@ -99,8 +190,9 @@
         </div>
 
         <div id="appointmentsSection" class="dashboard-section hidden">
-          <h2>Assigned appointments</h2>
-          <p>Only appointments specifically assigned to your activated practitioner account are shown here.</p>
+          <div class="section-top">
+            <div><h2>Assigned appointments</h2><p class="lead">Only appointments assigned specifically to you are shown here.</p></div>
+          </div>
           <div class="table-scroll">
             <table class="portal-table">
               <thead><tr><th>Date</th><th>Patient</th><th>Service</th><th>Visit address</th><th>Status</th></tr></thead>
@@ -109,18 +201,12 @@
           </div>
           <div id="appointmentsEmpty" class="help" style="margin-top:12px">No appointments assigned yet.</div>
         </div>
-
-        <div class="dashboard-section">
-          <h2>What happens next?</h2>
-          <p id="nextSteps">Our team will review your application. You can return to this dashboard at any time to see the latest status.</p>
-        </div>
       </div>
     </section>
   </div>
 </main>
 
 <script>
-const notice=document.getElementById('notice');
 const DOCS=[
   ['cv','CV'],
   ['qualification','Qualification evidence'],
@@ -128,23 +214,73 @@ const DOCS=[
   ['dbs','DBS / Disclosure'],
   ['right_to_work','Right-to-work evidence']
 ];
+const notice=document.getElementById('notice');
 let meData=null, docsData=[];
 
-function show(message,type='error'){notice.textContent=message;notice.className='notice show '+type;notice.scrollIntoView({behavior:'smooth',block:'center'})}
+function show(message,type='error'){
+  notice.textContent=message;notice.className='notice show '+type;
+  notice.scrollIntoView({behavior:'smooth',block:'center'});
+}
 function fmt(v){if(!v)return '—';try{return new Date(v).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'})}catch{return v}}
 function escapeHTML(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function statusCopy(status){
-  if(status==='Under Review')return 'Your application is being reviewed by the NEXmove team.';
-  if(status==='Approved')return 'Your application has passed the application review.';
-  if(status==='Rejected')return 'Your application review is complete. Contact NEXmove if you need clarification.';
-  return 'Your application has been received and is waiting for review.';
+function latestDoc(type){return docsData.find(d=>d.document_type===type)||null}
+
+function setProgress(step){
+  document.querySelectorAll('.progress-step').forEach(el=>{
+    const n=Number(el.dataset.step);el.classList.toggle('done',n<step);el.classList.toggle('current',n===step);
+  });
 }
-function verificationCopy(status){
-  if(status==='Required')return 'Please upload the requested verification documents below.';
-  if(status==='Submitted')return 'Your verification documents have been submitted and are awaiting review.';
-  if(status==='Verified')return 'Your verification has been completed successfully.';
-  if(status==='Issue')return 'NEXmove needs updated information. Review the note below and re-upload the affected document.';
-  return 'No verification documents are required at this stage.';
+
+function setState(title,copy,badge,badgeType='',actionTitle='',actionText=''){
+  document.getElementById('stateTitle').textContent=title;
+  document.getElementById('stateCopy').textContent=copy;
+  const b=document.getElementById('stateBadge');b.textContent=badge;b.className='state-badge'+(badgeType?' '+badgeType:'');
+  const a=document.getElementById('actionBanner');
+  if(actionTitle){
+    document.getElementById('actionTitle').textContent=actionTitle;
+    document.getElementById('actionText').textContent=actionText;
+    a.classList.add('show');
+  }else a.classList.remove('show');
+}
+
+function renderJourney(user,a){
+  if(user.practitioner_status==='Active'){
+    setProgress(5);
+    setState('You are an active NEXmove practitioner','Your recruitment and verification are complete. Keep your profile current and check below for appointments assigned to you.','Active','good');
+    return;
+  }
+  if(a.verification_status==='Issue'){
+    setProgress(4);
+    setState('We need one more thing from you','NEXmove has reviewed your documents and one or more items need an update.','Action required','action','Please review the feedback below','Replace only the document(s) marked “Needs changes”, then use the single upload button.');
+    return;
+  }
+  if(a.verification_status==='Required'){
+    setProgress(4);
+    setState('Verification requested','Your application review has progressed. Please upload the requested evidence below.','Action required','action','Documents required','Choose all documents you are ready to send, then upload them together.');
+    return;
+  }
+  if(a.verification_status==='Submitted'){
+    setProgress(4);
+    setState('Documents received','Your verification documents are with NEXmove for review.','Under verification','','Nothing else to do right now','You can return here later. Any feedback will appear clearly on this page.');
+    return;
+  }
+  if(a.verification_status==='Verified'){
+    setProgress(4);
+    setState('Verification complete','All required evidence has been verified. NEXmove is completing final practitioner activation.','Verified','good','No action required','Once activated, your profile and assigned appointments will appear here.');
+    return;
+  }
+  if(a.status==='Under Review'){
+    setProgress(3);
+    setState('Application under review','NEXmove is reviewing the information you submitted.','Under review','','No action required','If verification documents are needed, they will appear here automatically.');
+    return;
+  }
+  if(a.status==='Rejected'){
+    setProgress(3);
+    setState('Application review complete','Your application has not progressed to practitioner activation.','Review complete','action','Need clarification?','Please contact NEXmove if you believe further information should be considered.');
+    return;
+  }
+  setProgress(2);
+  setState('Application received','Your application has been submitted successfully and is waiting for NEXmove review.','Pending','','No action required','You do not need to submit the application again. Check this dashboard for the next update.');
 }
 
 async function loadMe(){
@@ -153,82 +289,135 @@ async function loadMe(){
   const data=await res.json();
   if(!data.user.email_verified){location.replace('/physio/verify-email.html?email='+encodeURIComponent(data.user.email||''));return null}
   meData=data;
-  const first=(data.user.full_name||'Practitioner').trim().split(/\s+/)[0];
-  document.getElementById('firstName').textContent=first;
+  document.getElementById('firstName').textContent=(data.user.full_name||'Practitioner').trim().split(/\s+/)[0];
   document.getElementById('userEmail').textContent=data.user.email||'—';
-  document.getElementById('userPhone').textContent=data.user.phone||'—';
-  document.getElementById('practitionerStatus').textContent=data.user.practitioner_status||'Applicant';
+
   if(!data.application){
-    document.getElementById('noApplication').hidden=false;
-    return data;
+    document.getElementById('noApplication').classList.remove('hidden');setProgress(2);return data;
   }
 
   const a=data.application;
-  document.getElementById('applicationPanel').hidden=false;
-  document.getElementById('statusPill').textContent=a.status||'Pending';
-  document.getElementById('verificationPill').textContent=a.verification_status||'Not Requested';
+  document.getElementById('applicationPanel').classList.remove('hidden');
+  document.getElementById('refBox').classList.remove('hidden');
   document.getElementById('applicationRef').textContent=a.application_ref||'—';
+  document.getElementById('appStatus').textContent=a.status||'Pending';
+  document.getElementById('verificationStatus').textContent=a.verification_status||'Not Requested';
+  document.getElementById('practitionerStatus').textContent=data.user.practitioner_status||'Applicant';
   document.getElementById('submittedAt').textContent=fmt(a.created_at);
   document.getElementById('updatedAt').textContent=fmt(a.updated_at);
-  document.getElementById('statusText').textContent=statusCopy(a.status);
-  document.getElementById('verificationText').textContent=verificationCopy(a.verification_status);
+  renderJourney(data.user,a);
+
   if(a.verification_notes){
-    const box=document.getElementById('verificationNote');
-    box.textContent='NEXmove note: '+a.verification_notes;
-    box.classList.remove('hidden');
+    document.getElementById('adminMessageText').textContent=a.verification_notes;
+    document.getElementById('adminMessage').classList.remove('hidden');
   }
-  if(['Required','Submitted','Issue'].includes(a.verification_status)) {
+
+  if(['Required','Submitted','Issue','Verified'].includes(a.verification_status)){
     document.getElementById('verificationSection').classList.remove('hidden');
     await loadDocuments();
   }
+
   if(data.user.practitioner_status==='Active'){
     document.getElementById('profileSection').classList.remove('hidden');
     document.getElementById('appointmentsSection').classList.remove('hidden');
     await Promise.all([loadProfile(),loadAppointments()]);
   }
-  if(data.user.practitioner_status==='Active'){
-    document.getElementById('nextSteps').textContent='Your practitioner account is active. Keep your profile and availability current and check this dashboard for assigned appointments.';
-  } else if(a.status==='Approved' && a.verification_status==='Verified'){
-    document.getElementById('nextSteps').textContent='Your application and verification are approved. NEXmove will complete final practitioner activation.';
-  } else if(a.verification_status==='Required' || a.verification_status==='Issue'){
-    document.getElementById('nextSteps').textContent='Complete the verification requests above. NEXmove will review them before final activation.';
-  }
   return data;
+}
+
+function docChipClass(status){
+  return status==='Verified'?'verified':status==='Issue'?'issue':status==='Submitted'?'submitted':'missing';
+}
+function docDisplayStatus(status){
+  return status==='Issue'?'Needs changes':status==='Missing'?'Not uploaded':status;
+}
+
+function selectedFiles(){
+  return [...document.querySelectorAll('.doc-file-input')].map(input=>({type:input.dataset.docType,file:input.files?.[0]||null})).filter(x=>x.file);
+}
+function updateSelectionBar(){
+  const selected=selectedFiles();
+  document.getElementById('selectedCount').textContent=selected.length+(selected.length===1?' file selected':' files selected');
+  document.getElementById('uploadAllBtn').disabled=!selected.length;
 }
 
 async function loadDocuments(){
   const res=await fetch('/api/physio-auth/documents',{credentials:'include'});
   const data=await res.json();
   docsData=data.success?data.data:[];
+  const latest=DOCS.map(([type])=>latestDoc(type));
+  const verified=latest.filter(d=>d?.status==='Verified').length;
+  document.getElementById('docsSummary').textContent=verified+' of '+DOCS.length+' verified';
+
+  const overall=meData?.application?.verification_status||'Required';
   const grid=document.getElementById('documentsGrid');
   grid.innerHTML=DOCS.map(([type,label])=>{
-    const doc=docsData.find(d=>d.document_type===type);
-    const status=doc?doc.status:'Not uploaded';
-    const note=doc?.reviewer_notes?'<div class="help">Reviewer note: '+escapeHTML(doc.reviewer_notes)+'</div>':'';
-    return '<div class="doc-card"><strong>'+label+'</strong><div class="doc-status">'+escapeHTML(status)+'</div>'+note+
-      '<input type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" data-doc-type="'+type+'" aria-label="Upload '+label+'">'+
-      '<button class="btn btn-secondary upload-btn" style="margin-top:8px;width:100%" type="button" data-doc-type="'+type+'">Upload / replace</button></div>';
+    const doc=latestDoc(type);
+    const status=doc?.status||'Missing';
+    const verified=status==='Verified';
+    const feedback=doc?.reviewer_notes
+      ? '<div class="feedback"><strong>NEXmove feedback</strong>'+escapeHTML(doc.reviewer_notes)+'</div>'
+      : '';
+    const fileText=doc?.original_name?'<div class="doc-file">Current file: '+escapeHTML(doc.original_name)+'</div>':'<div class="doc-file">No file uploaded yet.</div>';
+    const canUpload=!verified && ['Required','Submitted','Issue'].includes(overall);
+    const action=verified
+      ? '<div class="locked-note">Verified — no further action needed.</div>'
+      : canUpload
+        ? '<div class="doc-help">'+(status==='Issue'?'Choose a corrected file for this item.':'Choose a file now or select several documents before uploading.')+'</div><input class="doc-file-input" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" data-doc-type="'+type+'" aria-label="Choose '+escapeHTML(label)+'">'
+        : '<div class="doc-help">NEXmove will tell you if action is required.</div>';
+    return '<div class="doc-card"><div class="doc-card-head"><h3>'+escapeHTML(label)+'</h3><span class="doc-chip '+docChipClass(status)+'">'+escapeHTML(docDisplayStatus(status))+'</span></div>'+fileText+feedback+action+'</div>';
   }).join('');
-  document.querySelectorAll('.upload-btn').forEach(btn=>btn.addEventListener('click',()=>uploadDocument(btn.dataset.docType)));
+
+  document.querySelectorAll('.doc-file-input').forEach(input=>input.addEventListener('change',updateSelectionBar));
+  const hasUploadInputs=document.querySelectorAll('.doc-file-input').length>0;
+  document.getElementById('uploadBar').classList.toggle('hidden',!hasUploadInputs);
+  document.getElementById('verificationLead').textContent=
+    overall==='Issue'
+      ? 'Read the NEXmove feedback on any item marked “Needs changes”. Select all corrected files you want to send, then upload them together.'
+      : overall==='Verified'
+        ? 'Verification is complete. Your verified documents are listed below.'
+        : 'Choose all documents you want to send. Your selections stay in place until you press the single upload button.';
+  updateSelectionBar();
 }
 
-async function uploadDocument(type){
-  const input=document.querySelector('input[type=file][data-doc-type="'+type+'"]');
-  const file=input?.files?.[0];
-  if(!file)return show('Choose a PDF, JPG or PNG file first.');
-  if(file.size>5*1024*1024)return show('Document must be 5 MB or smaller.');
-  try{
-    const res=await fetch('/api/physio-auth/documents/'+encodeURIComponent(type),{
-      method:'POST',credentials:'include',
-      headers:{'Content-Type':'application/octet-stream','X-File-Name':encodeURIComponent(file.name),'X-File-Mime':file.type||'application/octet-stream'},
-      body:file
-    });
-    const data=await res.json();
-    if(!res.ok)throw new Error(data.message||'Upload failed.');
-    show('Document uploaded securely.','success');
-    await loadDocuments();
-  }catch(err){show(err.message)}
+async function uploadSelectedDocuments(){
+  const selected=selectedFiles();
+  if(!selected.length)return;
+  const btn=document.getElementById('uploadAllBtn');
+  const hint=document.getElementById('uploadHint');
+  btn.disabled=true;
+  document.querySelectorAll('.doc-file-input').forEach(i=>i.disabled=true);
+  let completed=0,failures=[];
+  for(const item of selected){
+    hint.textContent='Uploading '+(completed+1)+' of '+selected.length+'…';
+    try{
+      const res=await fetch('/api/physio-auth/documents/'+encodeURIComponent(item.type),{
+        method:'POST',
+        credentials:'include',
+        headers:{
+          'Content-Type':'application/octet-stream',
+          'X-File-Name':encodeURIComponent(item.file.name),
+          'X-File-Mime':item.file.type||'application/octet-stream'
+        },
+        body:item.file
+      });
+      const data=await res.json();
+      if(!res.ok)throw new Error(data.message||'Upload failed.');
+    }catch(err){failures.push(item.type+': '+err.message)}
+    completed++;
+  }
+
+  hint.textContent='Select one or more documents above. Nothing is uploaded until you press the button.';
+  document.querySelectorAll('.doc-file-input').forEach(i=>i.disabled=false);
+  if(failures.length){
+    show('Some documents could not be uploaded: '+failures.join(' | '),'error');
+  }else{
+    show(selected.length+' document'+(selected.length===1?'':'s')+' uploaded successfully. NEXmove can now review them.','success');
+  }
+  await loadMe();
 }
+
+document.getElementById('uploadAllBtn').addEventListener('click',uploadSelectedDocuments);
 
 async function loadProfile(){
   const res=await fetch('/api/physio-auth/profile',{credentials:'include'});
@@ -246,8 +435,7 @@ async function loadProfile(){
 
 document.getElementById('profileForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const form=new FormData(e.currentTarget);
-  const payload=Object.fromEntries(form.entries());
+  const payload=Object.fromEntries(new FormData(e.currentTarget).entries());
   try{
     const res=await fetch('/api/physio-auth/profile',{method:'PUT',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(payload)});
     const data=await res.json();
@@ -260,10 +448,9 @@ async function loadAppointments(){
   const res=await fetch('/api/physio-auth/appointments',{credentials:'include'});
   if(!res.ok)return;
   const data=await res.json();
-  const body=document.getElementById('appointmentsBody');
   const rows=data.data||[];
   document.getElementById('appointmentsEmpty').style.display=rows.length?'none':'block';
-  body.innerHTML=rows.map(b=>'<tr>'+
+  document.getElementById('appointmentsBody').innerHTML=rows.map(b=>'<tr>'+
     '<td>'+escapeHTML(b.preferred_date||'—')+'<br>'+escapeHTML(b.preferred_time||'')+'</td>'+
     '<td><strong>'+escapeHTML(b.full_name)+'</strong><br>'+escapeHTML(b.phone||'')+'</td>'+
     '<td>'+escapeHTML(b.service_name||'—')+'</td>'+
