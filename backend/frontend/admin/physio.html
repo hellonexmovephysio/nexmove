@@ -146,7 +146,7 @@
             background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; z-index: 1000;
         }
         .modal {
-            background: #fff; padding: 30px; border-radius: 12px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;
+            background: #fff; padding: 30px; border-radius: 12px; max-width: 820px; width: calc(100% - 30px); max-height: 90vh; overflow-y: auto;
         }
         .modal h2 { margin-top: 0; color: var(--navy); }
         .modal-details { margin-bottom: 20px; line-height: 1.6; }
@@ -156,6 +156,17 @@
         .btn-close:hover { background: #94a3b8; }
 
         select.status-select { padding: 8px; border-radius: 6px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; margin-right: 10px; }
+        .review-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; }
+        .review-card { background:#f8fafb; border:1px solid var(--border); border-radius:10px; padding:12px; margin:12px 0; }
+        .review-card h3 { margin:0 0 10px; font-size:15px; color:var(--navy); }
+        .doc-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:10px; align-items:center; padding:10px 0; border-top:1px solid var(--border); }
+        .doc-row:first-child { border-top:0; }
+        .doc-meta { font-size:12px; color:var(--muted); }
+        .doc-status { min-width:110px; padding:7px; border:1px solid var(--border); border-radius:6px; }
+        .btn-secondary { background:#64748b; }
+        .btn-danger { background:#b91c1c; }
+        .btn-activate { background:#15803d; }
+        @media(max-width:700px){ .review-grid{grid-template-columns:1fr}.doc-row{grid-template-columns:1fr}.modal{padding:20px} }
     </style>
 </head>
 <body>
@@ -191,6 +202,8 @@
                     <th>Contact</th>
                     <th>City / Areas</th>
                     <th>Status</th>
+                    <th>Verification</th>
+                    <th>Practitioner</th>
                     <th>Applied At</th>
                     <th>Actions</th>
                 </tr>
@@ -212,16 +225,40 @@
                 <textarea id="updateNotes" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; min-height: 80px; margin-bottom: 15px;"></textarea>
                 
                 <label style="display: block; font-weight: 600; margin-bottom: 5px;">Update Status:</label>
-                <div style="display: flex; align-items: center;">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
                     <select id="updateStatus" class="status-select">
                         <option value="Pending">Pending</option>
                         <option value="Under Review">Under Review</option>
                         <option value="Approved">Approved</option>
                         <option value="Rejected">Rejected</option>
                     </select>
-                    <button class="btn edit" id="saveStatusBtn">Save</button>
+                    <select id="verificationStatus" class="status-select">
+                        <option value="Not Requested">Verification: Not Requested</option>
+                        <option value="Required">Verification: Required</option>
+                        <option value="Submitted">Verification: Submitted</option>
+                        <option value="Verified">Verification: Verified</option>
+                        <option value="Issue">Verification: Issue</option>
+                    </select>
+                    <button class="btn edit" id="saveStatusBtn">Save Review</button>
+                </div>
+                <label style="display:block;font-weight:600;margin:15px 0 5px;">Verification Notes:</label>
+                <textarea id="verificationNotes" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);font-family:inherit;font-size:14px;min-height:70px;"></textarea>
+            </div>
+
+            <div class="review-card">
+                <h3>Verification Documents</h3>
+                <div id="documentsList">No documents uploaded.</div>
+            </div>
+
+            <div class="review-card">
+                <h3>Practitioner Activation</h3>
+                <p id="activationState" style="margin:0 0 10px;color:var(--muted);"></p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button class="btn btn-activate" id="activateBtn" type="button">Activate Practitioner</button>
+                    <button class="btn btn-danger" id="suspendBtn" type="button">Suspend Practitioner</button>
                 </div>
             </div>
+
             <div class="modal-actions">
                 <button class="btn btn-close" onclick="closeModal()">Close</button>
             </div>
@@ -278,6 +315,7 @@
         }
 
         let currentAppId = null;
+        let currentAppData = null;
 
         async function loadApplications() {
             try {
@@ -302,6 +340,8 @@
                             <td>${escapeHTML(row.email)}<br>${escapeHTML(row.phone)}</td>
                             <td>${escapeHTML(row.city)}</td>
                             <td><span class="badge ${getBadgeClass(row.status)}">${escapeHTML(row.status)}</span></td>
+                            <td>${escapeHTML(row.verification_status || 'Not Requested')}</td>
+                            <td>${escapeHTML(row.practitioner_status || (row.email_verified_at ? 'Applicant' : 'Legacy'))}</td>
                             <td>${formatDateTime(row.created_at)}</td>
                             <td>
                                 <button class="btn edit" onclick="viewApplication(${row.id})">Review</button>
@@ -319,6 +359,73 @@
             }
         }
 
+        function yesNo(value) {
+            return value === true ? 'Yes' : value === false ? 'No' : '-';
+        }
+
+        function prettyDocType(type) {
+            return ({
+                cv: 'CV',
+                indemnity: 'Professional Indemnity',
+                qualification: 'Qualification Evidence',
+                dbs: 'DBS / Disclosure',
+                right_to_work: 'Right-to-Work Evidence'
+            })[type] || type;
+        }
+
+        async function downloadDocument(docId, fileName) {
+            try {
+                const res = await apiFetch(`/api/physio/admin/${currentAppId}/document/${docId}`);
+                if (!res.ok) throw new Error('Could not download document.');
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName || 'document';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                alert(err.message || 'Could not download document.');
+            }
+        }
+
+        async function reviewDocument(docId, status) {
+            const notes = prompt('Optional reviewer note:', '') || '';
+            const res = await apiFetch(`/api/physio/admin/${currentAppId}/document/${docId}`, {
+                method: 'PUT',
+                body: { status, reviewer_notes: notes }
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) return alert(data.message || 'Could not update document.');
+            viewApplication(currentAppId);
+        }
+
+        function renderDocuments(documents) {
+            const holder = document.getElementById('documentsList');
+            if (!documents || !documents.length) {
+                holder.innerHTML = '<span style="color:var(--muted)">No documents uploaded.</span>';
+                return;
+            }
+            holder.innerHTML = documents.map(doc => `
+                <div class="doc-row">
+                    <div>
+                        <strong>${escapeHTML(prettyDocType(doc.document_type))}</strong><br>
+                        <span class="doc-meta">${escapeHTML(doc.original_name)} · ${Math.max(1, Math.round((doc.file_size || 0) / 1024))} KB · ${escapeHTML(doc.status)}</span>
+                        ${doc.reviewer_notes ? `<div class="doc-meta">Note: ${escapeHTML(doc.reviewer_notes)}</div>` : ''}
+                    </div>
+                    <button class="btn btn-secondary" type="button" onclick='downloadDocument(${doc.id}, ${JSON.stringify(doc.original_name)})'>Download</button>
+                    <select class="doc-status" onchange="if(this.value){reviewDocument(${doc.id},this.value);this.value=''}">
+                        <option value="">Review…</option>
+                        <option value="Verified">Verified</option>
+                        <option value="Issue">Issue</option>
+                        <option value="Submitted">Submitted</option>
+                    </select>
+                </div>
+            `).join('');
+        }
+
         async function viewApplication(id) {
             try {
                 const res = await apiFetch(`/api/physio/admin/${id}`);
@@ -328,25 +435,51 @@
                     const app = data.data;
                     currentAppId = app.id;
                     
+                    currentAppData = app;
                     document.getElementById('modalDetails').innerHTML = `
-                        <p><strong>Name:</strong> ${escapeHTML(app.full_name)}</p>
-                        <p><strong>Email:</strong> ${escapeHTML(app.email)} | <strong>Phone:</strong> ${escapeHTML(app.phone)}</p>
-                        <p><strong>City:</strong> ${escapeHTML(app.city)} | <strong>Preferred Contact:</strong> ${escapeHTML(app.preferred_contact)}</p>
-                        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #e2e8e8;">
-                        <p><strong>HCPC Number:</strong> ${escapeHTML(app.hcpc_number)}</p>
-                        <p><strong>Experience:</strong> ${app.years_experience !== null ? app.years_experience + ' years' : '-'}</p>
-                        <p><strong>Specialisations:</strong> ${escapeHTML(app.specialisations)}</p>
-                        <p><strong>Qualifications:</strong> ${escapeHTML(app.qualifications)}</p>
-                        <p><strong>Biography:</strong> ${escapeHTML(app.biography)}</p>
-                        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #e2e8e8;">
-                        <p><strong>Areas Covered:</strong> ${escapeHTML(app.areas_covered)}</p>
-                        <p><strong>Availability:</strong> ${escapeHTML(app.preferred_days)} | ${escapeHTML(app.preferred_hours)}</p>
-                        <p><strong>Home Visits:</strong> ${app.home_visit_availability ? 'Yes' : 'No'}</p>
-                        <p><strong>Additional Info:</strong> ${escapeHTML(app.additional_info)}</p>
+                        <div class="review-card">
+                            <h3>Applicant & Account</h3>
+                            <div class="review-grid">
+                                <div><strong>Name:</strong><br>${escapeHTML(app.full_name)}</div>
+                                <div><strong>Email verified:</strong><br>${app.email_verified_at ? 'Yes' : 'No / legacy application'}</div>
+                                <div><strong>Email:</strong><br>${escapeHTML(app.email)}</div>
+                                <div><strong>Phone:</strong><br>${escapeHTML(app.phone)}</div>
+                                <div><strong>City:</strong><br>${escapeHTML(app.city)}</div>
+                                <div><strong>Preferred contact:</strong><br>${escapeHTML(app.preferred_contact)}</div>
+                                <div><strong>Practitioner status:</strong><br>${escapeHTML(app.practitioner_status || 'Applicant')}</div>
+                                <div><strong>Application ref:</strong><br>${escapeHTML(app.application_ref)}</div>
+                            </div>
+                        </div>
+                        <div class="review-card">
+                            <h3>Professional</h3>
+                            <p><strong>HCPC Number:</strong> ${escapeHTML(app.hcpc_number)}</p>
+                            <p><strong>Experience:</strong> ${app.years_experience !== null ? app.years_experience + ' years' : '-'}</p>
+                            <p><strong>Specialisations:</strong> ${escapeHTML(app.specialisations)}</p>
+                            <p><strong>Qualifications:</strong> ${escapeHTML(app.qualifications)}</p>
+                            <p><strong>Biography:</strong> ${escapeHTML(app.biography)}</p>
+                        </div>
+                        <div class="review-card">
+                            <h3>Coverage & Eligibility</h3>
+                            <p><strong>Areas Covered:</strong> ${escapeHTML(app.areas_covered)}</p>
+                            <p><strong>Availability:</strong> ${escapeHTML(app.preferred_days)} | ${escapeHTML(app.preferred_hours)}</p>
+                            <p><strong>Home Visits:</strong> ${yesNo(app.home_visit_availability)}</p>
+                            <p><strong>Right to Work:</strong> ${yesNo(app.right_to_work)}</p>
+                            <p><strong>Visa / Eligibility:</strong> ${escapeHTML(app.eligibility_type)}</p>
+                            <p><strong>CSP Member:</strong> ${yesNo(app.csp_member)}</p>
+                            <p><strong>UK Experience:</strong> ${yesNo(app.uk_experience)}</p>
+                            <p><strong>Declaration:</strong> ${yesNo(app.agree_declaration)}</p>
+                            <p><strong>Additional Info:</strong> ${escapeHTML(app.additional_info)}</p>
+                        </div>
                     `;
                     
                     document.getElementById('updateStatus').value = app.status;
+                    document.getElementById('verificationStatus').value = app.verification_status || 'Not Requested';
                     document.getElementById('updateNotes').value = app.internal_notes || '';
+                    document.getElementById('verificationNotes').value = app.verification_notes || '';
+                    document.getElementById('activationState').textContent = `Current practitioner status: ${app.practitioner_status || 'Applicant'}`;
+                    document.getElementById('activateBtn').disabled = !(app.status === 'Approved' && app.verification_status === 'Verified' && app.physio_user_id);
+                    document.getElementById('suspendBtn').disabled = !(app.practitioner_status === 'Active' && app.physio_user_id);
+                    renderDocuments(data.documents || []);
                     document.getElementById('reviewModal').style.display = 'flex';
                 }
             } catch (err) {
@@ -358,12 +491,15 @@
         function closeModal() {
             document.getElementById('reviewModal').style.display = 'none';
             currentAppId = null;
+            currentAppData = null;
         }
 
         document.getElementById('saveStatusBtn').addEventListener('click', async () => {
             if (!currentAppId) return;
             const newStatus = document.getElementById('updateStatus').value;
+            const newVerificationStatus = document.getElementById('verificationStatus').value;
             const newNotes = document.getElementById('updateNotes').value;
+            const newVerificationNotes = document.getElementById('verificationNotes').value;
             
             try {
                 const btn = document.getElementById('saveStatusBtn');
@@ -372,7 +508,7 @@
                 
                 const res = await apiFetch(`/api/physio/admin/${currentAppId}`, {
                     method: 'PUT',
-                    body: JSON.stringify({ status: newStatus, internal_notes: newNotes })
+                    body: { status: newStatus, verification_status: newVerificationStatus, internal_notes: newNotes, verification_notes: newVerificationNotes }
                 });
                 
                 if (res.ok) {
@@ -389,6 +525,26 @@
                 btn.disabled = false;
                 btn.textContent = 'Save';
             }
+        });
+
+        document.getElementById('activateBtn').addEventListener('click', async () => {
+            if (!currentAppId || !confirm('Activate this fully verified practitioner?')) return;
+            const res = await apiFetch(`/api/physio/admin/${currentAppId}/activate`, { method: 'PUT' });
+            const data = await res.json();
+            if (!res.ok || !data.success) return alert(data.message || 'Could not activate practitioner.');
+            alert('Practitioner activated.');
+            await viewApplication(currentAppId);
+            loadApplications();
+        });
+
+        document.getElementById('suspendBtn').addEventListener('click', async () => {
+            if (!currentAppId || !confirm('Suspend this practitioner account?')) return;
+            const res = await apiFetch(`/api/physio/admin/${currentAppId}/suspend`, { method: 'PUT' });
+            const data = await res.json();
+            if (!res.ok || !data.success) return alert(data.message || 'Could not suspend practitioner.');
+            alert('Practitioner suspended.');
+            await viewApplication(currentAppId);
+            loadApplications();
         });
 
         // Initialize
