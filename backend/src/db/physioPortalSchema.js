@@ -28,6 +28,31 @@ async function ensurePhysioPortalSchema() {
       `;
 
       await sql`
+        ALTER TABLE physio_applications
+        ADD COLUMN IF NOT EXISTS right_to_work BOOLEAN
+      `;
+
+      await sql`
+        ALTER TABLE physio_applications
+        ADD COLUMN IF NOT EXISTS eligibility_type VARCHAR(120)
+      `;
+
+      await sql`
+        ALTER TABLE physio_applications
+        ADD COLUMN IF NOT EXISTS csp_member BOOLEAN
+      `;
+
+      await sql`
+        ALTER TABLE physio_applications
+        ADD COLUMN IF NOT EXISTS uk_experience BOOLEAN
+      `;
+
+      await sql`
+        ALTER TABLE physio_applications
+        ADD COLUMN IF NOT EXISTS agree_declaration BOOLEAN NOT NULL DEFAULT FALSE
+      `;
+
+      await sql`
         CREATE INDEX IF NOT EXISTS idx_physio_applications_physio_user_id
         ON physio_applications (physio_user_id)
       `;
