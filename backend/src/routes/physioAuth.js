@@ -92,7 +92,7 @@ router.post('/signup', async (req, res) => {
       success: true,
       message: 'Your practitioner account has been created.',
       user: publicUser(user),
-      next: '/join-as-physio/index.html',
+      next: '/physio/application.html',
     });
   } catch (err) {
     console.error('Practitioner signup error:', err);
