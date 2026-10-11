@@ -147,6 +147,7 @@ async function loadAccount(){
   const res=await fetch('/api/physio-auth/me',{credentials:'include'});
   if(!res.ok){location.replace('/physio/');return}
   const data=await res.json();
+  if(!data.user.email_verified){location.replace('/physio/verify-email.html?email='+encodeURIComponent(data.user.email||''));return}
   if(data.application){location.replace('/physio/dashboard.html');return}
   document.getElementById('accountName').textContent=data.user.full_name;
   document.getElementById('accountEmail').textContent=data.user.email;
