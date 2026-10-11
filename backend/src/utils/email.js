@@ -183,8 +183,45 @@ async function sendPhysioPasswordResetEmail(account) {
   }
 }
 
+
+async function sendPhysioVerificationEmail(account) {
+  if (!process.env.SMTP_PASSWORD) {
+    console.error('Practitioner verification email failed: SMTP_PASSWORD is not configured.');
+    return { success: false, error: 'SMTP configuration is missing.' };
+  }
+
+  const transporter = createTransporter();
+  const fromEmail = process.env.SMTP_FROM || 'noreply@nexmove.example.com';
+  const fromName = process.env.EMAIL_FROM_NAME || 'NEXmove Physio';
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${fromName}" <${fromEmail}>`,
+      to: account.email,
+      subject: 'Verify your NEXmove Practitioner Portal email',
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#26343d;line-height:1.6">
+          <h2 style="color:#1B2A4A">Verify your email</h2>
+          <p>Hello <strong>${account.full_name || 'Practitioner'}</strong>,</p>
+          <p>Please verify your email address before submitting your NEXmove practitioner application.</p>
+          <p style="margin:28px 0">
+            <a href="${account.verify_url}" style="display:inline-block;background:#1B2A4A;color:#fff;text-decoration:none;padding:13px 20px;border-radius:10px;font-weight:700">Verify email</a>
+          </p>
+          <p>This link expires in 24 hours. If you did not create this account, you can ignore this email.</p>
+        </div>
+      `,
+      text: `Hello ${account.full_name || 'Practitioner'},\n\nVerify your NEXmove Practitioner Portal email:\n${account.verify_url}\n\nThis link expires in 24 hours.\n`
+    });
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error(`Failed to send practitioner verification email to ${account.email}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
 module.exports = {
   sendApprovalEmail,
   sendAdminPhysioApplicationNotification,
-  sendPhysioPasswordResetEmail
+  sendPhysioPasswordResetEmail,
+  sendPhysioVerificationEmail
 };
