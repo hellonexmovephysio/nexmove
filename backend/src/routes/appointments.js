@@ -1,6 +1,7 @@
 const express = require('express');
 const { getDB } = require('../db/pool');
 const { authMiddleware } = require('../middleware/auth');
+const { ensurePhysioPortalSchema } = require('../db/physioPortalSchema');
 
 const router = express.Router();
 
@@ -9,6 +10,7 @@ const VALID_STATUSES = ['Pending', 'Confirmed', 'Completed', 'Cancelled'];
 // GET /api/appointments — list all (with optional ?status= filter)
 router.get('/', authMiddleware, async (req, res) => {
   try {
+    await ensurePhysioPortalSchema();
     const sql = getDB();
     const { status } = req.query;
 
@@ -20,9 +22,11 @@ router.get('/', authMiddleware, async (req, res) => {
                b.preferred_date AS appointment_date, 
                b.preferred_time AS appointment_time, 
                b.symptoms AS message,
-               b.status, b.created_at
+               b.status, b.created_at, b.physio_user_id,
+               u.full_name AS practitioner_name
         FROM bookings b
         LEFT JOIN services s ON s.id = b.service_id
+        LEFT JOIN physio_users u ON u.id = b.physio_user_id
         WHERE b.status = ${status.toLowerCase()}
         ORDER BY b.preferred_date ASC, b.preferred_time ASC
       `;
@@ -33,9 +37,11 @@ router.get('/', authMiddleware, async (req, res) => {
                b.preferred_date AS appointment_date, 
                b.preferred_time AS appointment_time, 
                b.symptoms AS message,
-               b.status, b.created_at
+               b.status, b.created_at, b.physio_user_id,
+               u.full_name AS practitioner_name
         FROM bookings b
         LEFT JOIN services s ON s.id = b.service_id
+        LEFT JOIN physio_users u ON u.id = b.physio_user_id
         ORDER BY b.preferred_date ASC, b.preferred_time ASC
       `;
     }
@@ -53,6 +59,7 @@ router.get('/', authMiddleware, async (req, res) => {
 // GET /api/appointments/stats — counts by status
 router.get('/stats', authMiddleware, async (req, res) => {
   try {
+    await ensurePhysioPortalSchema();
     const sql = getDB();
     const rows = await sql`
       SELECT
@@ -73,6 +80,7 @@ router.get('/stats', authMiddleware, async (req, res) => {
 // GET /api/appointments/:id
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
+    await ensurePhysioPortalSchema();
     const sql = getDB();
     const id = parseInt(req.params.id, 10);
     if (isNaN(id) || id <= 0) {
@@ -85,10 +93,12 @@ router.get('/:id', authMiddleware, async (req, res) => {
              b.preferred_date AS appointment_date, 
              b.preferred_time AS appointment_time, 
              b.symptoms AS message,
-             b.status, b.created_at,
-             b.approval_email_sent, b.approval_email_error
+             b.status, b.created_at, b.physio_user_id,
+             b.approval_email_sent, b.approval_email_error,
+             u.full_name AS practitioner_name
       FROM bookings b
       LEFT JOIN services s ON s.id = b.service_id
+      LEFT JOIN physio_users u ON u.id = b.physio_user_id
       WHERE b.id = ${id} LIMIT 1
     `;
     if (!rows.length) {
@@ -236,6 +246,51 @@ router.put('/:id', authMiddleware, async (req, res) => {
   } catch (err) {
     console.error('Update appointment error:', err);
     res.status(500).json({ success: false, message: 'Server error.' });
+  }
+});
+
+// PUT /api/appointments/:id/practitioner — assign an active practitioner without changing booking/payment logic
+router.put('/:id/practitioner', authMiddleware, async (req, res) => {
+  try {
+    await ensurePhysioPortalSchema();
+    const sql = getDB();
+    const id = parseInt(req.params.id, 10);
+    const rawPhysioId = req.body.physio_user_id;
+    const physioUserId = rawPhysioId === null || rawPhysioId === '' ? null : parseInt(rawPhysioId, 10);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ success: false, message: 'Invalid appointment ID.' });
+    }
+    if (physioUserId !== null && (!Number.isInteger(physioUserId) || physioUserId <= 0)) {
+      return res.status(400).json({ success: false, message: 'Invalid practitioner ID.' });
+    }
+
+    if (physioUserId !== null) {
+      const practitioners = await sql`
+        SELECT id
+        FROM physio_users
+        WHERE id = ${physioUserId}
+          AND account_status = 'Active'
+          AND practitioner_status = 'Active'
+        LIMIT 1
+      `;
+      if (!practitioners.length) {
+        return res.status(409).json({ success: false, message: 'Choose an active, fully verified practitioner.' });
+      }
+    }
+
+    const rows = await sql`
+      UPDATE bookings
+      SET physio_user_id = ${physioUserId}, updated_at = NOW()
+      WHERE id = ${id}
+      RETURNING id, physio_user_id
+    `;
+    if (!rows.length) return res.status(404).json({ success: false, message: 'Appointment not found.' });
+
+    res.json({ success: true, message: physioUserId ? 'Practitioner assigned.' : 'Practitioner unassigned.', data: rows[0] });
+  } catch (err) {
+    console.error('Assign practitioner error:', err);
+    res.status(500).json({ success: false, message: 'Could not update practitioner assignment.' });
   }
 });
 
