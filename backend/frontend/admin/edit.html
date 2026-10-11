@@ -113,6 +113,11 @@
                 <option value="Cancelled">Cancelled</option>
             </select>
 
+            <label class="label" style="display:block;margin-top:20px;">Assigned Practitioner</label>
+            <select id="practitioner" name="practitioner">
+                <option value="">Unassigned</option>
+            </select>
+
             <button type="submit">Save Changes</button>
         </form>
         <button id="resendBtn" type="button" style="display:none; background: #3b82f6; margin-top: 10px;">Resend Confirmation Email</button>
@@ -152,6 +157,7 @@
                 document.getElementById('custService').textContent = data.data.service;
                 document.getElementById('custDateTime').textContent = `${data.data.appointment_date} ${data.data.appointment_time}`;
                 document.getElementById('status').value = data.data.status;
+                await loadPractitioners(data.data.physio_user_id || '');
                 
                 if (data.data.status === 'Confirmed') {
                     const emailStatusRow = document.getElementById('emailStatusRow');
@@ -180,6 +186,26 @@
         }
     }
 
+    async function loadPractitioners(selectedId = '') {
+        const select = document.getElementById('practitioner');
+        select.innerHTML = '<option value="">Unassigned</option>';
+        try {
+            const res = await apiFetch('/api/physio/admin/practitioners/active');
+            const data = await res.json();
+            if (res.ok && data.success && Array.isArray(data.data)) {
+                data.data.forEach(p => {
+                    const option = document.createElement('option');
+                    option.value = p.id;
+                    option.textContent = p.full_name + (p.hcpc_number ? ` — ${p.hcpc_number}` : '');
+                    select.appendChild(option);
+                });
+            }
+            select.value = selectedId ? String(selectedId) : '';
+        } catch (err) {
+            console.error('Failed to load practitioners', err);
+        }
+    }
+
     document.getElementById('editForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const errorMsg = document.getElementById('errorMsg');
@@ -196,16 +222,26 @@
             });
             const data = await res.json();
 
-            if (res.ok && data.success) {
-                successMsg.textContent = 'Status updated successfully.';
-                successMsg.style.display = 'block';
-                setTimeout(() => window.location.href = 'dashboard.html', 1500);
-            } else {
-                errorMsg.textContent = data.message || 'Update failed.';
-                errorMsg.style.display = 'block';
+            if (!res.ok || !data.success) {
+                throw new Error(data.message || 'Status update failed.');
             }
+
+            const physioValue = document.getElementById('practitioner').value;
+            const assignmentRes = await apiFetch(`/api/appointments/${id}/practitioner`, {
+                method: 'PUT',
+                body: { physio_user_id: physioValue || null }
+            });
+            const assignmentData = await assignmentRes.json();
+
+            if (!assignmentRes.ok || !assignmentData.success) {
+                throw new Error(assignmentData.message || 'Practitioner assignment failed.');
+            }
+
+            successMsg.textContent = 'Appointment and practitioner assignment updated successfully.';
+            successMsg.style.display = 'block';
+            setTimeout(() => window.location.href = 'dashboard.html', 1500);
         } catch (err) {
-            errorMsg.textContent = 'Server error.';
+            errorMsg.textContent = err.message || 'Server error.';
             errorMsg.style.display = 'block';
         }
     });
