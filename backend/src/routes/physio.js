@@ -22,9 +22,9 @@ function documentKey() {
 }
 
 function decryptDocument(row) {
-  const decipher = crypto.createDecipheriv('aes-256-gcm', documentKey(), Buffer.from(row.iv));
-  decipher.setAuthTag(Buffer.from(row.auth_tag));
-  return Buffer.concat([decipher.update(Buffer.from(row.encrypted_data)), decipher.final()]);
+  const decipher = crypto.createDecipheriv('aes-256-gcm', documentKey(), Buffer.from(row.iv, 'base64'));
+  decipher.setAuthTag(Buffer.from(row.auth_tag, 'base64'));
+  return Buffer.concat([decipher.update(Buffer.from(row.encrypted_data, 'base64')), decipher.final()]);
 }
 
 function safeDownloadName(value) {
