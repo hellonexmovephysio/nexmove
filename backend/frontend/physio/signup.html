@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Create your NEXmove practitioner account and apply to join the physiotherapy network.">
+<title>Create Practitioner Account | NEXmove Physio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+</head>
+<body>
+<main class="portal-shell">
+  <div class="portal-wrap">
+    <div class="portal-brand">
+      <img class="portal-logo" src="../images/nexmove-logo.png" alt="NEXmove Physio">
+      <h1>Create your practitioner account</h1>
+      <p>Start your application to join the NEXmove home physiotherapy network.</p>
+    </div>
+
+    <section class="portal-card">
+      <div class="stepbar" aria-hidden="true"><span class="active"></span><span></span><span></span></div>
+      <h2 class="section-title">About you</h2>
+      <p class="section-copy">We only need your account details at this stage. Professional information comes next.</p>
+      <div id="notice" class="notice" role="alert"></div>
+
+      <form id="signupForm">
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" type="text" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Mobile number</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="new-password" minlength="10" required>
+            <div class="help">Use at least 10 characters.</div>
+          </div>
+          <div class="form-group">
+            <label for="confirm_password">Confirm password</label>
+            <input id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" minlength="10" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="check"><input type="checkbox" name="consent_privacy" value="true" required><span>I agree that NEXmove may use these details to create and manage my practitioner account and application.</span></label>
+        </div>
+        <button id="submitBtn" class="btn btn-primary" type="submit">Create account & continue</button>
+      </form>
+      <div class="portal-links">Already registered? <a href="index.html">Sign in</a></div>
+    </section>
+  </div>
+</main>
+<script>
+const form=document.getElementById('signupForm'),notice=document.getElementById('notice'),btn=document.getElementById('submitBtn');
+function show(message,type='error'){notice.textContent=message;notice.className='notice show '+type}
+form.addEventListener('submit',async e=>{
+  e.preventDefault(); btn.disabled=true; btn.textContent='Creating account…'; notice.className='notice';
+  const fd=new FormData(form);
+  const payload=Object.fromEntries(fd.entries());
+  payload.consent_privacy=fd.has('consent_privacy');
+  try{
+    const res=await fetch('/api/physio-auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Account creation failed.');
+    location.href='/physio/application.html';
+  }catch(err){show(err.message)}finally{btn.disabled=false;btn.textContent='Create account & continue'}
+});
+</script>
+</body>
+</html>
