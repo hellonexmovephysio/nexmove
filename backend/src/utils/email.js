@@ -219,9 +219,56 @@ async function sendPhysioVerificationEmail(account) {
   }
 }
 
+
+async function sendPhysioApplicationStatusEmail(application) {
+  if (!process.env.SMTP_PASSWORD || !application.email) {
+    return { success: false, error: 'SMTP configuration or recipient is missing.' };
+  }
+
+  const transporter = createTransporter();
+  const fromEmail = process.env.SMTP_FROM || 'noreply@nexmove.example.com';
+  const fromName = process.env.EMAIL_FROM_NAME || 'NEXmove Physio';
+  const status = application.status || 'Pending';
+  const verification = application.verification_status || 'Not Requested';
+
+  let guidance = 'You can sign in to the NEXmove Practitioner Portal to see the latest status.';
+  if (verification === 'Required') {
+    guidance = 'Please sign in to the NEXmove Practitioner Portal and upload the requested verification documents.';
+  } else if (verification === 'Verified' && status === 'Approved') {
+    guidance = 'Your application and verification have been approved. NEXmove will contact you about practitioner activation.';
+  }
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${fromName}" <${fromEmail}>`,
+      to: application.email,
+      subject: `NEXmove practitioner application update — ${status}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#26343d;line-height:1.6">
+          <h2 style="color:#1B2A4A">Practitioner application update</h2>
+          <p>Hello <strong>${application.full_name || 'Practitioner'}</strong>,</p>
+          <p>Your NEXmove practitioner application has been updated.</p>
+          <div style="background:#f7f4ed;padding:18px;border-radius:12px;margin:20px 0">
+            <p style="margin:0 0 6px"><strong>Application status:</strong> ${status}</p>
+            <p style="margin:0"><strong>Verification status:</strong> ${verification}</p>
+          </div>
+          <p>${guidance}</p>
+          <p><a href="${application.portal_url}" style="color:#1B2A4A;font-weight:700">Open Practitioner Portal</a></p>
+        </div>
+      `,
+      text: `Hello ${application.full_name || 'Practitioner'},\n\nApplication status: ${status}\nVerification status: ${verification}\n\n${guidance}\n\n${application.portal_url}\n`
+    });
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error(`Failed to send practitioner status email to ${application.email}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
 module.exports = {
   sendApprovalEmail,
   sendAdminPhysioApplicationNotification,
   sendPhysioPasswordResetEmail,
-  sendPhysioVerificationEmail
+  sendPhysioVerificationEmail,
+  sendPhysioApplicationStatusEmail
 };
