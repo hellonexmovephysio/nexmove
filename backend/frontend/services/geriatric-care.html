@@ -3165,6 +3165,94 @@
   .site-header .brand { gap: 10px !important; }
   .site-header .menu-btn { margin-left: auto !important; }
 }
+/* NEXmove service pages — mobile layout safeguard */
+@media (max-width: 760px) {
+  .service-page-main { overflow-x: hidden !important; }
+  .service-page-main .container { width: calc(100% - 24px) !important; max-width: 100% !important; }
+  .service-page-main .breadcrumb { padding: 14px 0 !important; overflow-wrap: anywhere; }
+
+  .service-page-main .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .service-page-main .hero-copy { padding: 8px 0 12px !important; }
+  .service-page-main .hero-copy h1 {
+    font-size: clamp(34px, 10vw, 44px) !important;
+    line-height: 1.08 !important;
+    overflow-wrap: anywhere;
+  }
+  .service-page-main .hero-copy h3 { font-size: 20px !important; }
+  .service-page-main .hero-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-bottom: 30px !important;
+  }
+  .service-page-main .hero-actions > a {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .service-page-main .hero-media {
+    margin: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    border-radius: 24px !important;
+  }
+  .service-page-main .hero-media img {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 260px !important;
+    max-height: 340px !important;
+    object-fit: cover !important;
+    border-radius: 24px !important;
+  }
+
+  .service-page-main [style*="grid-template-columns: repeat(4, 1fr)"],
+  .service-page-main [style*="grid-template-columns: repeat(5, 1fr)"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+  .service-page-main .section { padding-top: 40px !important; padding-bottom: 40px !important; }
+  .service-page-main .section-head h2 {
+    font-size: clamp(30px, 9vw, 38px) !important;
+    line-height: 1.12 !important;
+  }
+
+  .service-page-main section.section > .container > div[style*="background: #111d33"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 22px !important;
+    padding: 28px 20px !important;
+    border-radius: 22px !important;
+  }
+  .service-page-main section.section > .container > div[style*="background: #111d33"] > div[style*="max-width: 380px"],
+  .service-page-main section.section > .container > div[style*="background: #111d33"] > div[style*="max-width: 320px"] {
+    max-width: none !important;
+  }
+  .service-page-main section.section > .container > div[style*="background: #111d33"] > div[style*="max-width: 320px"] {
+    border-left: 0 !important;
+    padding-left: 0 !important;
+  }
+  .service-page-main section.section > .container > div[style*="background: #111d33"] > div[style*="min-width: 250px"] {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .service-page-main section.section > .container > div[style*="padding: 40px 10px 0"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 22px !important;
+    padding: 26px 4px 0 !important;
+  }
+  .service-page-main section.section > .container > div[style*="padding: 40px 10px 0"] > div[style*="gap: 40px"] {
+    flex-wrap: wrap !important;
+    gap: 16px 22px !important;
+  }
+}
+
+
 </style>
     <link rel="canonical" href="https://www.nexmovephysio.co.uk/services/geriatric-care.html">
 </head>
