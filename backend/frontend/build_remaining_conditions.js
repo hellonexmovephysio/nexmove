@@ -141,7 +141,7 @@ buildPage('post-surgery.html', `
             </div>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/post-surgery.jpg" alt="Post Surgery Physiotherapy">
+            <img src="images/conditions/post-surgery.jpg" alt="Post Surgery Physiotherapy">
         </div>
     </div>
 
@@ -180,7 +180,7 @@ buildPage('post-surgery.html', `
 
     <div class="cond-section" style="background:#fff;">
         <div class="cond-split">
-            <div class="cond-split-img"><img src="../images/Front Page.jpeg" alt="Treatment"></div>
+            <div class="cond-split-img"><img src="images/Front Page.jpeg" alt="Treatment"></div>
             <div>
                 <h2>How Physiotherapy Helps After Surgery</h2>
                 <p style="margin-bottom:20px;">Our physiotherapists use a combination of hands-on treatment, progressive exercises and education to help you:</p>
@@ -244,7 +244,7 @@ buildPage('post-surgery.html', `
             <p>Expert physiotherapy at your home, tailored to your recovery. Book your session today and take the next step towards a safer, healthier and more active life.</p>
             <a href="../booking/index.html" class="btn btn-primary" style="align-self: flex-start; padding: 15px 30px; font-size: 16px; background: #fff; color: var(--navy);">Book a Session &rarr;</a>
         </div>
-        <div class="cond-cta-image" style="background-image: url('../images/Front Page.jpeg');"></div>
+        <div class="cond-cta-image" style="background-image: url('images/Front Page.jpeg');"></div>
     </div>
 `);
 
@@ -266,7 +266,7 @@ buildPage('sports-injury.html', `
             </div>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/sports-injury.jpg" alt="Sports Injury Physiotherapy">
+            <img src="images/conditions/sports-injury.jpg" alt="Sports Injury Physiotherapy">
         </div>
     </div>
 
@@ -352,7 +352,7 @@ buildPage('sports-injury.html', `
             <p>Expert physiotherapy at your home, tailored to your sport, your goals and your lifestyle. Book your session today and take the next step towards a pain-free, active life.</p>
             <a href="../booking/index.html" class="btn btn-primary" style="align-self: flex-start; padding: 15px 30px; font-size: 16px; background: #fff; color: var(--navy);">Book a Session &rarr;</a>
         </div>
-        <div class="cond-cta-image" style="background-image: url('../images/Front Page.jpeg');"></div>
+        <div class="cond-cta-image" style="background-image: url('images/Front Page.jpeg');"></div>
     </div>
 `);
 
@@ -373,13 +373,13 @@ buildPage('stroke-rehabilitation.html', `
             </div>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/stroke-rehab.jpg" alt="Stroke Rehabilitation Physiotherapy">
+            <img src="images/conditions/stroke-rehab.jpg" alt="Stroke Rehabilitation Physiotherapy">
         </div>
     </div>
 
     <div class="cond-section" style="background:#fff;">
         <div class="cond-split">
-            <div class="cond-split-img"><img src="../images/Front Page.jpeg" alt="Treatment"></div>
+            <div class="cond-split-img"><img src="images/Front Page.jpeg" alt="Treatment"></div>
             <div>
                 <h2>How Physiotherapy Can Help After a Stroke</h2>
                 <p style="margin-bottom:20px;">Our physiotherapists use a combination of hands-on treatment, neurological rehabilitation techniques and functional exercises to help you:</p>
@@ -454,7 +454,7 @@ buildPage('stroke-rehabilitation.html', `
             <p>Specialist stroke rehabilitation physiotherapy at your home, tailored to your goals. Book your session today and take the next step towards a more active, confident life.</p>
             <a href="../booking/index.html" class="btn btn-primary" style="align-self: flex-start; padding: 15px 30px; font-size: 16px; background: #fff; color: var(--navy);">Book a Session &rarr;</a>
         </div>
-        <div class="cond-cta-image" style="background-image: url('../images/Front Page.jpeg');"></div>
+        <div class="cond-cta-image" style="background-image: url('images/Front Page.jpeg');"></div>
     </div>
 `);
 
@@ -471,13 +471,13 @@ buildPage('knee-pain.html', `
             <a href="../booking/index.html" class="btn btn-primary" style="display:inline-block; padding: 15px 30px; font-size: 16px;">Book a Session &rarr;</a>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/knee-pain.jpg" alt="Knee Pain Physiotherapy">
+            <img src="images/conditions/knee-pain.jpg" alt="Knee Pain Physiotherapy">
         </div>
     </div>
 
     <div class="cond-section" style="background:#fff;">
         <div class="cond-split">
-            <div class="cond-split-img"><img src="../images/Front Page.jpeg" alt="Treatment"></div>
+            <div class="cond-split-img"><img src="images/Front Page.jpeg" alt="Treatment"></div>
             <div>
                 <h2>How Physiotherapy Can Help Knee Pain</h2>
                 <p style="margin-bottom:20px;">Our physiotherapists use a combination of hands-on treatment, targeted exercises and education to help you:</p>
@@ -540,7 +540,7 @@ buildPage('knee-pain.html', `
             <p>Expert physiotherapy at your home, tailored to your goals. Book your session today and take the next step towards pain-free movement and a more active life.</p>
             <a href="../booking/index.html" class="btn btn-primary" style="align-self: flex-start; padding: 15px 30px; font-size: 16px; background: #fff; color: var(--navy);">Book a Session &rarr;</a>
         </div>
-        <div class="cond-cta-image" style="background-image: url('../images/Front Page.jpeg');"></div>
+        <div class="cond-cta-image" style="background-image: url('images/Front Page.jpeg');"></div>
     </div>
 `);
 
@@ -557,13 +557,13 @@ buildPage('shoulder-pain.html', `
             <a href="../booking/index.html" class="btn btn-primary" style="display:inline-block; padding: 15px 30px; font-size: 16px;">Book a Session &rarr;</a>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/shoulder-pain.jpg" alt="Shoulder Pain Physiotherapy">
+            <img src="images/conditions/shoulder-pain.jpg" alt="Shoulder Pain Physiotherapy">
         </div>
     </div>
 
     <div class="cond-section" style="background:#fff;">
         <div class="cond-split">
-            <div class="cond-split-img"><img src="../images/Front Page.jpeg" alt="Treatment"></div>
+            <div class="cond-split-img"><img src="images/Front Page.jpeg" alt="Treatment"></div>
             <div>
                 <h2>How Physiotherapy Can Help Shoulder Pain</h2>
                 <p style="margin-bottom:20px;">Our physiotherapists use a combination of hands-on treatment, targeted exercises and education to help you:</p>
@@ -625,7 +625,7 @@ buildPage('shoulder-pain.html', `
             <p>Expert physiotherapy at your home, tailored to your goals. Book your session today and take the next step towards pain-free movement and a better quality of life.</p>
             <a href="../booking/index.html" class="btn btn-primary" style="align-self: flex-start; padding: 15px 30px; font-size: 16px; background: #fff; color: var(--navy);">Book a Session &rarr;</a>
         </div>
-        <div class="cond-cta-image" style="background-image: url('../images/Front Page.jpeg');"></div>
+        <div class="cond-cta-image" style="background-image: url('images/Front Page.jpeg');"></div>
     </div>
 `);
 

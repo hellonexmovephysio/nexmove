@@ -97,7 +97,7 @@ const backPainHtml = `
         .cond-cta-content { padding: 60px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .cond-cta-content h2 { font-size: 36px; font-family: 'Playfair Display', serif; margin-bottom: 15px; }
         .cond-cta-content p { font-size: 16px; color: #b3c5d6; margin-bottom: 30px; line-height: 1.6; }
-        .cond-cta-image { flex: 1; background-image: url('../images/Front Page.jpeg'); background-size: cover; background-position: center; }
+        .cond-cta-image { flex: 1; background-image: url('images/Front Page.jpeg'); background-size: cover; background-position: center; }
 
         @media (max-width: 900px) {
             .cond-hero, .cond-help-split, .cond-sym-cause, .cond-cta { grid-template-columns: 1fr; display: flex; flex-direction: column; }
@@ -132,7 +132,7 @@ const backPainHtml = `
             </div>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/back-pain.jpg" alt="Woman experiencing back pain">
+            <img src="images/conditions/back-pain.jpg" alt="Woman experiencing back pain">
         </div>
     </div>
 
@@ -180,7 +180,7 @@ const backPainHtml = `
     <div class="cond-section" style="background: #fff;">
         <div class="cond-help-split">
             <div class="cond-help-img">
-                <img src="../images/Front Page.jpeg" alt="Physiotherapy treatment">
+                <img src="images/Front Page.jpeg" alt="Physiotherapy treatment">
             </div>
             <div>
                 <div class="cond-section-title" style="text-align: left;">

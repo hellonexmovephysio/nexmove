@@ -141,7 +141,7 @@ buildPage('neck-pain.html', `
             </div>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/neck-pain.jpg" alt="Neck Pain Physiotherapy">
+            <img src="images/conditions/neck-pain.jpg" alt="Neck Pain Physiotherapy">
         </div>
     </div>
 
@@ -180,7 +180,7 @@ buildPage('neck-pain.html', `
 
     <div class="cond-section" style="background:#fff;">
         <div class="cond-split">
-            <div class="cond-split-img"><img src="../images/Front Page.jpeg" alt="Treatment"></div>
+            <div class="cond-split-img"><img src="images/Front Page.jpeg" alt="Treatment"></div>
             <div>
                 <h2>How Physiotherapy Can Help Neck Pain</h2>
                 <p style="margin-bottom:20px;">Our physiotherapists use a combination of hands-on treatment, targeted exercises and education to help you:</p>
@@ -260,7 +260,7 @@ buildPage('neck-pain.html', `
             <p>Expert physiotherapy at your home, tailored to your goals. Book your session today and take the next step towards less pain, better movement and a better quality of life.</p>
             <a href="../booking/index.html" class="btn btn-primary" style="align-self: flex-start; padding: 15px 30px; font-size: 16px; background: #fff; color: var(--navy);">Book a Session &rarr;</a>
         </div>
-        <div class="cond-cta-image" style="background-image: url('../images/Front Page.jpeg');"></div>
+        <div class="cond-cta-image" style="background-image: url('images/Front Page.jpeg');"></div>
     </div>
 `);
 
@@ -282,7 +282,7 @@ buildPage('sciatica.html', `
             </div>
         </div>
         <div class="cond-hero-image">
-            <img src="../images/conditions/sciatica.jpg" alt="Sciatica Physiotherapy">
+            <img src="images/conditions/sciatica.jpg" alt="Sciatica Physiotherapy">
         </div>
     </div>
 
@@ -325,7 +325,7 @@ buildPage('sciatica.html', `
                 </ul>
             </div>
             <div class="cond-split-img">
-                <img src="../images/Front Page.jpeg" alt="Physiotherapy treatment">
+                <img src="images/Front Page.jpeg" alt="Physiotherapy treatment">
             </div>
         </div>
     </div>
@@ -391,7 +391,7 @@ buildPage('sciatica.html', `
             <p>Expert physiotherapy at your home, tailored to your goals. Book your session today and take the next step towards less pain, better movement and a better quality of life.</p>
             <a href="../booking/index.html" class="btn btn-primary" style="align-self: flex-start; padding: 15px 30px; font-size: 16px; background: #fff; color: var(--navy);">Book a Session &rarr;</a>
         </div>
-        <div class="cond-cta-image" style="background-image: url('../images/Front Page.jpeg');"></div>
+        <div class="cond-cta-image" style="background-image: url('images/Front Page.jpeg');"></div>
     </div>
 `);
 
