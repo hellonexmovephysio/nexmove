@@ -27,8 +27,12 @@ function createPaymentEmails(booking) {
   const time = cleanText(booking.preferred_time || 'To be confirmed');
   const amount = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' })
     .format(Number(booking.amount_paid_pence || 0) / 100);
-  const confirmationUrl = 'https://www.nexmovephysio.co.uk/booking/confirmation.html?ref='
-    + encodeURIComponent(ref);
+  const { createBookingAccess, confirmationLink } = require('./bookingAccess');
+  const confirmationUrl = confirmationLink(
+    ref,
+    createBookingAccess(ref),
+    process.env.FRONTEND_URL || 'https://www.nexmovephysio.co.uk'
+  );
 
   const cardStyle = 'background:#f7f4ed;border:1px solid #e7e1d5;border-radius:12px;padding:16px';
   const wrapperStart = '<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;color:#1b2a4a;line-height:1.6">'

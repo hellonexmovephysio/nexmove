@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
 <title>Booking Confirmation | NEXmove</title>
 <link rel="stylesheet" href="assets/styles.css">
     <link rel="stylesheet" href="../cookie-notice.css">
@@ -29,7 +30,7 @@
     
     <div id="errorState" style="display:none;">
         <h1>Confirmation not available</h1>
-        <p>Please return to the booking page and submit the form again.</p>
+        <p>This private booking link is missing or no longer valid. Please contact NEXmove with your reference. Do not pay again without checking your booking status.</p>
     </div>
     
     <a class="back-btn" href="index.html">← Back to booking page</a>
@@ -41,15 +42,23 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const ref = urlParams.get('ref');
-    
-    if (!ref) {
+    const access = new URLSearchParams(window.location.hash.slice(1)).get('access');
+    const legacyCheckoutSession = urlParams.get('session_id');
+
+    if (!ref || (!access && !legacyCheckoutSession)) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('errorState').style.display = 'block';
         return;
     }
     
     try {
-        const res = await apiFetch(`/api/bookings/${ref}`);
+        // Never put the access token in a network URL. It travels only in a header.
+        const res = await fetch(`/api/bookings/${encodeURIComponent(ref)}`, {
+            method: 'GET',
+            headers: access ? { 'X-Booking-Access': access } : { 'X-Stripe-Checkout-Session': legacyCheckoutSession },
+            cache: 'no-store',
+            credentials: 'omit'
+        });
         const data = await res.json();
         
         document.getElementById('loading').style.display = 'none';
@@ -83,18 +92,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             const descEl = document.getElementById('mainDesc');
             const tickEl = document.querySelector('.confirm-tick');
             
+            // Keep patient-supplied names as text, never interpret them as HTML.
+            const setDescription = (prefix, name, suffix) => {
+                const strongName = document.createElement('strong');
+                strongName.textContent = name;
+                descEl.replaceChildren(document.createTextNode(prefix), strongName, document.createTextNode(suffix));
+            };
+
             if (b.payment_status === 'paid') {
                 titleEl.textContent = 'Booking Confirmed!';
-                descEl.innerHTML = `Thank you, <strong id="custName">${b.full_name}</strong>. Your payment was successful and your booking is confirmed.`;
+                setDescription('Thank you, ', b.full_name, '. Your payment was successful and your booking is confirmed.');
                 tickEl.style.backgroundColor = '#10b981'; // green
             } else if (b.payment_status === 'pending') {
                 titleEl.textContent = 'Payment Processing...';
-                descEl.innerHTML = `Thank you, <strong id="custName">${b.full_name}</strong>. Your payment is being processed. This page will not auto-refresh, but we will notify you once confirmed.`;
+                setDescription('Thank you, ', b.full_name, '. Your payment is being processed. This page will not auto-refresh, but we will notify you once confirmed.');
                 tickEl.style.backgroundColor = '#f59e0b'; // orange
                 tickEl.textContent = '⌛';
             } else if (b.payment_status === 'failed' || b.payment_status === 'cancelled') {
                 titleEl.textContent = 'Payment Failed';
-                descEl.innerHTML = `Sorry, <strong id="custName">${b.full_name}</strong>. Your payment was not successful. Your booking is not confirmed. <br><a href="index.html" style="color:#2563eb;text-decoration:underline;">Please try again</a>.`;
+                setDescription('Sorry, ', b.full_name, '. Your payment was not successful. Your booking is not confirmed. Please contact NEXmove before trying again.');
                 tickEl.style.backgroundColor = '#ef4444'; // red
                 tickEl.textContent = '✖';
             }

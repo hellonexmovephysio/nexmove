@@ -1,6 +1,7 @@
 const express = require('express');
 const { getDB } = require('../db/pool');
 const { bookingReference, cleanString } = require('../utils/helpers');
+const { createBookingAccess, verifyBookingAccess, confirmationLink } = require('../utils/bookingAccess');
 
 const router = express.Router();
 
@@ -90,10 +91,11 @@ router.post('/', async (req, res) => {
     const service = serviceRows[0];
     const reference = bookingReference();
     const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() : 'http://localhost:5500';
+    const bookingAccess = createBookingAccess(reference);
 
     // Stripe Integration
     let stripeSessionId = null;
-    let checkoutUrl = `${frontendUrl}/booking/confirmation.html?ref=${encodeURIComponent(reference)}`; // fallback if free
+    let checkoutUrl = confirmationLink(reference, bookingAccess, frontendUrl); // no-payment booking
     
     if (service.price_pence > 0) {
       stage = 'stripe_checkout';
@@ -119,7 +121,7 @@ router.post('/', async (req, res) => {
           },
         ],
         mode: 'payment',
-        success_url: `${frontendUrl}/booking/confirmation.html?ref=${encodeURIComponent(reference)}&session_id={CHECKOUT_SESSION_ID}`,
+        success_url: confirmationLink(reference, bookingAccess, frontendUrl, true),
         cancel_url: `${frontendUrl}/booking/index.html?cancel=true`,
         client_reference_id: reference,
         customer_email: email,
@@ -179,18 +181,28 @@ router.post('/', async (req, res) => {
 // GET /api/bookings/:ref — get booking by reference (for confirmation page)
 router.get('/:ref', async (req, res) => {
   try {
-    const sql = getDB();
     const ref = cleanString(req.params.ref, 32);
-
-    if (!ref) {
-      return res.status(400).json({ ok: false, message: 'Reference is required.' });
+    res.set('Cache-Control', 'no-store');
+    res.set('Referrer-Policy', 'no-referrer');
+    const access = req.get('X-Booking-Access');
+    const allowedByToken = verifyBookingAccess(ref, access);
+    // Backwards compatibility for Stripe redirects created before private links:
+    // only a matching, paid Stripe Checkout Session ID can act as a bearer secret.
+    const sessionId = req.get('X-Stripe-Checkout-Session') || '';
+    const allowedByLegacySession = /^cs_(?:live|test)_[A-Za-z0-9_]{12,200}$/.test(sessionId);
+    if (!ref || (!allowedByToken && !allowedByLegacySession)) {
+      return res.status(403).json({ ok: false, message: 'This private booking link is missing, invalid, or expired. Please contact NEXmove.' });
     }
 
+    const sql = getDB();
     const rows = await sql`
-      SELECT b.*, s.name AS service_name, s.duration_minutes, s.appointment_type, s.price_pence
+      SELECT b.booking_ref, b.full_name, b.preferred_date, b.preferred_time,
+             b.address_line1, b.city, b.postcode, b.payment_status,
+             s.name AS service_name
       FROM bookings b
       JOIN services s ON s.id = b.service_id
       WHERE b.booking_ref = ${ref}
+        AND (${allowedByToken} OR (b.stripe_session_id = ${sessionId} AND b.payment_status = 'paid'))
       LIMIT 1
     `;
 
