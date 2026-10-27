@@ -1096,33 +1096,47 @@ document.getElementById('submitFormBtn').addEventListener('click', async (e) => 
 
     submitBtn.disabled = true;
     submitBtn.style.opacity = '0.7';
-    msg.textContent = 'Processing Payment...';
+    msg.textContent = 'Preparing secure payment...';
     msg.style.color = '#3b82f6';
-    
+
+    // A stalled connection must not leave the booking form frozen indefinitely.
+    // A timed-out request may still finish on the server; never suggest an
+    // immediate retry that could create a duplicate booking.
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
+    let redirecting = false;
+
     try {
         const res = await apiFetch('/api/bookings', {
             method: 'POST',
-            body: data
+            body: data,
+            signal: controller.signal
         });
-        
+
         const result = await res.json();
-        
         if (res.ok && result.ok) {
-            window.location.href = result.redirect; // e.g. confirmation.html?ref=...
-        } else {
-            msg.textContent = result.message || 'Submission failed.';
-            msg.style.color = '#dc2626';
-            if (result.errors && result.errors.length) {
-                msg.innerHTML = result.message + '<br>' + result.errors.join('<br>');
+            if (typeof result.redirect !== 'string' || !/^https?:\/\//i.test(result.redirect)) {
+                throw new Error('Invalid checkout redirect');
             }
+            redirecting = true;
+            window.location.assign(result.redirect);
+        } else {
+            const details = Array.isArray(result.errors) ? result.errors.filter(x => typeof x === 'string') : [];
+            msg.textContent = [result.message || 'We could not prepare payment.', ...details].join(' ');
+            msg.style.color = '#dc2626';
+        }
+    } catch (err) {
+        msg.textContent = err && err.name === 'AbortError'
+            ? 'The booking request is taking longer than expected. It may still complete. Please contact NEXmove before trying again to avoid duplicate bookings.'
+            : 'We could not confirm the booking request. Please contact NEXmove before trying again.';
+        msg.style.color = '#dc2626';
+        console.error('Booking checkout failed on this device', { type: err && err.name || 'Error' });
+    } finally {
+        clearTimeout(timeoutId);
+        if (!redirecting) {
             submitBtn.disabled = false;
             submitBtn.style.opacity = '1';
         }
-    } catch (err) {
-        msg.textContent = 'Server error. Please try again.';
-        msg.style.color = '#dc2626';
-        submitBtn.disabled = false;
-        submitBtn.style.opacity = '1';
     }
 });
 </script>

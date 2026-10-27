@@ -23,6 +23,8 @@ router.get('/form-data', async (req, res) => {
 
 // POST /api/bookings — create booking (mirrors create_booking.php exactly)
 router.post('/', async (req, res) => {
+  const startedAt = Date.now();
+  let stage = 'validation';
   try {
     const body = req.body;
 
@@ -76,6 +78,7 @@ router.post('/', async (req, res) => {
       return res.status(422).json({ ok: false, message: 'Please correct the form.', errors });
     }
 
+    stage = 'service_lookup';
     const sql = getDB();
 
     // Verify service exists and is active
@@ -93,7 +96,13 @@ router.post('/', async (req, res) => {
     let checkoutUrl = `${frontendUrl}/booking/confirmation.html?ref=${encodeURIComponent(reference)}`; // fallback if free
     
     if (service.price_pence > 0) {
-      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+      stage = 'stripe_checkout';
+      // Bound Stripe network waits; the frontend has a longer safety timeout.
+      // No payment is taken merely by creating a Checkout Session.
+      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
+        timeout: 15000,
+        maxNetworkRetries: 1,
+      });
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [
@@ -120,6 +129,7 @@ router.post('/', async (req, res) => {
       checkoutUrl = session.url;
     }
 
+    stage = 'save_booking';
     await sql`
       INSERT INTO bookings (
         booking_ref, service_id, full_name, email, phone, date_of_birth,
@@ -136,14 +146,33 @@ router.post('/', async (req, res) => {
       )
     `;
 
+    console.info('Booking checkout prepared', {
+      stage: 'complete',
+      elapsedMs: Date.now() - startedAt,
+      requiresPayment: service.price_pence > 0,
+    });
     res.status(201).json({
       ok: true,
       reference,
       redirect: checkoutUrl,
     });
   } catch (err) {
-    console.error('Create booking error:', err);
-    res.status(500).json({ ok: false, message: 'We could not save your booking. Please try again.' });
+    // Never log the request body, patient details, secrets, Stripe session ID,
+    // or full third-party error object.
+    const errorType = String(err && (err.type || err.name) || 'Error').replace(/[^A-Za-z0-9_]/g, '').slice(0, 50);
+    const errorCode = String(err && err.code || '').replace(/[^A-Za-z0-9_]/g, '').slice(0, 50);
+    console.error('Booking checkout failed', {
+      stage,
+      elapsedMs: Date.now() - startedAt,
+      errorType,
+      errorCode,
+    });
+    res.status(stage === 'stripe_checkout' ? 503 : 500).json({
+      ok: false,
+      message: stage === 'stripe_checkout'
+        ? 'Secure payment is temporarily unavailable. Please contact NEXmove if the problem continues.'
+        : 'We could not complete your booking. Please contact NEXmove before trying again.',
+    });
   }
 });
 
