@@ -350,6 +350,40 @@ select {
 </style>
 <link rel="stylesheet" href="assets/pixel-booking.css">
     <link rel="stylesheet" href="../cookie-notice.css">
+<style id="nexmove-booking-multi-conditions-local-only">
+#conditionGrid .condition-chip input[type="checkbox"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+#conditionGrid .condition-chip:has(input[type="checkbox"]:focus-visible) span {
+    outline: 2px solid #58765b;
+    outline-offset: 2px;
+}
+</style>
+<style id="nexmove-booking-clean-section-headings-local-v1">
+/* Cleaner, left-aligned booking form section headings; leave page layout and booking flow alone. */
+.panel h2.step-heading {
+    align-items: flex-start !important;
+    gap: 0 !important;
+}
+.panel h2.step-heading > .step-title {
+    width: 100%;
+}
+.panel h2.step-heading .step-title strong {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    color: #263e4b !important;
+}
+.panel h2.step-heading .step-title small {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #63767a !important;
+}
+</style>
 </head>
 <body>
 
@@ -759,14 +793,14 @@ select {
     <form id="bookingForm">
         <div class="form-grid">
             <section class="panel service-panel">
-                <h2 class="step-heading"><span class="step-badge">A</span><span class="step-title"><strong>Choose your service</strong><small>Select the appointment type that suits you.</small></span></h2>
+                <h2 class="step-heading"><span class="step-title"><strong>Choose your service</strong><small>Select the appointment type that suits you.</small></span></h2>
                 <div class="service-grid" id="serviceGrid">
                     Loading services...
                 </div>
             </section>
 
             <section class="panel details-panel">
-                <h2 class="step-heading"><span class="step-badge">B</span><span class="step-title"><strong>Your details</strong><small>Tell us who the appointment is for.</small></span></h2>
+                <h2 class="step-heading"><span class="step-title"><strong>Your details</strong><small>Tell us who the appointment is for.</small></span></h2>
                 <div class="field-grid">
                     <label>Full Name<input name="full_name" autocomplete="name" placeholder="e.g. John Smith" required></label>
                     <label>Email Address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
@@ -776,7 +810,7 @@ select {
             </section>
 
             <section class="panel address-panel">
-                <h2 class="step-heading"><span class="step-badge">C</span><span class="step-title"><strong>Visit address</strong><small>Where should your physiotherapist visit?</small></span></h2>
+                <h2 class="step-heading"><span class="step-title"><strong>Visit address</strong><small>Where should your physiotherapist visit?</small></span></h2>
                 <div class="address-grid">
                     <label>Postcode<div class="postcode-row"><input name="postcode" autocomplete="postal-code" placeholder="SW1A 1AA" required><button type="button" id="findAddress">Find Address</button></div></label>
                     <label>Address<input name="address_line1" autocomplete="street-address" placeholder="10 Downing Street" required></label>
@@ -787,14 +821,14 @@ select {
             </section>
 
             <section class="panel condition-panel" id="conditions">
-                <h2 class="step-heading"><span class="step-badge">D</span><span class="step-title"><strong>What do you need help with?</strong><small>Choose the main reason for your appointment.</small></span></h2>
+                <h2 class="step-heading"><span class="step-title"><strong>What do you need help with?</strong><small>Select all that apply to your appointment.</small></span></h2>
                 <div class="condition-grid" id="conditionGrid">
                     Loading conditions...
                 </div>
             </section>
 
             <section class="panel clinical-panel">
-                <h2 class="step-heading"><span class="step-badge">E</span><span class="step-title"><strong>Quick clinical information</strong><small>A few details help us prepare for your visit.</small></span></h2>
+                <h2 class="step-heading"><span class="step-title"><strong>Quick clinical information</strong><small>A few details help us prepare for your visit.</small></span></h2>
                 <div class="clinical-grid">
                     <label>How long have you had this issue?<select name="issue_duration"><option>Less than 1 week</option><option>1–2 weeks</option><option selected>2–6 weeks</option><option>6–12 weeks</option><option>3–6 months</option><option>More than 6 months</option></select></label>
                     <label>Pain level (0–10)<div class="range-row"><output id="painValue">4</output><input id="painRange" name="pain_level" type="range" min="0" max="10" value="4"></div></label>
@@ -805,7 +839,7 @@ select {
             </section>
 
             <section class="panel appointment-panel">
-                <h2 class="step-heading"><span class="step-badge">F</span><span class="step-title"><strong>Preferred appointment</strong><small>Tell us when you would prefer to be seen.</small></span></h2>
+                <h2 class="step-heading"><span class="step-title"><strong>Preferred appointment</strong><small>Tell us when you would prefer to be seen.</small></span></h2>
                 <div class="appointment-grid">
                     <label class="span3">Preferred Date<input name="preferred_date" id="preferredDate" type="date" required></label>
                     <span class="field-label span3">Preferred Time</span>
@@ -817,7 +851,7 @@ select {
             </section>
 
             <section class="panel consent-panel">
-                <h2 class="step-heading"><span class="step-badge">G</span><span class="step-title"><strong>Consent</strong><small>Review and confirm before continuing.</small></span></h2>
+                <h2 class="step-heading"><span class="step-title"><strong>Consent</strong><small>Review and confirm before continuing.</small></span></h2>
                 <label class="check-line"><input type="checkbox" name="consent_privacy" required><span>I have read and agree to the <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="terms-and-conditions.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>.</span></label>
                 <label class="check-line"><input type="checkbox" name="consent_updates"><span>I agree to receive appointment updates and occasional health tips via email or SMS.</span></label>
                 <p class="hint" style="font-size:12px;line-height:1.5;margin:10px 0 0">For information about website cookies and storage, read our <a href="../cookie-policy.html" target="_blank" rel="noopener noreferrer">Cookie Policy</a>.</p>
@@ -896,7 +930,7 @@ function renderFormData(data) {
     const conditionGrid = document.getElementById('conditionGrid');
     conditionGrid.innerHTML = '';
     data.conditions.forEach(cond => {
-        const html = `<label class="condition-chip" role="radio" aria-checked="false"><input type="radio" name="condition_id" value="${cond.id}"><span>${cond.label}</span></label>`;
+        const html = `<label class="condition-chip"><input type="checkbox" name="condition_ids" value="${cond.id}"><span>${cond.label}</span></label>`;
         conditionGrid.insertAdjacentHTML('beforeend', html);
     });
 
@@ -961,22 +995,14 @@ function bindServiceCards() {
 }
 
 function bindConditionChips() {
-    const chips = document.querySelectorAll('.condition-chip input[name="condition_id"]');
+    const chips = document.querySelectorAll('.condition-chip input[name="condition_ids"]');
     chips.forEach(input => {
         input.addEventListener('change', () => {
-            document.querySelectorAll('.condition-chip').forEach(chip => {
-                chip.classList.remove('selected');
-                chip.setAttribute('aria-checked', 'false');
-            });
-            if (input.checked) {
-                const chip = input.closest('.condition-chip');
-                chip.classList.add('selected');
-                chip.setAttribute('aria-checked', 'true');
-            }
+            const chip = input.closest('.condition-chip');
+            if (chip) chip.classList.toggle('selected', input.checked);
         });
     });
 }
-
 function bindTimeCards() {
     document.querySelectorAll('.time-card input').forEach(input => {
         input.addEventListener('change', () => {
@@ -1038,6 +1064,22 @@ document.getElementById('submitFormBtn').addEventListener('click', async (e) => 
     
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
+    // Booking backend stores a primary condition_id. Record additional choices
+    // in the existing optional symptoms note without changing backend/database.
+    const selectedConditions = Array.from(
+        form.querySelectorAll('.condition-chip input[name="condition_ids"]:checked')
+    );
+    if (selectedConditions.length) {
+        data.condition_id = selectedConditions[0].value;
+        if (selectedConditions.length > 1) {
+            const selectedLabels = selectedConditions.map(input =>
+                input.closest('.condition-chip').querySelector('span').textContent.trim()
+            );
+            const selectionNote = 'Selected reasons for appointment: ' + selectedLabels.join(', ');
+            data.symptoms = [selectionNote, data.symptoms].filter(Boolean).join('\n\n').slice(0, 2000);
+        }
+    }
+    delete data.condition_ids;
     // Process checkboxes
     data.mobility_aid = form.elements['mobility_aid'].checked;
     data.fall_risk = form.elements['fall_risk'].checked;
