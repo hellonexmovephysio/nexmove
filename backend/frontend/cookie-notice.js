@@ -1,9 +1,11 @@
-/* NEXmove homepage: essential-storage information notice.
+/* NEXmove public pages: essential-storage information notice.
    No analytics, advertising pixels, or other optional tracking is introduced here. */
 (() => {
   "use strict";
 
   const KEY = "nexmove_cookie_notice_v1";
+  const scriptUrl = document.currentScript && document.currentScript.src;
+  const cookiePolicyUrl = new URL("cookie-policy.html", scriptUrl || window.location.href).href;
   const VERSION = 1;
   const LIFETIME_MS = 180 * 24 * 60 * 60 * 1000;
 
@@ -41,8 +43,8 @@
       '  <div class="nm-cookie-copy">',
       '    <p class="nm-cookie-label">YOUR PRIVACY MATTERS</p>',
       '    <h2>Cookies &amp; website storage</h2>',
-      '    <p>We use necessary website storage to keep NEXmove working and remember that you have seen this notice. No optional analytics or advertising trackers are enabled on this page. ',
-      '    <a href="cookie-policy.html">Read our Cookie Policy</a>.</p>',
+      '    <p>We use necessary website storage to remember this notice and support services you request. Find out which technologies are used and how to manage them in our ',
+      '    <a href="' + cookiePolicyUrl + '">Cookie Policy</a>.</p>',
       '  </div>',
       '  <button class="nm-cookie-button" type="button">Understood</button>',
       '</div>'
@@ -57,7 +59,10 @@
     document.body.appendChild(notice);
     notice.hidden = hasAcknowledged();
 
-    const footer = document.querySelector(".footer-legal");
+    const footer = document.querySelector(".footer-legal") ||
+      document.querySelector(".footer-bottom > div") ||
+      document.querySelector(".consent-panel .hint a[href*=\"cookie-policy.html\"]")?.parentElement ||
+      document.querySelector(".confirmation-card > .small-note a[href*=\"cookie-policy.html\"]")?.parentElement;
     if (footer && !document.getElementById("nm-cookie-open")) {
       const separator = document.createElement("span");
       separator.setAttribute("aria-hidden", "true");
@@ -74,7 +79,7 @@
         acknowledge.focus({ preventScroll: true });
       });
 
-      footer.appendChild(separator);
+      if (footer.classList.contains("footer-legal")) footer.appendChild(separator);
       footer.appendChild(trigger);
     }
   }
