@@ -164,4 +164,45 @@ async function sendPaidBookingNotifications(booking) {
   return sent;
 }
 
-module.exports = { createPaymentEmails, sendPaidBookingNotifications };
+// Send one recipient independently so one failed email can be retried without
+// resending the other recipient's successful message.
+async function sendPaidBookingNotification(booking, kind) {
+  if (!['customer', 'admin'].includes(kind)) throw new Error('Invalid notification type');
+  const required = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USERNAME', 'SMTP_PASSWORD', 'SMTP_FROM'];
+  if (kind === 'admin') required.push('ADMIN_EMAIL');
+  if (required.some(key => !process.env[key]) || !booking.email) {
+    const error = new Error('Email configuration incomplete');
+    error.code = 'SMTP_NOT_CONFIGURED';
+    throw error;
+  }
+  const port = Number(process.env.SMTP_PORT);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    const error = new Error('Invalid SMTP port');
+    error.code = 'SMTP_PORT_INVALID';
+    throw error;
+  }
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port,
+    secure: port === 465,
+    auth: { user: process.env.SMTP_USERNAME, pass: process.env.SMTP_PASSWORD },
+    connectionTimeout: 5000, greetingTimeout: 5000, socketTimeout: 8000,
+  });
+  const fromName = cleanText(process.env.EMAIL_FROM_NAME || 'NEXmove Physio').replace(/["\\]/g, '');
+  const from = '"' + fromName + '" <' + cleanText(process.env.SMTP_FROM) + '>';
+  const message = createPaymentEmails(booking)[kind];
+  try {
+    const crypto = require('crypto');
+    const digest = crypto.createHash('sha256')
+      .update(kind + ':' + String(booking.booking_ref)).digest('hex').slice(0, 24);
+    // Stable Message-ID assists provider/email threading but cannot guarantee
+    // exactly-once SMTP delivery if a process crashes after the send.
+    await transporter.sendMail({
+      from, ...message, messageId: '<nexmove-' + kind + '-' + digest + '@nexmovephysio.co.uk>',
+    });
+  } finally {
+    if (typeof transporter.close === 'function') transporter.close();
+  }
+}
+
+module.exports = { createPaymentEmails, sendPaidBookingNotifications, sendPaidBookingNotification };
