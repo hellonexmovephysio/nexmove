@@ -30,46 +30,48 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
 
     try {
       const sql = getDB();
-      // Mark a paid booking exactly once, using Stripe's verified session ID.
-      // RETURNING also ensures Stripe webhook retries do not send duplicate emails.
+      // Keep the existing payment update independent from email delivery.
       const updated = await sql`
         UPDATE bookings
         SET payment_status = 'paid', status = 'confirmed', amount_paid_pence = ${session.amount_total}
         WHERE stripe_session_id = ${session.id} AND payment_status != 'paid'
-        RETURNING booking_ref, full_name, email, phone, preferred_date,
-                  preferred_time, amount_paid_pence, service_id
+        RETURNING booking_ref
       `;
 
-      if (updated.length) {
-        console.info('Stripe payment matched a booking and was confirmed');
-        // Only notify after Stripe reports that the payment was actually paid.
-        if (session.payment_status === 'paid') {
-          try {
-            const booking = updated[0];
-            const services = await sql`
-              SELECT name FROM services WHERE id = ${booking.service_id} LIMIT 1
-            `;
-            const { sendPaidBookingNotifications } = require('../utils/paymentNotifications');
-            await sendPaidBookingNotifications({
-              ...booking,
-              service_name: services[0] ? services[0].name : 'Physiotherapy',
-            });
-          } catch (notificationErr) {
-            // Payment/database confirmation must not be rolled back or repeatedly
-            // processed because a separate email provider is unavailable.
-            console.error('Paid booking email notification step failed', {
-              errorType: String(notificationErr && notificationErr.name || 'Error')
-                .replace(/[^A-Za-z0-9_]/g, '').slice(0, 40),
-            });
-          }
-        } else {
-          console.info('Stripe session completed; no paid notification because payment is not settled');
+      // A retry after an outbox/database error must still be able to enqueue.
+      // The outbox's unique key prevents notifications from being enqueued twice.
+      const matched = updated.length ? updated : await sql`
+        SELECT booking_ref FROM bookings
+        WHERE stripe_session_id = ${session.id} AND payment_status = 'paid'
+        LIMIT 1
+      `;
+
+      if (matched.length) {
+        const { ensureOutboxSchema, enqueuePaidBooking, processOutbox } =
+          require('../utils/paymentOutbox');
+        await ensureOutboxSchema(sql);
+        await enqueuePaidBooking(sql, matched[0].booking_ref);
+        try {
+          const result = await processOutbox(sql, { reference: matched[0].booking_ref, limit: 2 });
+          console.info('Paid booking email outbox processed', result);
+        } catch (emailError) {
+          // An already queued notification is retried by the daily worker;
+          // a transient SMTP error must not reverse or duplicate a payment.
+          console.error('Immediate email worker unavailable', {
+            errorType: String(emailError && emailError.name || 'Error')
+              .replace(/[^A-Za-z0-9_]/g, '').slice(0, 40),
+          });
         }
       } else {
-        console.info('Stripe webhook duplicate or unmatched booking; no emails sent');
+        console.info('Stripe payment webhook did not match a booking');
       }
     } catch (dbErr) {
-      console.error('Database error updating booking status:', dbErr);
+      // Stripe retries a 500 webhook after a database/outbox write error.
+      // Do not print SQL errors that could contain patient details.
+      console.error('Booking payment or email outbox database operation failed', {
+        errorType: String(dbErr && dbErr.name || 'Error')
+          .replace(/[^A-Za-z0-9_]/g, '').slice(0, 40),
+      });
       return res.status(500).end();
     }
   } else {

@@ -50,6 +50,28 @@ app.use('/api/contact', require('./routes/contact'));
 app.use('/api/physio', require('./routes/physio'));
 app.use('/api/physio-auth', require('./routes/physioAuth'));
 
+// Daily failed-email recovery. Vercel adds Authorization: Bearer CRON_SECRET.
+// This endpoint is never accessible without the configured production secret.
+app.get('/api/jobs/paid-email-retry', async (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  if (!secret || req.get('Authorization') !== 'Bearer ' + secret) {
+    return res.status(401).json({ ok: false });
+  }
+  try {
+    const sql = require('./db/pool').getDB();
+    const { ensureOutboxSchema, processOutbox } = require('./utils/paymentOutbox');
+    await ensureOutboxSchema(sql);
+    const result = await processOutbox(sql, { limit: 6 });
+    console.info('Daily paid booking email retry', result);
+    return res.json({ ok: true, ...result });
+  } catch (err) {
+    console.error('Daily paid booking email retry failed', {
+      errorType: String(err && err.name || 'Error').replace(/[^A-Za-z0-9_]/g, '').slice(0, 40),
+    });
+    return res.status(500).json({ ok: false });
+  }
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'NEXmove API is running.' });
