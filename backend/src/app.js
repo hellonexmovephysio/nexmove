@@ -33,7 +33,15 @@ const frontendPath = path.join(__dirname, '../frontend');
 app.use(express.static(frontendPath, {
   extensions: ['html'],
   index: 'index.html',
-  setHeaders: (res) => {
+  setHeaders: (res, filePath) => {
+    // Public, immutable-in-content frontend images and fonts can be reused by
+    // visitors. Keep HTML, API responses and all booking data uncached.
+    if (/\.(?:avif|gif|ico|jpe?g|png|svg|webp|woff2?)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+      res.removeHeader('Pragma');
+      res.removeHeader('Expires');
+      return;
+    }
     if (process.env.NODE_ENV !== 'production') {
       res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
