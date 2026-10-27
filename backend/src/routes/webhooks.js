@@ -22,15 +22,52 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
 
+    // Do not confirm a booking or send emails until Stripe reports the payment as paid.
+    if (session.payment_status !== 'paid') {
+      console.info('Stripe Checkout completed without settled payment; awaiting payment confirmation');
+      return res.send();
+    }
+
     try {
       const sql = getDB();
-      // Update booking based on the session ID
-      await sql`
-        UPDATE bookings 
+      // Mark a paid booking exactly once, using Stripe's verified session ID.
+      // RETURNING also ensures Stripe webhook retries do not send duplicate emails.
+      const updated = await sql`
+        UPDATE bookings
         SET payment_status = 'paid', status = 'confirmed', amount_paid_pence = ${session.amount_total}
         WHERE stripe_session_id = ${session.id} AND payment_status != 'paid'
+        RETURNING booking_ref, full_name, email, phone, preferred_date,
+                  preferred_time, amount_paid_pence, service_id
       `;
-      console.log(`Payment successful for session ${session.id}. Booking confirmed.`);
+
+      if (updated.length) {
+        console.info('Stripe payment matched a booking and was confirmed');
+        // Only notify after Stripe reports that the payment was actually paid.
+        if (session.payment_status === 'paid') {
+          try {
+            const booking = updated[0];
+            const services = await sql`
+              SELECT name FROM services WHERE id = ${booking.service_id} LIMIT 1
+            `;
+            const { sendPaidBookingNotifications } = require('../utils/paymentNotifications');
+            await sendPaidBookingNotifications({
+              ...booking,
+              service_name: services[0] ? services[0].name : 'Physiotherapy',
+            });
+          } catch (notificationErr) {
+            // Payment/database confirmation must not be rolled back or repeatedly
+            // processed because a separate email provider is unavailable.
+            console.error('Paid booking email notification step failed', {
+              errorType: String(notificationErr && notificationErr.name || 'Error')
+                .replace(/[^A-Za-z0-9_]/g, '').slice(0, 40),
+            });
+          }
+        } else {
+          console.info('Stripe session completed; no paid notification because payment is not settled');
+        }
+      } else {
+        console.info('Stripe webhook duplicate or unmatched booking; no emails sent');
+      }
     } catch (dbErr) {
       console.error('Database error updating booking status:', dbErr);
       return res.status(500).end();
