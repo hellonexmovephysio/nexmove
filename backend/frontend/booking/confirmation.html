@@ -25,104 +25,20 @@
             <div><dt>Visit address</dt><dd id="bookAddress"></dd></div>
             <div><dt>Payment status</dt><dd id="bookPaymentStatus"></dd></div>
         </dl>
-        <p class="small-note" id="smallNote">Our team will contact you shortly.</p>
+        <p class="small-note" id="smallNote" role="status" aria-live="polite">Our team will contact you shortly.</p>
     </div>
     
     <div id="errorState" style="display:none;">
         <h1>Confirmation not available</h1>
-        <p>This private booking link is missing or no longer valid. Please contact NEXmove with your reference. Do not pay again without checking your booking status.</p>
+        <p id="errorMessage" role="alert">This private booking link is missing or no longer valid. Please contact NEXmove with your reference. Do not pay again without checking your booking status.</p>
     </div>
     
+    <button type="button" id="checkPaymentStatus" class="back-btn" style="display:none; border:0; cursor:pointer;">Check payment status</button>
     <a class="back-btn" href="index.html">← Back to booking page</a>
     <p class="small-note"><a href="../cookie-policy.html">Cookie Policy</a></p>
 </div>
 
-<script src="../js/api.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get('ref');
-    const access = new URLSearchParams(window.location.hash.slice(1)).get('access');
-    const legacyCheckoutSession = urlParams.get('session_id');
-
-    if (!ref || (!access && !legacyCheckoutSession)) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('errorState').style.display = 'block';
-        return;
-    }
-    
-    try {
-        // Never put the access token in a network URL. It travels only in a header.
-        const res = await fetch(`/api/bookings/${encodeURIComponent(ref)}`, {
-            method: 'GET',
-            headers: access ? { 'X-Booking-Access': access } : { 'X-Stripe-Checkout-Session': legacyCheckoutSession },
-            cache: 'no-store',
-            credentials: 'omit'
-        });
-        const data = await res.json();
-        
-        document.getElementById('loading').style.display = 'none';
-        
-        if (res.ok && data.ok) {
-            document.getElementById('confirmationDetails').style.display = 'block';
-            const b = data.data;
-            
-            document.getElementById('custName').textContent = b.full_name;
-            document.getElementById('bookRef').textContent = b.booking_ref;
-            document.getElementById('bookService').textContent = b.service_name;
-            
-            const dateStr = new Date(b.preferred_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            document.getElementById('bookDate').textContent = dateStr;
-            
-            document.getElementById('bookTime').textContent = b.preferred_time;
-            
-            document.getElementById('bookAddress').textContent = `${b.address_line1}, ${b.city}, ${b.postcode}`;
-            
-            const paymentMap = {
-                'pending': 'Pending / Processing',
-                'paid': 'Paid',
-                'failed': 'Failed',
-                'cancelled': 'Cancelled',
-                'refunded': 'Refunded'
-            };
-            
-            document.getElementById('bookPaymentStatus').textContent = paymentMap[b.payment_status] || b.payment_status;
-            
-            const titleEl = document.getElementById('mainTitle');
-            const descEl = document.getElementById('mainDesc');
-            const tickEl = document.querySelector('.confirm-tick');
-            
-            // Keep patient-supplied names as text, never interpret them as HTML.
-            const setDescription = (prefix, name, suffix) => {
-                const strongName = document.createElement('strong');
-                strongName.textContent = name;
-                descEl.replaceChildren(document.createTextNode(prefix), strongName, document.createTextNode(suffix));
-            };
-
-            if (b.payment_status === 'paid') {
-                titleEl.textContent = 'Booking Confirmed!';
-                setDescription('Thank you, ', b.full_name, '. Your payment was successful and your booking is confirmed.');
-                tickEl.style.backgroundColor = '#10b981'; // green
-            } else if (b.payment_status === 'pending') {
-                titleEl.textContent = 'Payment Processing...';
-                setDescription('Thank you, ', b.full_name, '. Your payment is being processed. This page will not auto-refresh, but we will notify you once confirmed.');
-                tickEl.style.backgroundColor = '#f59e0b'; // orange
-                tickEl.textContent = '⌛';
-            } else if (b.payment_status === 'failed' || b.payment_status === 'cancelled') {
-                titleEl.textContent = 'Payment Failed';
-                setDescription('Sorry, ', b.full_name, '. Your payment was not successful. Your booking is not confirmed. Please contact NEXmove before trying again.');
-                tickEl.style.backgroundColor = '#ef4444'; // red
-                tickEl.textContent = '✖';
-            }
-        } else {
-            document.getElementById('errorState').style.display = 'block';
-        }
-    } catch (err) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('errorState').style.display = 'block';
-    }
-});
-</script>
+<script src="assets/confirmation-status.js" defer></script>
     <script src="../cookie-notice.js"></script>
 </body>
 </html>
