@@ -43,8 +43,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const ref = urlParams.get('ref');
     const access = new URLSearchParams(window.location.hash.slice(1)).get('access');
+    const legacyCheckoutSession = urlParams.get('session_id');
 
-    if (!ref || !access) {
+    if (!ref || (!access && !legacyCheckoutSession)) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('errorState').style.display = 'block';
         return;
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Never put the access token in a network URL. It travels only in a header.
         const res = await fetch(`/api/bookings/${encodeURIComponent(ref)}`, {
             method: 'GET',
-            headers: { 'X-Booking-Access': access },
+            headers: access ? { 'X-Booking-Access': access } : { 'X-Stripe-Checkout-Session': legacyCheckoutSession },
             cache: 'no-store',
             credentials: 'omit'
         });

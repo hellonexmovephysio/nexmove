@@ -185,7 +185,12 @@ router.get('/:ref', async (req, res) => {
     res.set('Cache-Control', 'no-store');
     res.set('Referrer-Policy', 'no-referrer');
     const access = req.get('X-Booking-Access');
-    if (!ref || !verifyBookingAccess(ref, access)) {
+    const allowedByToken = verifyBookingAccess(ref, access);
+    // Backwards compatibility for Stripe redirects created before private links:
+    // only a matching, paid Stripe Checkout Session ID can act as a bearer secret.
+    const sessionId = req.get('X-Stripe-Checkout-Session') || '';
+    const allowedByLegacySession = /^cs_(?:live|test)_[A-Za-z0-9_]{12,200}$/.test(sessionId);
+    if (!ref || (!allowedByToken && !allowedByLegacySession)) {
       return res.status(403).json({ ok: false, message: 'This private booking link is missing, invalid, or expired. Please contact NEXmove.' });
     }
 
@@ -197,6 +202,7 @@ router.get('/:ref', async (req, res) => {
       FROM bookings b
       JOIN services s ON s.id = b.service_id
       WHERE b.booking_ref = ${ref}
+        AND (${allowedByToken} OR (b.stripe_session_id = ${sessionId} AND b.payment_status = 'paid'))
       LIMIT 1
     `;
 
