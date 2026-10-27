@@ -1,0 +1,78 @@
+/* Cookie notice: isolated from homepage layout and existing design styles. */
+.nm-cookie-notice {
+  position: fixed;
+  z-index: 20000;
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  width: min(930px, calc(100% - 32px));
+  transform: translateX(-50%);
+  background: #fffdf9;
+  color: #26343d;
+  border: 1px solid #ded7c8;
+  border-radius: 18px;
+  box-shadow: 0 18px 55px rgba(17, 35, 50, .24);
+  font-family: 'Inter', Arial, sans-serif;
+  max-height: min(75vh, 480px);
+  overflow-y: auto;
+}
+.nm-cookie-notice[hidden] { display: none !important; }
+.nm-cookie-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 22px 24px;
+}
+.nm-cookie-copy { min-width: 0; }
+.nm-cookie-label {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: #5c7a5c;
+}
+.nm-cookie-copy h2 {
+  margin: 0 0 8px;
+  font: 600 clamp(19px, 2.5vw, 24px)/1.24 Georgia, serif;
+  color: #1b2a4a;
+}
+.nm-cookie-copy p:not(.nm-cookie-label) {
+  margin: 0;
+  max-width: 640px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #46545b;
+}
+.nm-cookie-copy a { color: #1b2a4a; text-decoration: underline; text-underline-offset: 2px; font-weight: 650; }
+.nm-cookie-button {
+  flex: 0 0 auto;
+  border: 1px solid #1b2a4a;
+  border-radius: 999px;
+  min-height: 45px;
+  padding: 0 28px;
+  color: white;
+  background: #1b2a4a;
+  font: 700 13px 'Inter', Arial, sans-serif;
+  cursor: pointer;
+}
+.nm-cookie-button:hover { background: #324a70; }
+.nm-cookie-button:focus-visible, .nm-cookie-footer-trigger:focus-visible {
+  outline: 3px solid #b8894a;
+  outline-offset: 3px;
+}
+.nm-cookie-footer-trigger {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 680px) {
+  .nm-cookie-notice { width: calc(100% - 24px); bottom: max(12px, env(safe-area-inset-bottom, 0px)); border-radius: 15px; }
+  .nm-cookie-inner { display: flex; flex-direction: column; align-items: stretch; gap: 16px; padding: 18px; }
+  .nm-cookie-copy h2 { font-size: 21px; }
+  .nm-cookie-button { width: 100%; min-height: 47px; }
+}
