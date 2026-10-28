@@ -3660,6 +3660,7 @@
 
         // Populate dynamic data
         document.addEventListener("DOMContentLoaded", async () => {
+            if (!document.getElementById("condition")) return;
             try {
                 const res = await apiFetch("/api/bookings/form-data");
                 const json = await res.json();
@@ -3695,7 +3696,7 @@
         });
 
         // Booking form submit via API
-        document.getElementById("bookingForm").addEventListener("submit", async function (e) {
+        document.getElementById("bookingForm")?.addEventListener("submit", async function (e) {
             e.preventDefault();
             const msgEl = document.getElementById("formMessage");
             msgEl.style.display = "none";
