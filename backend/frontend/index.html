@@ -8845,6 +8845,13 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
 
     <link rel="canonical" href="https://www.nexmovephysio.co.uk/">
     <link rel="stylesheet" href="cookie-notice.css">
+
+    <style id="nexmove-editorial-refinement">
+      #conditions > div:first-of-type, #pricing > div:first-of-type { display:none; }
+      .feature-card, .special-card-standard, .about-benefit-card, .price-card { box-shadow:0 4px 18px rgba(27,42,74,.045); }
+      .feature-card:hover, .special-card-standard:hover, .about-benefit-card:hover { box-shadow:0 8px 22px rgba(27,42,74,.07); }
+      @media (prefers-reduced-motion:reduce) { .hero-premium *, .special-card-standard, .feature-card { animation:none !important; transition:none !important; } }
+    </style>
 </head>
 
 <body id="top">
@@ -9273,9 +9280,9 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
         <section class="section locations-section location-magazine" id="locations">
             <div class="location-magazine-shell">
                 <div class="location-magazine-head">
-                    <div class="location-magazine-eyebrow"><span></span>UK-WIDE COVERAGE<span></span></div>
+                    <div class="location-magazine-eyebrow"><span></span>AREAS WE COVER<span></span></div>
                     <h2>Home Physio in Your City</h2>
-                    <p>Professional physiotherapy across major UK cities.</p>
+                    <p>Looking for a home visit? Choose your area and tell us where you need care. We'll confirm availability before your appointment.</p>
                 </div>
 
                 <div class="location-magazine-grid">
@@ -9365,16 +9372,13 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="about-premium-shell">
                 <div class="about-premium-head">
                     <span class="about-premium-eyebrow">THE NEXMOVE DIFFERENCE</span>
-                    <h2>Why Choose NEXmove Physio?</h2>
+                    <h2>Why a home visit can make a difference</h2>
                 </div>
 
                 <div class="about-premium-grid">
                     <div class="about-visual-card">
                         <img src="images/center_photo-user.jpg" alt="NEXmove physiotherapist supporting an older adult during rehabilitation" class="about-premium-image" loading="lazy" decoding="async">
-                        <div class="about-verified-badge">
-                            <strong>170+</strong>
-                            <span>Verified<br>Physios</span>
-                        </div>
+                        
                     </div>
 
                     <div class="about-benefit-grid">
@@ -9390,8 +9394,7 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="about-benefit-number">02</div>
                             <div class="about-benefit-copy">
                                 <h4>We Come to You</h4>
-                                <p>Expert home visits that eliminate crowded waiting rooms and difficult clinic
-                                    journeys.</p>
+                                <p>No extra journey on a day when getting around may already be difficult.</p>
                             </div>
                         </article>
 
@@ -9399,14 +9402,14 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="about-benefit-number">03</div>
                             <div class="about-benefit-copy">
                                 <h4>Personalised Care</h4>
-                                <p>One-to-one therapy focused on your goals, your home environment and steady progress.</p>
+                                <p>We can practise movements where you actually use them, from stairs to your favourite chair.</p>
                             </div>
                         </article>
 
                         <article class="about-cta-card">
                             <div>
                                 <span class="about-cta-kicker">READY WHEN YOU ARE</span>
-                                <h4>Ready to start your recovery?</h4>
+                                <h4>Want to talk through your options?</h4>
                             </div>
                             <a href="#pricing" class="about-cta-button">View Pricing
                                 <span aria-hidden="true">→</span>
@@ -9459,8 +9462,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             EXPERT CARE<br>AT YOUR DOORSTEP</div>
                     </div>
                     <div class="ph-center">
-                        <h2>Simple pricing. Personal care.</h2>
-                        <p>Choose the support that fits your recovery.</p>
+                        <h2>Clear prices, no guesswork.</h2>
+                        <p>Compare appointment types and choose what makes sense for you.</p>
                     </div>
                     <div class="ph-right">
                         <div class="script-font">Move Better<br>Live Brighter</div>
@@ -9620,8 +9623,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="container vet-layout">
                 <div class="vet-left">
                     <span class="eyebrow">SAFETY FIRST</span>
-                    <h2>How Our Physios Are Verified</h2>
-                    <p>Every physiotherapist goes through a structured verification process.</p>
+                    <h2>Who will be coming to your home?</h2>
+                    <p>Feeling comfortable with who you invite in matters. These are the checks we make before practitioners join NEXmove.</p>
                     <p style="margin-top:12px;font-size:13px;line-height:1.6;">You can independently <a href="https://www.hcpc-uk.org.uk/check-the-register/" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">check a physiotherapist's HCPC registration</a> before your visit.</p>
 
                     <div class="vet-seal-container">
@@ -9632,7 +9635,7 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
 
                     <div class="trust-footer">
                         <div class="trust-line"></div>
-                        <div class="trust-text">TRUST IN EVERY VISIT</div>
+                        <div class="trust-text">KNOW WHO YOU'RE BOOKING WITH</div>
                         <div class="trust-line"></div>
                     </div>
                 </div>
@@ -9703,8 +9706,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="etiquette-luxe-shell">
                 <div class="etiquette-luxe-head">
                     <span class="etiquette-luxe-eyebrow">HOME VISIT ETIQUETTE</span>
-                    <h2>What to Expect During a Home Visit</h2>
-                    <p>Professional, respectful care delivered in the comfort of your own home.</p>
+                    <h2>What happens when we arrive?</h2>
+                    <p>We'll introduce ourselves, listen to your concerns and explain each step before we start.</p>
                 </div>
 
                 <div class="etiquette-luxe-grid">
@@ -9908,8 +9911,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="faq-premium-shell">
                 <div class="faq-premium-intro">
                     <span class="faq-premium-eyebrow">BEFORE YOU BOOK</span>
-                    <h2>Questions Patients Often Ask</h2>
-                    <p>Clear answers about what to expect from NEXmove home physiotherapy.</p>
+                    <h2>A few things you might be wondering</h2>
+                    <p>It's fine to have questions before inviting someone into your home.</p>
 
                     <div class="faq-premium-note">
                         <div class="faq-premium-note-icon">
