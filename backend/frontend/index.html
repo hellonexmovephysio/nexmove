@@ -8848,6 +8848,16 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
 
     <style id="nexmove-editorial-refinement">
       #conditions > div:first-of-type, #pricing > div:first-of-type { display:none; }
+      .hero.hero-premium .hero-media { border-radius:18px !important; box-shadow:0 8px 28px rgba(27,42,74,.09) !important; }
+      #about .about-visual-card { border-radius:18px !important; box-shadow:0 6px 24px rgba(27,42,74,.06) !important; }
+      #vetting .vet-seal-container { filter:none !important; }
+      .vet-editorial-card { background:#edf0e8; border:1px solid #dfe4d9; border-radius:14px; width:100%; height:100%; padding:clamp(18px,2.2vw,27px); display:flex; flex-direction:column; justify-content:center; gap:12px; }
+      .vet-editorial-card span { font:700 10px/1.5 Arial,sans-serif; letter-spacing:1.6px; color:#587065; }
+      .vet-editorial-card strong { font:500 clamp(20px,2vw,26px)/1.18 Georgia,serif; color:#1B2A4A; }
+      .vet-editorial-card p { margin:0 !important; font-size:12px !important; line-height:1.55 !important; color:#4f5e59; }
+      .vet-editorial-card a { color:#285b51; font-size:11.5px; line-height:1.4; text-decoration:underline; text-underline-offset:3px; font-weight:650; }
+      @media(max-width:640px) { .vet-editorial-card {padding:16px;gap:8px} .vet-editorial-card strong {font-size:19px} .vet-editorial-card p {font-size:11px !important} .vet-editorial-card a{font-size:11px} }
+
       .feature-card, .special-card-standard, .about-benefit-card, .price-card { box-shadow:0 4px 18px rgba(27,42,74,.045); }
       .feature-card:hover, .special-card-standard:hover, .about-benefit-card:hover { box-shadow:0 8px 22px rgba(27,42,74,.07); }
       @media (prefers-reduced-motion:reduce) { .hero-premium *, .special-card-standard, .feature-card { animation:none !important; transition:none !important; } }
@@ -9008,7 +9018,7 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                         <p>There is no one-size-fits-all recovery. We start with what you are finding difficult and work from there.</p>
                     </div>
                     <div class="services-intro-image">
-                        <img src="images/Sunlit-Serene-Spa-Treatment-Room.png" alt="Calm home physiotherapy treatment environment" loading="lazy" decoding="async">
+                        <img src="images/services-care-hero.jpg" alt="Physiotherapy care and rehabilitation" loading="lazy" decoding="async">
                     </div>
                 </div>
 
@@ -9628,9 +9638,12 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                     <p style="margin-top:12px;font-size:13px;line-height:1.6;">You can independently <a href="https://www.hcpc-uk.org.uk/check-the-register/" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">check a physiotherapist's HCPC registration</a> before your visit.</p>
 
                     <div class="vet-seal-container">
-                        <img class="vet-seal-svg vet-seal-option1-image"
-                            src="images/nexmove-physio-verification-seal.svg"
-                            alt="4-step verification: HCPC and CSP registration, enhanced DBS check, insurance verified and qualifications review" loading="lazy" decoding="async">
+                        <div class="vet-editorial-card">
+                            <span>BEFORE YOUR FIRST VISIT</span>
+                            <strong>It's your home.<br>Knowing who's coming matters.</strong>
+                            <p>Ask us about your practitioner and what will happen at your appointment. There's no such thing as a silly question.</p>
+                            <a href="https://www.hcpc-uk.org.uk/check-the-register/" target="_blank" rel="noopener noreferrer">Check professional registration</a>
+                        </div>
                     </div>
 
                     <div class="trust-footer">
