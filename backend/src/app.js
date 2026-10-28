@@ -4,22 +4,53 @@ const path = require('path');
 
 const app = express();
 
-// CORS configuration
-const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(',').map(s => s.trim())
-  : ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000'];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.some(allowed => origin.startsWith(allowed) || allowed === '*')) {
-      return callback(null, true);
+// Permit the official site, configured frontend origins, and the request's exact
+// same origin (including Vercel preview URLs). Do not reflect arbitrary origins
+// while allowing credentialed CORS requests.
+const trustedOrigins = new Set([
+  'https://www.nexmovephysio.co.uk',
+  'https://nexmovephysio.co.uk',
+]);
+for (const value of (process.env.FRONTEND_URL || '').split(',')) {
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol === 'https:' || url.protocol === 'http:') {
+      trustedOrigins.add(url.origin);
     }
-    callback(null, true); // Allow all in development; restrict via env in production
-  },
-  credentials: true,
-}));
+  } catch (_) {
+    // Ignore missing/malformed optional frontend URLs.
+  }
+}
+if (process.env.NODE_ENV !== 'production') {
+  ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000']
+    .forEach(origin => trustedOrigins.add(origin));
+}
+
+// Basic non-disruptive response hardening.
+app.disable('x-powered-by');
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
+app.use((req, res, next) => {
+  const origin = req.get('Origin');
+  let trusted = !origin; // Webhooks, mobile clients and server-to-server calls.
+  if (origin) {
+    try {
+      const parsed = new URL(origin);
+      const sameHost = parsed.host.toLowerCase() === (req.get('Host') || '').toLowerCase();
+      const validProtocol = parsed.protocol === 'https:' ||
+        (process.env.NODE_ENV !== 'production' && parsed.protocol === 'http:');
+      trusted = origin === parsed.origin &&
+        (trustedOrigins.has(origin) || (sameHost && validProtocol));
+    } catch (_) {
+      trusted = false;
+    }
+  }
+  cors({ origin: trusted, credentials: true })(req, res, next);
+});
 
 // Webhook route needs raw body for Stripe signature verification
 app.use('/api/webhooks', require('./routes/webhooks'));
@@ -85,13 +116,13 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'NEXmove API is running.' });
 });
 
-// SPA fallback — serve index.html for unmatched routes
+// Unmatched public URLs must return a real 404, not a duplicate homepage
 app.get('*', (req, res) => {
   // Only serve HTML for non-API requests
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ success: false, message: 'API endpoint not found.' });
   }
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.status(404).sendFile(path.join(__dirname, '../frontend/404.html'));
 });
 
 // Global error handler
