@@ -8845,6 +8845,23 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
 
     <link rel="canonical" href="https://www.nexmovephysio.co.uk/">
     <link rel="stylesheet" href="cookie-notice.css">
+
+    <style id="nexmove-editorial-refinement">
+      #conditions > div:first-of-type, #pricing > div:first-of-type { display:none; }
+      .hero.hero-premium .hero-media { border-radius:18px !important; box-shadow:0 8px 28px rgba(27,42,74,.09) !important; }
+      #about .about-visual-card { border-radius:18px !important; box-shadow:0 6px 24px rgba(27,42,74,.06) !important; }
+      #vetting .vet-seal-container { filter:none !important; }
+      .vet-editorial-card { background:#edf0e8; border:1px solid #dfe4d9; border-radius:14px; width:100%; height:100%; padding:clamp(18px,2.2vw,27px); display:flex; flex-direction:column; justify-content:center; gap:12px; }
+      .vet-editorial-card span { font:700 10px/1.5 Arial,sans-serif; letter-spacing:1.6px; color:#587065; }
+      .vet-editorial-card strong { font:500 clamp(20px,2vw,26px)/1.18 Georgia,serif; color:#1B2A4A; }
+      .vet-editorial-card p { margin:0 !important; font-size:12px !important; line-height:1.55 !important; color:#4f5e59; }
+      .vet-editorial-card a { color:#285b51; font-size:11.5px; line-height:1.4; text-decoration:underline; text-underline-offset:3px; font-weight:650; }
+      @media(max-width:640px) { .vet-editorial-card {padding:16px;gap:8px} .vet-editorial-card strong {font-size:19px} .vet-editorial-card p {font-size:11px !important} .vet-editorial-card a{font-size:11px} }
+
+      .feature-card, .special-card-standard, .about-benefit-card, .price-card { box-shadow:0 4px 18px rgba(27,42,74,.045); }
+      .feature-card:hover, .special-card-standard:hover, .about-benefit-card:hover { box-shadow:0 8px 22px rgba(27,42,74,.07); }
+      @media (prefers-reduced-motion:reduce) { .hero-premium *, .special-card-standard, .feature-card { animation:none !important; transition:none !important; } }
+    </style>
 </head>
 
 <body id="top">
@@ -8919,12 +8936,12 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
         <section class="hero hero-premium">
             <div class="container hero-grid">
                 <div class="hero-copy">
-                    <span class="eyebrow">Expert care. Personalised for you.</span>
-                    <h1 class="hero-title">Professional Care<br><span class="hero-title-soft">Without Leaving Home</span></h1>
-                    <p class="hero-text">Personalised physiotherapy delivered to your door — expert support, flexible appointments and care built around your goals.</p>
+                    <span class="eyebrow">PHYSIOTHERAPY, AT YOUR PLACE</span>
+                    <h1 class="hero-title">Physiotherapy at home.<br><span class="hero-title-soft">Care that starts with listening.</span></h1>
+                    <p class="hero-text">Struggling with stairs, a sore shoulder or getting moving after surgery? We'll come to you, listen to what's been happening and help you find a way forward.</p>
                     <div class="hero-actions">
-                        <a href="booking/index.html" class="btn btn-primary hero-booking-btn" aria-label="Book a physiotherapy appointment">Book Your Session <span>→</span></a>
-                        <a href="#how" class="btn btn-outline">How It Works <span>→</span></a>
+                        <a href="booking/index.html" class="btn btn-primary hero-booking-btn" aria-label="Book a physiotherapy appointment">Request a Home Visit <span>→</span></a>
+                        <a href="#how" class="btn btn-outline">What to Expect <span>→</span></a>
                     </div>
                     <div class="hero-trust" aria-label="NEXmove care assurances">
                         <span class="hero-trust-item">HCPC Registered</span>
@@ -8945,8 +8962,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
         <section class="simplified" id="how">
             <div class="container">
                 <div class="section-head">
-                    <span class="eyebrow">Care that fits your life</span>
-                    <h2>Physiotherapy, <em>Simplified</em></h2>
+                    <span class="eyebrow">WHAT A HOME VISIT IS REALLY LIKE</span>
+                    <h2>Care that works <em>in your world</em></h2>
                 </div>
 
                 <div class="feature-grid">
@@ -8957,16 +8974,16 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                                 <path
                                     d="M11 24 6 28l10 11c1 1.1 2.4 1.6 3.8 1.2l13.7-4.1c1.5-.5 2.5-1.8 2.5-3.4 0-2.3-2.2-3.9-4.4-3.2l-7 2.3" />
                             </svg></div>
-                        <h3>Clear Pricing</h3>
-                        <p>Understand the cost of your care before you book.</p>
+                        <h3>Know the cost upfront</h3>
+                        <p>See the session price and what's included before you make a booking request.</p>
                     </article>
                     <article class="feature-card sage">
                         <div class="feature-icon"><svg viewBox="0 0 48 48">
                                 <circle cx="25" cy="27" r="13" />
                                 <path d="M25 14V9M19 8h12M25 27v-8M25 27l7 4M9 20H4M11 14l-4-4" />
                             </svg></div>
-                        <h3>Focused Rehabilitation</h3>
-                        <p>Treatment tailored to your condition, goals and progress.</p>
+                        <h3>A plan you can use</h3>
+                        <p>Exercises and advice that fit your home, your routine and what matters to you.</p>
                     </article>
                     <article class="feature-card navy">
                         <div class="feature-icon"><svg viewBox="0 0 48 48">
@@ -8974,16 +8991,16 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                                 <path d="M15 7v9M33 7v9M8 20h32" />
                                 <path d="M15 26h4M23 26h4M31 26h4M15 32h4M23 32h4M31 32h4" />
                             </svg></div>
-                        <h3>Flexible Booking</h3>
-                        <p>Appointments that fit your schedule. Book online in seconds.</p>
+                        <h3>Tell us when suits you</h3>
+                        <p>Choose a preferred date and time. We'll get in touch to confirm the visit.</p>
                     </article>
                     <article class="feature-card gold">
                         <div class="feature-icon"><svg viewBox="0 0 48 48">
                                 <circle cx="24" cy="16" r="8" />
                                 <path d="M10 40c1-10 6-15 14-15s13 5 14 15" />
                             </svg></div>
-                        <h3>Personalised Care</h3>
-                        <p>One-to-one treatment plans built around your goals and daily life.</p>
+                        <h3>Room for your questions</h3>
+                        <p>Your appointment is a conversation, not just a list of exercises.</p>
                     </article>
                 </div>
 
@@ -8997,17 +9014,17 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                 <div class="services-intro">
                     <div class="services-intro-copy">
                         <div class="services-eyebrow">OUR SERVICES</div>
-                        <h2 id="services-care-title"><span>Care that moves</span><br>with you</h2>
-                        <p>Expert physiotherapy for every stage of life — helping you move better, feel stronger and live more fully.</p>
+                        <h2 id="services-care-title"><span>Let's talk about</span><br>what's holding you back</h2>
+                        <p>There is no one-size-fits-all recovery. We start with what you are finding difficult and work from there.</p>
                     </div>
                     <div class="services-intro-image">
-                        <img src="images/Sunlit-Serene-Spa-Treatment-Room.png" alt="Calm home physiotherapy treatment environment" loading="lazy" decoding="async">
+                        <img src="images/services-care-hero.jpg" alt="Physiotherapy care and rehabilitation" loading="lazy" decoding="async">
                     </div>
                 </div>
 
                 <div class="care-section-head">
-                    <h2>Find the right care for you</h2>
-                    <p>From everyday aches to complex neurological conditions, our specialist physiotherapists deliver personalised, evidence-based care.</p>
+                    <h2>What would you like help with?</h2>
+                    <p>From a painful back to rebuilding confidence after an operation, explore the kinds of support available at home.</p>
                 </div>
 
                 <div class="special-bento">
@@ -9016,8 +9033,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/musculoskeletal.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Musculoskeletal</h3>
                         </div>
-                        <p>Expert assessment and treatment for back pain, neck pain, joint pain, arthritis and other musculoskeletal conditions.</p>
-                        <a href="services/musculoskeletal.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>For back, neck or joint pain that's making daily activities more difficult.</p>
+                        <a href="services/musculoskeletal.html" class="special-link">About back and joint pain <span aria-hidden="true">→</span></a>
                     </article>
 
                     <article class="special-card-standard">
@@ -9025,8 +9042,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/sports-physio.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Sports Physio</h3>
                         </div>
-                        <p>Assessment, treatment and injury prevention for sports injuries, running injuries and return-to-sport rehab.</p>
-                        <a href="services/sports-physio.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>For an injury that's interrupted running, training or your usual activities.</p>
+                        <a href="services/sports-physio.html" class="special-link">About sports injuries <span aria-hidden="true">→</span></a>
                     </article>
 
                     <article class="special-card-standard">
@@ -9034,8 +9051,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/neuro-physio.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Neuro Physio</h3>
                         </div>
-                        <p>Specialist neurorehabilitation for stroke, Parkinson's disease, multiple sclerosis and brain injuries.</p>
-                        <a href="services/neuro-physio.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>For movement, balance and everyday tasks affected by a neurological condition.</p>
+                        <a href="services/neuro-physio.html" class="special-link">About neurological care <span aria-hidden="true">→</span></a>
                     </article>
 
                     <article class="special-card-standard">
@@ -9043,8 +9060,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/respiratory-physio.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Respiratory Physio</h3>
                         </div>
-                        <p>Support for COPD, asthma, long COVID and other respiratory conditions to improve breathing and build endurance.</p>
-                        <a href="services/respiratory-physio.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>For people managing breathlessness, chest symptoms or reduced activity tolerance.</p>
+                        <a href="services/respiratory-physio.html" class="special-link">About breathing support <span aria-hidden="true">→</span></a>
                     </article>
 
                     <article class="special-card-standard">
@@ -9052,8 +9069,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/paediatric-physio.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Paediatric Physio</h3>
                         </div>
-                        <p>Specialist care for developmental delay, cerebral palsy, neurological conditions and childhood injuries.</p>
-                        <a href="services/paediatric-physio.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>Movement support for children, with parents and carers involved along the way.</p>
+                        <a href="services/paediatric-physio.html" class="special-link">About children's physio <span aria-hidden="true">→</span></a>
                     </article>
 
                     <article class="special-card-standard">
@@ -9061,8 +9078,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/geriatric-care.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Geriatric Care</h3>
                         </div>
-                        <p>Maintain independence with falls prevention, balance training, mobility and strength programmes for older adults.</p>
-                        <a href="services/geriatric-care.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>For older adults who want to feel steadier at home, on stairs and out walking.</p>
+                        <a href="services/geriatric-care.html" class="special-link">About mobility support <span aria-hidden="true">→</span></a>
                     </article>
 
                     <article class="special-card-standard">
@@ -9070,8 +9087,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/womens-health.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Women's Health</h3>
                         </div>
-                        <p>Specialist support for pregnancy-related pain, postnatal recovery, pelvic health and women's wellbeing.</p>
-                        <a href="services/womens-health.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>A private, supportive conversation about pelvic health, pregnancy or recovery after birth.</p>
+                        <a href="services/womens-health.html" class="special-link">About women's health care <span aria-hidden="true">→</span></a>
                     </article>
 
                     <article class="special-card-standard">
@@ -9079,8 +9096,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="special-icon-bare" aria-hidden="true"><img src="images/service-icons-reference/post-surgical-rehab.png" alt="" loading="lazy" decoding="async"></div>
                             <h3>Post-Surgical Rehab</h3>
                         </div>
-                        <p>Rehabilitation after hip &amp; knee replacement, spinal surgery and other procedures to help you return to daily life with confidence.</p>
-                        <a href="services/post-surgical-rehab.html" class="special-link">Explore care <span aria-hidden="true">→</span></a>
+                        <p>Help with walking, strength and daily routines after surgery, guided by your recovery instructions.</p>
+                        <a href="services/post-surgical-rehab.html" class="special-link">About recovery after surgery <span aria-hidden="true">→</span></a>
                     </article>
                 </div>
             </div>
@@ -9138,9 +9155,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                         <span class="eyebrow pill">WHAT WE TREAT</span>
                         <div class="gold-line-side"></div>
                     </div>
-                    <h2>From Pain to Progress</h2>
-                    <p>Expert treatment for every stage of recovery.<br>Evidence-based physiotherapy, delivered in the
-                        comfort of your home.</p>
+                    <h2>Start with what's bothering you</h2>
+                    <p>Everyone's symptoms are different.<br>Here are some of the things people commonly ask us about.</p>
                 </div>
 
                 <div class="conditions-bento">
@@ -9274,9 +9290,9 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
         <section class="section locations-section location-magazine" id="locations">
             <div class="location-magazine-shell">
                 <div class="location-magazine-head">
-                    <div class="location-magazine-eyebrow"><span></span>UK-WIDE COVERAGE<span></span></div>
+                    <div class="location-magazine-eyebrow"><span></span>AREAS WE COVER<span></span></div>
                     <h2>Home Physio in Your City</h2>
-                    <p>Professional physiotherapy across major UK cities.</p>
+                    <p>Looking for a home visit? Choose your area and tell us where you need care. We'll confirm availability before your appointment.</p>
                 </div>
 
                 <div class="location-magazine-grid">
@@ -9353,7 +9369,7 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                 </div>
 
                 <div class="location-magazine-foot">
-                    <span></span><p>Expert care, delivered to your doorstep.</p><span></span>
+                    <span></span><p>Physiotherapy that starts with your everyday life.</p><span></span>
                 </div>
                 <div style="display:flex; justify-content:center; margin-top:24px;">
                     <a href="booking/index.html" class="btn btn-primary">Check Availability &amp; Book <span aria-hidden="true">→</span></a>
@@ -9366,16 +9382,13 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="about-premium-shell">
                 <div class="about-premium-head">
                     <span class="about-premium-eyebrow">THE NEXMOVE DIFFERENCE</span>
-                    <h2>Why Choose NEXmove Physio?</h2>
+                    <h2>Why a home visit can make a difference</h2>
                 </div>
 
                 <div class="about-premium-grid">
                     <div class="about-visual-card">
                         <img src="images/center_photo-user.jpg" alt="NEXmove physiotherapist supporting an older adult during rehabilitation" class="about-premium-image" loading="lazy" decoding="async">
-                        <div class="about-verified-badge">
-                            <strong>170+</strong>
-                            <span>Verified<br>Physios</span>
-                        </div>
+                        
                     </div>
 
                     <div class="about-benefit-grid">
@@ -9391,8 +9404,7 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="about-benefit-number">02</div>
                             <div class="about-benefit-copy">
                                 <h4>We Come to You</h4>
-                                <p>Expert home visits that eliminate crowded waiting rooms and difficult clinic
-                                    journeys.</p>
+                                <p>No extra journey on a day when getting around may already be difficult.</p>
                             </div>
                         </article>
 
@@ -9400,14 +9412,14 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                             <div class="about-benefit-number">03</div>
                             <div class="about-benefit-copy">
                                 <h4>Personalised Care</h4>
-                                <p>One-to-one therapy focused on your goals, your home environment and steady progress.</p>
+                                <p>We can practise movements where you actually use them, from stairs to your favourite chair.</p>
                             </div>
                         </article>
 
                         <article class="about-cta-card">
                             <div>
                                 <span class="about-cta-kicker">READY WHEN YOU ARE</span>
-                                <h4>Ready to start your recovery?</h4>
+                                <h4>Want to talk through your options?</h4>
                             </div>
                             <a href="#pricing" class="about-cta-button">View Pricing
                                 <span aria-hidden="true">→</span>
@@ -9457,11 +9469,11 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                     <div class="ph-left">
                         <div class="eyebrow"
                             style="margin:0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: #8c9b8c;">
-                            EXPERT CARE<br>AT YOUR DOORSTEP</div>
+                            HOME VISITS<br>WITH TIME TO TALK</div>
                     </div>
                     <div class="ph-center">
-                        <h2>Simple pricing. Personal care.</h2>
-                        <p>Choose the support that fits your recovery.</p>
+                        <h2>Clear prices, no guesswork.</h2>
+                        <p>Compare appointment types and choose what makes sense for you.</p>
                     </div>
                     <div class="ph-right">
                         <div class="script-font">Move Better<br>Live Brighter</div>
@@ -9557,9 +9569,9 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                 <!-- NEW TRUST STRIP -->
                 <div class="trust-footer">
                     <div class="tf-left">
-                        <h4>Expert physiotherapy<br>for a healthier, brighter you.</h4>
+                        <h4>Care that takes your questions<br>and your daily life seriously.</h4>
                         <div class="tf-line"></div>
-                        <div class="tf-subtitle">SAME EXPERT CARE. A BRIGHTER TOMORROW.</div>
+                        <div class="tf-subtitle">YOUR OWN PACE. YOUR OWN GOALS.</div>
                     </div>
                     <div class="tf-right pill-box">
                         <div class="trust-item">
@@ -9570,7 +9582,7 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                                 </svg></div>
                             <div class="tf-text">
                                 <strong>No hidden fees</strong>
-                                <span>JUST EXPERT CARE</span>
+                                <span>CLEAR, PRACTICAL CARE</span>
                             </div>
                         </div>
                         <div class="tf-divider"></div>
@@ -9621,19 +9633,22 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="container vet-layout">
                 <div class="vet-left">
                     <span class="eyebrow">SAFETY FIRST</span>
-                    <h2>How Our Physios Are Verified</h2>
-                    <p>Every physiotherapist goes through a structured verification process.</p>
+                    <h2>Who will be coming to your home?</h2>
+                    <p>Feeling comfortable with who you invite in matters. These are the checks we make before practitioners join NEXmove.</p>
                     <p style="margin-top:12px;font-size:13px;line-height:1.6;">You can independently <a href="https://www.hcpc-uk.org.uk/check-the-register/" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">check a physiotherapist's HCPC registration</a> before your visit.</p>
 
                     <div class="vet-seal-container">
-                        <img class="vet-seal-svg vet-seal-option1-image"
-                            src="images/nexmove-physio-verification-seal.svg"
-                            alt="4-step verification: HCPC and CSP registration, enhanced DBS check, insurance verified and qualifications review" loading="lazy" decoding="async">
+                        <div class="vet-editorial-card">
+                            <span>BEFORE YOUR FIRST VISIT</span>
+                            <strong>It's your home.<br>Knowing who's coming matters.</strong>
+                            <p>Ask us about your practitioner and what will happen at your appointment. There's no such thing as a silly question.</p>
+                            <a href="https://www.hcpc-uk.org.uk/check-the-register/" target="_blank" rel="noopener noreferrer">Check professional registration</a>
+                        </div>
                     </div>
 
                     <div class="trust-footer">
                         <div class="trust-line"></div>
-                        <div class="trust-text">TRUST IN EVERY VISIT</div>
+                        <div class="trust-text">KNOW WHO YOU'RE BOOKING WITH</div>
                         <div class="trust-line"></div>
                     </div>
                 </div>
@@ -9704,8 +9719,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="etiquette-luxe-shell">
                 <div class="etiquette-luxe-head">
                     <span class="etiquette-luxe-eyebrow">HOME VISIT ETIQUETTE</span>
-                    <h2>What to Expect During a Home Visit</h2>
-                    <p>Professional, respectful care delivered in the comfort of your own home.</p>
+                    <h2>What happens when we arrive?</h2>
+                    <p>We'll introduce ourselves, listen to your concerns and explain each step before we start.</p>
                 </div>
 
                 <div class="etiquette-luxe-grid">
@@ -9909,8 +9924,8 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
             <div class="faq-premium-shell">
                 <div class="faq-premium-intro">
                     <span class="faq-premium-eyebrow">BEFORE YOU BOOK</span>
-                    <h2>Questions Patients Often Ask</h2>
-                    <p>Clear answers about what to expect from NEXmove home physiotherapy.</p>
+                    <h2>A few things you might be wondering</h2>
+                    <p>It's fine to have questions before inviting someone into your home.</p>
 
                     <div class="faq-premium-note">
                         <div class="faq-premium-note-icon">
@@ -10035,8 +10050,7 @@ html, body { width: 100% !important; max-width: 100% !important; overflow-x: cli
                         </span>
                     </a>
 
-                    <p>Professional physiotherapy at your doorstep. Flexible home visits and personalised rehabilitation
-                        support.</p>
+                    <p>Home physiotherapy, a clear conversation and practical support for everyday movement.</p>
 
                     <div class="footer-socials" aria-label="NEXmove social links">
                         <a href="https://www.instagram.com/nexmovephysio?utm_source=qr&igsi=bWN6ZG9raHN5bWRq"
