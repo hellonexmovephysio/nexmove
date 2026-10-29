@@ -21,7 +21,11 @@
     <section class="portal-card">
       <div id="notice" class="notice show success" role="alert">Check your inbox for your verification link.</div>
       <div id="verifyPanel">
-        <p class="section-copy">Click the verification link we sent to your registered email. The link is valid for 24 hours.</p>
+        <p class="section-copy">Open the newest verification email we sent to your registered address. The link is valid for 24 hours and can only be used once.</p>
+        <div id="verifyAction" style="display:none;margin:18px 0 24px">
+          <button id="verifyBtn" class="btn btn-primary" type="button">Confirm email address</button>
+          <p class="section-copy" style="margin:10px 0 0;font-size:13px">Your email is confirmed only when you press the button above. Opening this page alone will not use the link.</p>
+        </div>
         <form id="resendForm">
           <div class="form-group">
             <label for="email">Registered email</label>
@@ -39,21 +43,72 @@ const notice=document.getElementById('notice');
 const params=new URLSearchParams(location.search);
 const token=params.get('token')||'';
 const email=params.get('email')||'';
+const verifyAction=document.getElementById('verifyAction');
+const verifyBtn=document.getElementById('verifyBtn');
+const resendForm=document.getElementById('resendForm');
 document.getElementById('email').value=email;
 function show(message,type='success'){notice.textContent=message;notice.className='notice show '+type}
+function clearTokenFromAddress(){
+  if(!params.has('token'))return;
+  const url=new URL(location.href);
+  url.searchParams.delete('token');
+  history.replaceState(null,'',url.pathname+url.search+url.hash);
+}
+function verifiedNext(data){
+  return data?.application?'/physio/dashboard.html':'/physio/application.html';
+}
+async function checkVerifiedSession(){
+  try{
+    const res=await fetch('/api/physio-auth/me',{credentials:'include',cache:'no-store'});
+    if(!res.ok)return null;
+    const data=await res.json();
+    const sameAccount=data?.user?.email?.trim().toLowerCase()===email.trim().toLowerCase();
+    return sameAccount&&data?.user?.email_verified?verifiedNext(data):null;
+  }catch{return null}
+}
+function showVerified(next){
+  clearTokenFromAddress();
+  verifyAction.style.display='block';
+  resendForm.style.display='none';
+  verifyBtn.disabled=false;
+  verifyBtn.textContent='Continue to your application';
+  verifyBtn.onclick=()=>location.replace(next);
+  show('Your email is already verified. You can continue to your practitioner account.','success');
+}
+let verifying=false;
 async function verify(){
-  if(!token)return;
-  show('Verifying your email…','success');
+  if(!token||verifying)return;
+  verifying=true;
+  verifyBtn.disabled=true;
+  verifyBtn.textContent='Confirming email…';
+  show('Confirming your email address…','success');
   try{
     const res=await fetch('/api/physio-auth/verify-email',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({token})});
     const data=await res.json();
     if(!res.ok)throw new Error(data.message||'Email verification failed.');
+    clearTokenFromAddress();
     show('Email verified. Opening your practitioner application…','success');
+    verifyAction.style.display='none';
     setTimeout(()=>location.replace(data.next||'/physio/application.html'),800);
-  }catch(err){show(err.message,'error')}
+  }catch(err){
+    const next=await checkVerifiedSession();
+    if(next){showVerified(next);return}
+    clearTokenFromAddress();
+    verifyAction.style.display='none';
+    show('This link is no longer valid. It may have been used already or replaced by a newer email. If you have verified your email, sign in. Otherwise, request a fresh link below.','error');
+  }finally{
+    verifying=false;
+    verifyBtn.disabled=false;
+    if(verifyBtn.textContent==='Confirming email…')verifyBtn.textContent='Confirm email address';
+  }
 }
-verify();
-document.getElementById('resendForm').addEventListener('submit',async e=>{
+if(token){
+  verifyAction.style.display='block';
+  show('Ready to verify. Press “Confirm email address” to continue.','success');
+  verifyBtn.addEventListener('click',verify);
+  checkVerifiedSession().then(next=>{if(next&&!verifying)showVerified(next)});
+}
+resendForm.addEventListener('submit',async e=>{
   e.preventDefault();
   const btn=document.getElementById('resendBtn');
   btn.disabled=true;btn.textContent='Sending…';
@@ -62,8 +117,11 @@ document.getElementById('resendForm').addEventListener('submit',async e=>{
     const data=await res.json();
     if(!res.ok)throw new Error(data.message||'Could not resend verification email.');
     show(data.message||'If verification is still required, a new email has been sent.','success');
+    clearTokenFromAddress();
+    verifyAction.style.display='none';
   }catch(err){show(err.message,'error')}finally{btn.disabled=false;btn.textContent='Resend verification email'}
 });
+
 </script>
 </body>
 </html>
