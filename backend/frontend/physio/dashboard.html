@@ -290,7 +290,7 @@ body{
               <h2>Verification documents</h2>
               <p id="verificationLead" class="lead">Choose all documents you want to send, then upload them together with one button.</p>
             </div>
-            <div id="docsSummary" class="docs-summary">0 of 5 verified</div>
+            <div id="docsSummary" class="docs-summary">0 of 6 verified</div>
           </div>
           <div id="documentsGrid" class="doc-grid"></div>
           <div id="uploadBar" class="upload-bar hidden">
@@ -347,7 +347,8 @@ const DOCS=[
   ['cv','CV'],
   ['qualification','Qualification evidence'],
   ['indemnity','Professional indemnity'],
-  ['dbs','DBS / Disclosure'],
+  ['hcpc','HCPC registration evidence (photo or PDF)'],
+  ['dbs','DBS certificate (photo or PDF)'],
   ['right_to_work','Right-to-work evidence']
 ];
 const notice=document.getElementById('notice');
@@ -496,10 +497,15 @@ async function loadDocuments(){
       : '';
     const fileText=doc?.original_name?'<div class="doc-file">Current file: '+escapeHTML(doc.original_name)+'</div>':'<div class="doc-file">No file uploaded yet.</div>';
     const canUpload=!verified && ['Required','Submitted','Issue'].includes(overall);
+    const uploadGuidance = type==='hcpc'
+      ? 'Use a clear photo, screenshot or PDF of your HCPC registration evidence. NEXmove will also check your registration on the official register.'
+      : type==='dbs'
+        ? 'Upload a clear photo, scan or PDF of your DBS / Disclosure certificate. Make sure the details are readable.'
+        : 'PDF, JPG or PNG accepted (up to 5 MB).';
     const action=verified
       ? '<div class="locked-note">Verified — no further action needed.</div>'
       : canUpload
-        ? '<div class="doc-help">'+(status==='Issue'?'Choose a corrected file for this item.':'Choose a file now or select several documents before uploading.')+'</div><input class="doc-file-input" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" data-doc-type="'+type+'" aria-label="Choose '+escapeHTML(label)+'">'
+        ? '<div class="doc-help">'+(status==='Issue'?'Choose a corrected file. ':'')+escapeHTML(uploadGuidance)+'</div><input class="doc-file-input" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" data-doc-type="'+type+'" aria-label="Choose '+escapeHTML(label)+'">'
         : '<div class="doc-help">NEXmove will tell you if action is required.</div>';
     return '<div class="doc-card"><div class="doc-card-head"><h3>'+escapeHTML(label)+'</h3><span class="doc-chip '+docChipClass(status)+'">'+escapeHTML(docDisplayStatus(status))+'</span></div>'+fileText+feedback+action+'</div>';
   }).join('');
@@ -512,7 +518,7 @@ async function loadDocuments(){
       ? 'Read the NEXmove feedback on any item marked “Needs changes”. Select all corrected files you want to send, then upload them together.'
       : overall==='Verified'
         ? 'Verification is complete. Your verified documents are listed below.'
-        : 'Choose all documents you want to send. Your selections stay in place until you press the single upload button.';
+        : 'Upload your requested evidence as PDF, JPG or PNG files (maximum 5 MB each). Select several documents, then use the single upload button.';
   updateSelectionBar();
 }
 

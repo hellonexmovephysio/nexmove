@@ -17,7 +17,7 @@ const {
 
 const router = express.Router();
 
-const DOCUMENT_TYPES = ['cv', 'indemnity', 'qualification', 'dbs', 'right_to_work'];
+const DOCUMENT_TYPES = ['cv', 'indemnity', 'qualification', 'hcpc', 'dbs', 'right_to_work'];
 const DOCUMENT_MIMES = ['application/pdf', 'image/jpeg', 'image/png'];
 const DOCUMENT_MAX_BYTES = 5 * 1024 * 1024;
 

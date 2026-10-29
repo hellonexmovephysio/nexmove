@@ -112,7 +112,7 @@ table{width:100%;border-collapse:collapse;min-width:1080px}th,td{padding:15px 16
         <div class="detail-grid">
           <div class="field"><label for="updateStatus">Application status</label><select id="updateStatus"><option>Pending</option><option>Under Review</option><option>Rejected</option></select></div>
           <div class="field"><label for="internalNotes">Internal notes — owner only</label><textarea id="internalNotes" placeholder="Private notes for NEXmove"></textarea></div>
-          <div class="field full"><label for="verificationMessage">Message to practitioner</label><textarea id="verificationMessage" placeholder="Example: Please upload the five verification documents listed below."></textarea></div>
+          <div class="field full"><label for="verificationMessage">Message to practitioner</label><textarea id="verificationMessage" placeholder="Example: Please upload the six verification documents listed below, including HCPC registration evidence and your DBS certificate."></textarea></div>
         </div>
         <div class="review-actions">
           <button id="saveReviewBtn" class="btn secondary" type="button">Save review notes</button>
@@ -123,7 +123,7 @@ table{width:100%;border-collapse:collapse;min-width:1080px}th,td{padding:15px 16
       <div id="docsSection" class="section">
         <h3>Verification documents</h3>
         <p class="section-copy">No browser pop-ups. Add feedback beside the document and choose either Verify or Needs changes.</p>
-        <div class="verification-summary"><strong id="verificationCount">0 of 5 verified</strong><span id="overallVerification" class="badge">Not Requested</span></div>
+        <div class="verification-summary"><strong id="verificationCount">0 of 6 verified</strong><span id="overallVerification" class="badge">Not Requested</span></div>
         <div id="documentsList" class="doc-list"></div>
       </div>
 
@@ -147,7 +147,8 @@ const REQUIRED=[
   ['cv','CV'],
   ['qualification','Qualification evidence'],
   ['indemnity','Professional indemnity'],
-  ['dbs','DBS / Disclosure'],
+  ['hcpc','HCPC registration evidence (photo or PDF)'],
+  ['dbs','DBS certificate (photo or PDF)'],
   ['right_to_work','Right-to-work evidence']
 ];
 let currentAppId=null,currentData=null,currentDocuments=[],currentSummary=null;
@@ -246,7 +247,7 @@ function renderApplicant(){
 
 function renderDocuments(){
   const holder=document.getElementById('documentsList');
-  const summary=currentSummary||{required_count:5,verified_count:0,items:[]};
+  const summary=currentSummary||{required_count:REQUIRED.length,verified_count:0,items:[]};
   document.getElementById('verificationCount').textContent=summary.verified_count+' of '+summary.required_count+' verified';
   const overall=document.getElementById('overallVerification');overall.textContent=currentData.verification_status||'Not Requested';overall.className='badge '+badgeClass(currentData.verification_status||'Not Requested');
 
@@ -273,7 +274,7 @@ function renderActivation(){
   const section=document.getElementById('activationSection'),status=document.getElementById('activationStatus');
   const activate=document.getElementById('activateBtn'),suspend=document.getElementById('suspendBtn');
   const active=currentData.practitioner_status==='Active';
-  const verified=currentSummary?.verified_count||0,total=currentSummary?.required_count||5;
+  const verified=currentSummary?.verified_count||0,total=currentSummary?.required_count||REQUIRED.length;
   suspend.disabled=!active;
   if(active){
     section.className='section activation ready';activate.disabled=true;activate.textContent='Practitioner Active';
@@ -321,7 +322,7 @@ document.getElementById('saveReviewBtn').addEventListener('click',async()=>{
 });
 document.getElementById('requestDocsBtn').addEventListener('click',async()=>{
   if(!document.getElementById('verificationMessage').value.trim()){
-    document.getElementById('verificationMessage').value='Please upload the five verification documents shown in your practitioner portal. We will review each item and show any feedback directly beside the document.';
+    document.getElementById('verificationMessage').value='Please upload the six verification documents shown in your practitioner portal, including HCPC registration evidence and your DBS / Disclosure certificate. We will review each item and show any feedback directly beside the document.';
   }
   try{
     await saveReview({status:'Under Review',verification_status:'Required'});

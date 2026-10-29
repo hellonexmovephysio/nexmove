@@ -14,7 +14,7 @@ const router = express.Router();
 const VALID_STATUSES = ['Pending', 'Under Review', 'Approved', 'Rejected'];
 const VALID_VERIFICATION_STATUSES = ['Not Requested', 'Required', 'Submitted', 'Verified', 'Issue'];
 const VALID_DOC_STATUSES = ['Submitted', 'Verified', 'Issue'];
-const REQUIRED_DOCUMENT_TYPES = ['cv', 'qualification', 'indemnity', 'dbs', 'right_to_work'];
+const REQUIRED_DOCUMENT_TYPES = ['cv', 'qualification', 'indemnity', 'hcpc', 'dbs', 'right_to_work'];
 
 function documentKey() {
   const source = process.env.PHYSIO_DOCUMENT_KEY || process.env.JWT_SECRET;
