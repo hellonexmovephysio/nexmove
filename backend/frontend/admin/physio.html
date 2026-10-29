@@ -265,7 +265,7 @@ function renderDocuments(){
       '<div class="doc-review"><input id="docNote'+doc.id+'" type="text" value="'+escapeHTML(note)+'" placeholder="Feedback for practitioner — optional when verified, required for changes">'+
       '<button class="btn good" type="button" onclick="reviewDocument('+doc.id+',\'Verified\')">Verify</button>'+
       '<button class="btn warn" type="button" onclick="reviewDocument('+doc.id+',\'Issue\')">Needs changes</button></div>'+
-      '<div class="review-actions"><button class="btn secondary" type="button" onclick="downloadDocument('+doc.id+','+JSON.stringify(doc.original_name)+')">Download</button></div>'+
+      '<div class="review-actions"><button class="btn secondary" type="button" onclick="downloadDocument('+doc.id+')">Download</button></div>'+
     '</div>';
   }).join('');
 }
@@ -330,13 +330,29 @@ document.getElementById('requestDocsBtn').addEventListener('click',async()=>{
   }catch(err){toast(err.message,'error')}
 });
 
-async function downloadDocument(docId,fileName){
+async function downloadDocument(docId){
+  // Resolve the name from the already-loaded admin data, never from an HTML attribute.
+  const documentRecord=currentDocuments.find(doc=>Number(doc.id)===Number(docId));
+  if(!documentRecord||!currentAppId){toast('Document details are unavailable. Reopen this application.','error');return}
   try{
     const res=await apiFetch('/api/physio/admin/'+currentAppId+'/document/'+docId);
-    if(!res.ok)throw new Error('Could not download document.');
-    const blob=await res.blob(),url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download=fileName||'document';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
-  }catch(err){toast(err.message,'error')}
+    if(!res.ok){
+      const error=await res.json().catch(()=>null);
+      throw new Error(error?.message||'Could not download document (HTTP '+res.status+').');
+    }
+    const blob=await res.blob();
+    if(!blob.size)throw new Error('The downloaded document was empty. Please try again.');
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=documentRecord.original_name||'verification-document';
+    document.body.appendChild(a);
+    try{a.click()}finally{
+      a.remove();
+      // Some browsers need the object URL to stay valid until the download starts.
+      setTimeout(()=>URL.revokeObjectURL(url),60000);
+    }
+  }catch(err){toast(err.message||'Could not download document.','error')}
 }
 
 async function reviewDocument(docId,status){
