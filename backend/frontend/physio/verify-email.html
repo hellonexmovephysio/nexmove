@@ -54,6 +54,7 @@ function clearTokenFromAddress(){
   url.searchParams.delete('token');
   history.replaceState(null,'',url.pathname+url.search+url.hash);
 }
+let continueTo=null;
 function verifiedNext(data){
   return data?.application?'/physio/dashboard.html':'/physio/application.html';
 }
@@ -67,16 +68,17 @@ async function checkVerifiedSession(){
   }catch{return null}
 }
 function showVerified(next){
+  continueTo=next;
   clearTokenFromAddress();
   verifyAction.style.display='block';
   resendForm.style.display='none';
   verifyBtn.disabled=false;
   verifyBtn.textContent='Continue to your application';
-  verifyBtn.onclick=()=>location.replace(next);
   show('Your email is already verified. You can continue to your practitioner account.','success');
 }
 let verifying=false;
 async function verify(){
+  if(continueTo){location.replace(continueTo);return}
   if(!token||verifying)return;
   verifying=true;
   verifyBtn.disabled=true;
