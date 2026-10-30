@@ -41,16 +41,16 @@ function generateApprovalEmailHtml(booking) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
       <h2 style="color: #087f80; text-align: center; border-bottom: 2px solid #eaf7f6; padding-bottom: 10px;">Appointment Confirmed</h2>
-      <p>Hello <strong>${booking.full_name || booking.name}</strong>,</p>
+      <p>Hello <strong>${escapeEmailHtml(booking.full_name || booking.name)}</strong>,</p>
       <p>Your physiotherapy appointment has been officially approved. Please find the details of your upcoming visit below.</p>
       
       <div style="background-color: #f5f8f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0; color: #182535;">Appointment Details:</h3>
         <ul style="list-style: none; padding-left: 0;">
-          <li style="margin-bottom: 10px;"><strong>Date:</strong> ${formattedDate}</li>
-          <li style="margin-bottom: 10px;"><strong>Time:</strong> ${time}</li>
-          <li style="margin-bottom: 10px;"><strong>Service:</strong> ${serviceName}</li>
-          <li style="margin-bottom: 10px;"><strong>Practitioner:</strong> ${therapistName}</li>
+          <li style="margin-bottom: 10px;"><strong>Date:</strong> ${escapeEmailHtml(formattedDate)}</li>
+          <li style="margin-bottom: 10px;"><strong>Time:</strong> ${escapeEmailHtml(time)}</li>
+          <li style="margin-bottom: 10px;"><strong>Service:</strong> ${escapeEmailHtml(serviceName)}</li>
+          <li style="margin-bottom: 10px;"><strong>Practitioner:</strong> ${escapeEmailHtml(therapistName)}</li>
         </ul>
       </div>
 
@@ -59,7 +59,7 @@ function generateApprovalEmailHtml(booking) {
       
       <br>
       <p style="margin-bottom: 5px;">Regards,</p>
-      <p style="font-weight: bold; color: #087f80; margin-top: 0;">${clinicName}</p>
+      <p style="font-weight: bold; color: #087f80; margin-top: 0;">${escapeEmailHtml(clinicName)}</p>
     </div>
   `;
 }
@@ -124,11 +124,11 @@ async function sendAdminPhysioApplicationNotification(application) {
           
           <div style="background-color: #f5f8f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <ul style="list-style: none; padding-left: 0;">
-              <li style="margin-bottom: 10px;"><strong>Name:</strong> ${application.full_name}</li>
-              <li style="margin-bottom: 10px;"><strong>Email:</strong> ${application.email}</li>
-              <li style="margin-bottom: 10px;"><strong>Phone:</strong> ${application.phone}</li>
-              <li style="margin-bottom: 10px;"><strong>City:</strong> ${application.city}</li>
-              <li style="margin-bottom: 10px;"><strong>HCPC Number:</strong> ${application.hcpc_number || 'N/A'}</li>
+              <li style="margin-bottom: 10px;"><strong>Name:</strong> ${escapeEmailHtml(application.full_name)}</li>
+              <li style="margin-bottom: 10px;"><strong>Email:</strong> ${escapeEmailHtml(application.email)}</li>
+              <li style="margin-bottom: 10px;"><strong>Phone:</strong> ${escapeEmailHtml(application.phone)}</li>
+              <li style="margin-bottom: 10px;"><strong>City:</strong> ${escapeEmailHtml(application.city)}</li>
+              <li style="margin-bottom: 10px;"><strong>HCPC Number:</strong> ${escapeEmailHtml(application.hcpc_number || 'N/A')}</li>
             </ul>
           </div>
 
@@ -147,7 +147,7 @@ async function sendAdminPhysioApplicationNotification(application) {
 }
 
 
-function escapePractitionerEmailHtml(value) {
+function escapeEmailHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
@@ -160,8 +160,8 @@ async function sendPhysioPasswordResetEmail(account) {
   const transporter = createTransporter();
   const fromEmail = process.env.SMTP_FROM || 'noreply@nexmove.example.com';
   const fromName = process.env.EMAIL_FROM_NAME || 'NEXmove Physio';
-  const safeName = escapePractitionerEmailHtml(account.full_name || 'Practitioner');
-  const safeResetUrl = escapePractitionerEmailHtml(account.reset_url || '');
+  const safeName = escapeEmailHtml(account.full_name || 'Practitioner');
+  const safeResetUrl = escapeEmailHtml(account.reset_url || '');
 
   try {
     const info = await transporter.sendMail({
@@ -200,8 +200,8 @@ async function sendPhysioVerificationEmail(account) {
   const fromEmail = process.env.SMTP_FROM || 'noreply@nexmove.example.com';
   const fromName = process.env.EMAIL_FROM_NAME || 'NEXmove Physio';
   // Applicant-provided data must be escaped before insertion into HTML email.
-  const safeName = escapePractitionerEmailHtml(account.full_name || 'Practitioner');
-  const safeVerifyUrl = escapePractitionerEmailHtml(account.verify_url || '');
+  const safeName = escapeEmailHtml(account.full_name || 'Practitioner');
+  const safeVerifyUrl = escapeEmailHtml(account.verify_url || '');
 
   try {
     const info = await transporter.sendMail({
@@ -260,15 +260,15 @@ async function sendPhysioApplicationStatusEmail(application) {
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#26343d;line-height:1.6">
           <h2 style="color:#1B2A4A">Practitioner application update</h2>
-          <p>Hello <strong>${application.full_name || 'Practitioner'}</strong>,</p>
+          <p>Hello <strong>${escapeEmailHtml(application.full_name || 'Practitioner')}</strong>,</p>
           <p>Your NEXmove practitioner application has been updated.</p>
           <div style="background:#f7f4ed;padding:18px;border-radius:12px;margin:20px 0">
-            <p style="margin:0 0 6px"><strong>Application status:</strong> ${status}</p>
-            <p style="margin:0 0 6px"><strong>Verification status:</strong> ${verification}</p>
-            ${practitionerStatus ? `<p style="margin:0"><strong>Practitioner status:</strong> ${practitionerStatus}</p>` : ''}
+            <p style="margin:0 0 6px"><strong>Application status:</strong> ${escapeEmailHtml(status)}</p>
+            <p style="margin:0 0 6px"><strong>Verification status:</strong> ${escapeEmailHtml(verification)}</p>
+            ${practitionerStatus ? `<p style="margin:0"><strong>Practitioner status:</strong> ${escapeEmailHtml(practitionerStatus)}</p>` : ''}
           </div>
           <p>${guidance}</p>
-          <p><a href="${application.portal_url}" style="color:#1B2A4A;font-weight:700">Open Practitioner Portal</a></p>
+          <p><a href="${escapeEmailHtml(application.portal_url)}" style="color:#1B2A4A;font-weight:700">Open Practitioner Portal</a></p>
         </div>
       `,
       text: `Hello ${application.full_name || 'Practitioner'},\n\nApplication status: ${status}\nVerification status: ${verification}${practitionerStatus ? `\nPractitioner status: ${practitionerStatus}` : ''}\n\n${guidance}\n\n${application.portal_url}\n`
