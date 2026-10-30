@@ -4839,6 +4839,23 @@ img.nexmove-sports-cta-image-v2 {
   }
 }
 </style>
+<style id="nexmove-sports-tablet-overflow-safe">
+/* Resolve conflicting header styles without clipping page content. */
+@media (min-width:901px) and (max-width:1239px) {
+.site-header.nexmove-backpain-header-match .nexmove-backpain-nav { display:none !important; }
+.site-header.nexmove-backpain-header-match .menu-btn { display:block !important; margin-left:auto !important; flex:0 0 45px !important; }
+}
+@media (min-width:901px) and (max-width:1499px) {
+.site-header.nexmove-backpain-header-match .nexmove-backpain-logo { width:100% !important; max-width:100% !important; height:100% !important; object-fit:contain !important; }
+.site-header.nexmove-backpain-header-match .nexmove-backpain-header-inner { width:calc(100% - 32px) !important; max-width:100% !important; gap:12px !important; }
+.site-header.nexmove-backpain-header-match .nexmove-backpain-social { width:42px !important; height:42px !important; min-width:42px !important; margin-left:6px !important; }
+}
+@media (min-width:1240px) and (max-width:1499px) {
+.site-header.nexmove-backpain-header-match .nexmove-backpain-nav { gap:16px !important; margin-left:auto !important; margin-right:12px !important; }
+.site-header.nexmove-backpain-header-match .nexmove-backpain-nav a { font-size:14px !important; }
+.site-header.nexmove-backpain-header-match .nexmove-backpain-phone { min-width:175px !important; height:48px !important; font-size:13px !important; padding:0 10px !important; }
+}
+</style>
 <script id="nexmove-sports-header-backpain-visual-match-v2-script">
 (function(){
   function text(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim(); }
