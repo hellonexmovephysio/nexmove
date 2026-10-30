@@ -31,6 +31,8 @@ app.disable('x-powered-by');
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  // Keep the public site and practitioner/admin pages from being framed by other origins.
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   next();
 });
 
