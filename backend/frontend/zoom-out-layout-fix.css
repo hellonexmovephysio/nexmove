@@ -1,0 +1,41 @@
+/* NEXmove local preview: prevent empty, viewport-tall sections during deep browser zoom-out.
+   Only activates when CSS viewport is both unusually wide and unusually tall.
+   Normal laptop, tablet and mobile layouts remain unchanged.
+   Remove this stylesheet link to reverse the experiment instantly. */
+@media (min-width: 1600px) and (min-height: 1250px) {
+  #conditions,
+  #locations.location-magazine,
+  #about.about-premium,
+  #physios.physio-network,
+  #faq.faq-premium {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+  #conditions {
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
+  /* Match the verification panel to the other contained sections at extreme zoom.
+     Previously its navy background expanded across the entire CSS viewport. */
+  #vetting {
+    box-sizing: border-box !important;
+    width: min(1760px, calc(100% - 44px)) !important;
+    max-width: 1760px !important;
+    margin: 18px auto !important;
+  }
+  /* Image ratios otherwise make city tiles expand after they finish loading. */
+  #locations .location-magazine-grid {
+    height: 440px !important;
+    min-height: 0 !important;
+  }
+  #conditions .container,
+  #locations .location-magazine-shell,
+  #about .about-premium-shell,
+  #physios .physio-network-shell,
+  #faq .faq-premium-shell {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+}
