@@ -12,6 +12,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/styles.css">
+<style>
+/* Reserve the service chooser while its read-only options request is loading.
+   Finished cards and load-error messages keep their existing layout. */
+#serviceGrid:not(:has(.service-card)):not(:has(.load-error)) { min-height: 116px; }
+@media (max-width: 1150px) {
+  #serviceGrid:not(:has(.service-card)):not(:has(.load-error)) { min-height: 241px; }
+}
+@media (max-width: 560px) {
+  #serviceGrid:not(:has(.service-card)):not(:has(.load-error)) { min-height: 493px; }
+}
+</style>
 
 <style>
 /* ============================================================
