@@ -346,7 +346,7 @@ body{
 const DOCS=[
   ['cv','CV'],
   ['qualification','Qualification evidence'],
-  ['indemnity','Professional indemnity'],
+  ['indemnity','CSP membership certificate / card'],
   ['hcpc','HCPC registration evidence (photo or PDF)'],
   ['dbs','DBS certificate (photo or PDF)'],
   ['right_to_work','Right-to-work evidence']
@@ -497,8 +497,10 @@ async function loadDocuments(){
       : '';
     const fileText=doc?.original_name?'<div class="doc-file">Current file: '+escapeHTML(doc.original_name)+'</div>':'<div class="doc-file">No file uploaded yet.</div>';
     const canUpload=!verified && ['Required','Submitted','Issue'].includes(overall);
-    const uploadGuidance = type==='hcpc'
-      ? 'Use a clear photo, screenshot or PDF of your HCPC registration evidence. NEXmove will also check your registration on the official register.'
+    const uploadGuidance = type==='indemnity'
+      ? 'Upload a clear photo, scan or PDF of your CSP membership card or membership certificate.'
+      : type==='hcpc'
+        ? 'Use a clear photo, screenshot or PDF of your HCPC registration evidence. NEXmove will also check your registration on the official register.'
       : type==='dbs'
         ? 'Upload a clear photo, scan or PDF of your DBS / Disclosure certificate. Make sure the details are readable.'
         : 'PDF, JPG or PNG accepted (up to 5 MB).';
